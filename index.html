@@ -253,21 +253,121 @@ html[data-style="news"] .seg button[aria-pressed="true"]{background:#211c12}
 html[data-style="news"] .opt-close{background:#211c12;border-radius:2px}
 @media(max-width:760px){html[data-style="news"] #introduction>div{columns:1}html[data-style="news"] h1{font-size:1.7rem}html[data-style="gamer"] h1{font-size:1.4rem}}
 @media print{#readProgress,#toTop{display:none!important}.rv{opacity:1!important;transform:none!important}html[data-style="gamer"],html[data-style="news"]{--ink:#17202a;--mut:#5b6b7b;--bg:#fff;--card:#fff}html[data-style="gamer"] h1,html[data-style="gamer"] h2{text-shadow:none;color:#17202a}}
+/* ===== v4: Jornal NOTURNO (principal) + botão flutuante único ☰ + responsivo ===== */
+html{-webkit-text-size-adjust:100%;scroll-padding-top:66px}
+html:not([data-font="large"]):not([data-font="xlarge"]) body{font-size:clamp(16px,4.4vw,17.5px)}
+h1{font-size:clamp(1.5rem,5.6vw,2rem)}
+h2{font-size:clamp(1.22rem,4.6vw,1.5rem)}
+h3{font-size:clamp(1.03rem,3.9vw,1.14rem)}
+canvas{max-width:100%}
+.tablebox{-webkit-overflow-scrolling:touch}
+footer{padding-bottom:96px}
+html[data-theme="dark"] .votea{color:#fca5a5}
+html[data-theme="dark"] .voteb{color:#93c5fd}
+/* Botão flutuante único (hambúrguer) */
+#menuFab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:260;display:inline-flex;align-items:center;gap:9px;min-height:54px;padding:12px 20px;border-radius:999px;background:#0e2233;color:#fff;border:2px solid var(--gold);font:inherit;font-weight:800;font-size:1.02rem;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.38)}
+#menuFab .fab-bars{font-size:1.3rem;line-height:1}
+#menuFab:hover{filter:brightness(1.12)}
+.menu-index{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0 4px}
+.menu-index a{display:flex;align-items:center;min-height:42px;padding:8px 11px;border:1px solid var(--line);border-radius:9px;color:var(--ink);text-decoration:none;font-weight:600;font-size:.93rem;background:var(--card)}
+.menu-index a:hover{filter:brightness(1.06)}
+@media print{#menuFab{display:none!important}}
+/* ---------- 📰 JORNAL NOTURNO (escuro) ---------- */
+html[data-style="news"]{--ink:#f2e9d8;--mut:#c9bb9c;--bg:#12100a;--card:#1e1a12;--line:#554a36;--gold:#d8a24a;--shadow:0 10px 28px rgba(0,0,0,.45)}
+html[data-style="news"] body{background-color:#12100a;background-image:radial-gradient(1000px 520px at 50% -8%,rgba(216,162,74,.10),transparent 62%)}
+html[data-style="news"] ::selection{background:#d8a24a;color:#17130c}
+html[data-style="news"] :focus-visible{outline-color:#d8a24a}
+html[data-style="news"] header.hero{background:#17130c;color:#f2e9d8;border-bottom:4px double #d8c9a3}
+html[data-style="news"] .eyebrow{border-top:2px solid #d8c9a3;border-bottom:1px solid #d8c9a3;color:#e8dcc0}
+html[data-style="news"] h1{font-size:clamp(1.68rem,6.4vw,2.65rem);color:#faf3e0}
+html[data-style="news"] .subtitle{color:#e6d9bd;max-width:780px}
+html[data-style="news"] .byline{border-top-color:#6b5f45;border-bottom-color:#6b5f45;color:#e6d9bd}
+html[data-style="news"] .pill{border-color:#6b5f45;color:#e6d9bd}
+html[data-style="news"] .kpi{border-color:#6b5f45;background:rgba(216,162,74,.05)}
+html[data-style="news"] .kpi b{color:#f0c169}
+html[data-style="news"] .btn-hero{background:#d8a24a;color:#17130c;border-color:#d8a24a}
+html[data-style="news"] .btn-ghost{color:#f2e9d8;border-color:#a08c5f}
+html[data-style="news"] .btn-ghost[aria-pressed="true"]{background:#d8a24a;color:#17130c;border-color:#d8a24a}
+html[data-style="news"] nav.toc{background:rgba(23,19,12,.97);border-bottom:4px double #d8c9a3}
+html[data-style="news"] nav.toc a{color:#e8dcc0}
+html[data-style="news"] nav.toc a:hover{background:#2b2517;color:#faf3e0}
+html[data-style="news"] nav.toc a.active{background:#d8a24a;color:#17130c}
+html[data-style="news"] section{background:#1e1a12;border-color:#554a36}
+html[data-style="news"] h2{color:#faf3e0;border-top:3px double #d8c9a3;border-bottom:1px solid #d8c9a3;letter-spacing:.02em}
+html[data-style="news"] h3{color:#f0e3c2;border-bottom:1px dotted #8a7a54}
+html[data-style="news"] .kicker{color:#faf3e0}
+html[data-style="news"] .lead{color:#dccdaa}
+html[data-style="news"] .lead::first-letter{color:#e0654f}
+html[data-style="news"] #introduction>div{column-rule:1px solid #554a36}
+html[data-style="news"] .card{background:#262013;border-color:#554a36}
+html[data-style="news"] .chartbox{background:#1a160e;border:1px solid #554a36}
+html[data-style="news"] table{background:#211c12;font-family:"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif}
+html[data-style="news"] th{background:#2d2617;color:#faf3e0;border-bottom:3px double #d8c9a3}
+html[data-style="news"] th,html[data-style="news"] td{border-right-color:#3f3724;border-bottom-color:#3f3724}
+html[data-style="news"] tr:nth-child(even) td{background:#261f13}
+html[data-style="news"] tbody tr:hover td{background:rgba(216,162,74,.10)}
+html[data-style="news"] .callout{background:#262013;border-color:#6b5f45;border-left:4px solid #d8a24a}
+html[data-style="news"] .callout.danger{border-left-color:#e0654f}
+html[data-style="news"] .callout.good{border-left-color:#57b97e}
+html[data-style="news"] .callout.info{border-left-color:#8fb8dd}
+html[data-style="news"] a{color:#eec27f}
+html[data-style="news"] select,html[data-style="news"] button.btn{background:#262013;color:#f2e9d8;border-color:#6b5f45}
+html[data-style="news"] button.btn.active{background:#d8a24a;color:#17130c;border-color:#d8a24a}
+html[data-style="news"] .badge.neut{background:#2d2617;color:#e8dcc0;border-color:#6b5f45}
+html[data-style="news"] .timeline{border-left-color:#6b5f45}
+html[data-style="news"] footer{background:#17130c;color:#e6d9bd;border-top:4px double #d8c9a3}
+html[data-style="news"] footer a{color:#eec27f}
+html[data-style="news"] #readProgress{background:linear-gradient(90deg,#e0654f,#d8a24a)}
+html[data-style="news"] #menuFab{background:#f2e9d8;color:#17130c;border:2px solid #17130c;border-radius:4px;font-family:Georgia,"Times New Roman",serif;text-transform:uppercase;letter-spacing:.09em;box-shadow:0 12px 28px rgba(0,0,0,.55)}
+html[data-style="news"] dialog#optionsDialog{background:#1e1a12;border:2px solid #d8c9a3}
+html[data-style="news"] .seg button{border-color:#6b5f45}
+html[data-style="news"] .seg button[aria-pressed="true"]{background:#d8a24a;color:#17130c;border-color:#d8a24a}
+html[data-style="news"] .opt-close{background:#d8a24a;color:#17130c}
+html[data-style="news"] .menu-index a{border-radius:2px}
+html[data-style="gamer"] h1{font-size:clamp(1.35rem,5.4vw,2rem)}
+html[data-style="gamer"] h2{font-size:clamp(1.08rem,4.4vw,1.35rem)}
+html[data-style="gamer"] #menuFab{background:linear-gradient(90deg,#164e63,#701a75);color:#fff;border:2px solid #22d3ee;border-radius:8px;font-family:Consolas,"Courier New",monospace;text-transform:uppercase;box-shadow:0 0 20px rgba(34,211,238,.55)}
+/* ---------- Responsivo: celulares pequenos ---------- */
+@media(max-width:820px){nav.toc{display:none}html{scroll-padding-top:14px}main{padding-top:14px}}
+@media(max-width:640px){
+  .wrap{padding:0 12px}
+  header.hero{padding:28px 14px 22px}
+  section{padding:20px 15px 14px}
+  body{line-height:1.72}
+  .small{font-size:.92rem}
+  .pill{font-size:.83rem}
+  .eyebrow{font-size:.8rem}
+  .kpis{grid-template-columns:1fr}
+  .chartbox{height:302px}
+  .chartbox.smallh{height:262px}
+  table{font-size:.9rem}
+  th,td{padding:8px}
+  .seg button{flex:1 1 45%}
+  .menu-index{grid-template-columns:1fr 1fr}
+  dialog#optionsDialog{width:calc(100% - 18px)}
+  .opt-body{padding:8px 16px 18px;max-height:76vh}
+  .opt-head{padding:16px 16px 8px}
+  .dl-list li{flex-direction:column;align-items:stretch}
+  .dl-list a.dl-btn{text-align:center}
+  #menuFab{min-height:56px;padding:13px 22px}
+}
+@media print{html[data-style="news"] body,html[data-style="news"] header.hero,html[data-style="news"] section,html[data-style="news"] .card,html[data-style="news"] table,html[data-style="news"] footer{background:#fff!important;color:#17202a!important}html[data-style="news"] h1,html[data-style="news"] h2,html[data-style="news"] h3,html[data-style="news"] .subtitle,html[data-style="news"] .byline,html[data-style="news"] .lead,html[data-style="news"] .kpi b{color:#17202a!important}html[data-style="news"] th{background:#eee!important}}
 </style>
 <script>
 /* Aplica preferências salvas (idioma/tema/acessibilidade) o mais cedo possível. */
 (function(){try{var p=JSON.parse(localStorage.getItem("analise2026_prefs")||"{}");var d=document.documentElement;
 d.dataset.lang=(p.lang==="en"?"en":"pt");d.lang=(p.lang==="en"?"en":"pt-BR");
-var pref=p.theme||"light";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+if(!p.v4){p.style="news";p.theme="dark";}
+var pref=p.theme||"dark";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
 d.dataset.theme=dark?"dark":"light";d.dataset.themePref=pref;
-d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
-}catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="light";}})();
+d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.style:"news";if(d.dataset.style!=="standard")d.dataset.theme="dark";d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
+}catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="dark";document.documentElement.dataset.style="news";}})();
 </script>
 </head>
 <body>
 <a class="skip" href="#introduction"><span class="i18n-pt">Ir para o conteúdo</span><span class="i18n-en" hidden>Skip to content</span></a>
 <div id="readProgress" aria-hidden="true"></div>
-<button type="button" id="toTop" data-no-i18n><span class="i18n-pt">⬆ Topo</span><span class="i18n-en" hidden>⬆ Top</span></button>
+<button type="button" id="menuFab" class="js-open-options" aria-haspopup="dialog" aria-controls="optionsDialog" data-no-i18n><span class="fab-bars" aria-hidden="true">☰</span><span>Menu</span></button>
 
 <header class="hero">
   <div class="wrap">
@@ -277,18 +377,10 @@ d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.datas
     <div class="byline" data-no-i18n>
       <span class="i18n-pt">Curadoria: <strong>by rogerelizar</strong> &middot; Pesquisa, redação, gráficos e montagem por inteligência artificial: <strong>Arena.ai — Agent Mode</strong>. O curador forneceu apenas o prompt e os PDFs oficiais (ver Apresentação).</span><span class="i18n-en" hidden>Curated by <strong>by rogerelizar</strong> &middot; Research, writing, charts and assembly by artificial intelligence: <strong>Arena.ai — Agent Mode</strong>. The curator supplied only the prompt and the official PDFs (see Introduction).</span>
     </div>
-    <div class="hero-actions" data-no-i18n>
-      <button type="button" class="btn-hero js-open-options" aria-haspopup="dialog"><span class="i18n-pt">⚙ Opções — acessibilidade, tema, idioma e downloads (PDF)</span><span class="i18n-en" hidden>⚙ Options — accessibility, theme, language &amp; downloads (PDF)</span></button>
-      <button type="button" class="btn-ghost lang-set" data-lang="pt" aria-pressed="true" title="Português brasileiro (idioma principal)">PT · Português</button>
-      <button type="button" class="btn-ghost lang-set" data-lang="en" aria-pressed="false" title="English (secondary language)">EN · English</button>
-      <button type="button" class="btn-ghost style-set" data-style="standard" aria-pressed="true">🖥 <span class="i18n-pt">Padrão</span><span class="i18n-en" hidden>Standard</span></button>
-      <button type="button" class="btn-ghost style-set" data-style="gamer" aria-pressed="false">🎮 Gamer</button>
-      <button type="button" class="btn-ghost style-set" data-style="news" aria-pressed="false">📰 <span class="i18n-pt">Jornal</span><span class="i18n-en" hidden>Newspaper</span></button>
-    </div>
     <div class="meta">
       <span class="pill">Data de corte: 23 de outubro de 2026 (véspera do 2º turno, em 25/10/2026)</span>
       <span class="pill">Fontes primárias: PDFs registrados no TSE (DivulgaCandContas)</span>
-      <span class="pill">Idioma principal: português brasileiro · Secundário: English (botão Opções)</span>
+      <span class="pill">Idioma principal: português brasileiro · Secundário: English (botão ☰ Menu)</span>
       <span class="pill">Postura: neutralidade estrita — sem recomendação de voto</span>
     </div>
     <div class="kpis">
@@ -312,8 +404,6 @@ d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.datas
     <a href="#proposal_evolution">Evolução 1º→2º turno</a>
     <a href="#official_context">Contexto oficial</a>
     <a href="#references">Fontes</a>
-    <button type="button" class="options-nav js-open-options" aria-haspopup="dialog" data-no-i18n><span class="i18n-pt">⚙ Opções</span><span class="i18n-en" hidden>⚙ Options</span></button>
-    <span class="langquick" data-no-i18n><button type="button" class="lang-set" data-lang="pt" aria-pressed="true">PT</button><button type="button" class="lang-set" data-lang="en" aria-pressed="false">EN</button></span>
   </div>
 </nav>
 
@@ -326,14 +416,14 @@ d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.datas
 
   <div class="i18n-pt">
     <p>Seja bem-vindo e bem-vinda. Esta página reúne, em linguagem clara e com fontes verificáveis, a comparação integral entre os dois programas de governo que disputam o segundo turno da eleição presidencial brasileira de 2026. Ela foi concebida para ajudar você a decidir com base em documentos — não em slogans, cortes de vídeo ou boatos. Aqui, cada afirmação relevante indica a página do programa oficial ou a fonte institucional correspondente, para que a conferência esteja sempre a um clique de distância.</p>
-    <p><strong>Disclaimer — isenção e limites de responsabilidade do curador.</strong> A curadoria desta publicação, assinada como <strong>by rogerelizar</strong>, limitou-se estritamente a <strong>formular o prompt</strong> (o pedido de análise) e a <strong>anexar os dois PDFs oficiais</strong> registrados no Tribunal Superior Eleitoral. O curador <strong>não redigiu, não revisou previamente linha a linha nem endossa necessariamente</strong> as interpretações, as notas de viabilidade, os alertas jurídico-fiscais ou quaisquer juízos comparativos aqui apresentados. Toda a pesquisa, a redação, os gráficos e a montagem desta página foram executados por inteligência artificial (<strong>Arena.ai — Agent Mode</strong>), sob as instruções e restrições constantes do prompt — em especial a obrigação de priorizar fontes oficiais e de não inventar dados. Para que não reste dúvida sobre essa divisão de papéis, o <strong>prompt completo pode ser baixado em PDF</strong> no botão <button type="button" class="btn js-open-options"><strong>⚙ Opções</strong></button> (onde também estão os dois programas de governo em PDF). Recomenda-se lê-lo: é ele que permite distinguir o que foi <em>pedido</em> pelo curador daquilo que foi <em>produzido</em> pela IA — e cobrar de cada parte apenas a sua responsabilidade.</p>
+    <p><strong>Disclaimer — isenção e limites de responsabilidade do curador.</strong> A curadoria desta publicação, assinada como <strong>by rogerelizar</strong>, limitou-se estritamente a <strong>formular o prompt</strong> (o pedido de análise) e a <strong>anexar os dois PDFs oficiais</strong> registrados no Tribunal Superior Eleitoral. O curador <strong>não redigiu, não revisou previamente linha a linha nem endossa necessariamente</strong> as interpretações, as notas de viabilidade, os alertas jurídico-fiscais ou quaisquer juízos comparativos aqui apresentados. Toda a pesquisa, a redação, os gráficos e a montagem desta página foram executados por inteligência artificial (<strong>Arena.ai — Agent Mode</strong>), sob as instruções e restrições constantes do prompt — em especial a obrigação de priorizar fontes oficiais e de não inventar dados. Para que não reste dúvida sobre essa divisão de papéis, o <strong>prompt completo pode ser baixado em PDF</strong> no <strong>botão flutuante ☰ Menu</strong>, no canto inferior direito da tela, (onde também estão os dois programas de governo em PDF). Recomenda-se lê-lo: é ele que permite distinguir o que foi <em>pedido</em> pelo curador daquilo que foi <em>produzido</em> pela IA — e cobrar de cada parte apenas a sua responsabilidade.</p>
     <p><strong>Um chamado à cidadania responsável.</strong> Nenhum relatório, pesquisa ou inteligência artificial pode votar por você — e nenhum deveria. Antes de decidir, leia ao menos os trechos dos programas oficiais sobre os temas que mais afetam a sua vida, confira os números diretamente no TSE, no Banco Central, no IBGE e no Tesouro Nacional, e desconfie de promessas que não apresentam custo, prazo nem caminho institucional. Verifique seu título e seu local de votação, leve um documento oficial com foto e vote de forma <strong>correta e consciente</strong>: o segundo turno será em <strong>25 de outubro de 2026, das 8h às 17h (horário de Brasília)</strong>. Votar consciente não é votar neste ou naquele candidato por indicação desta página — que não recomenda voto a ninguém. É votar sabendo o que cada projeto propõe, o que ele custa e o que ele exige das instituições. É assim, com informação verificável e participação serena, que a democracia se fortalece.</p>
     <p class="intro-pub">Publicado em <time class="pub-datetime" data-pub="pt" datetime="2026-10-23T14:33:57.033064-03:00">23 de outubro de 2026 às 14h33 (horário de São Paulo)</time> &middot; Curadoria: <strong>by rogerelizar</strong> &middot; Montagem por IA: <strong>Arena.ai — Agent Mode</strong>.</p>
   </div>
 
   <div class="i18n-en" hidden>
     <p>Welcome. This page brings together, in clear language and with verifiable sources, a full comparison of the two government programmes contesting the runoff of Brazil’s 2026 presidential election. It was designed to help you decide on the basis of documents — not slogans, video clips or rumours. Every material claim points to the page of the official programme or to the corresponding institutional source, so fact-checking is always one click away. <em>Brazilian Portuguese is the primary and authoritative language of this report; English is provided as a secondary access language. Verbatim programme evidence, page citations and Portuguese source titles are preserved in the original to keep the audit trail intact.</em></p>
-    <p><strong>Disclaimer — scope and limits of the curator’s responsibility.</strong> The curator of this publication, signed <strong>by rogerelizar</strong>, did no more than <strong>write the prompt</strong> (the analysis request) and <strong>attach the two official PDFs</strong> filed with Brazil’s Superior Electoral Court (TSE). The curator <strong>did not draft, line-edit in advance, or necessarily endorse</strong> the interpretations, feasibility scores, legal-fiscal warnings or comparative judgements presented here. All research, writing, charts and page assembly were carried out by artificial intelligence (<strong>Arena.ai — Agent Mode</strong>) under the instructions and constraints set out in the prompt — in particular the duty to prioritise official sources and not to invent data. So that this division of roles is beyond doubt, the <strong>full prompt is downloadable as a PDF</strong> from the <button type="button" class="btn js-open-options"><strong>⚙ Options</strong></button> button (where both government programmes are also available as PDFs). Please read it: it is what allows you to distinguish what the curator <em>asked for</em> from what the AI <em>produced</em> — and to hold each side accountable only for its own part.</p>
+    <p><strong>Disclaimer — scope and limits of the curator’s responsibility.</strong> The curator of this publication, signed <strong>by rogerelizar</strong>, did no more than <strong>write the prompt</strong> (the analysis request) and <strong>attach the two official PDFs</strong> filed with Brazil’s Superior Electoral Court (TSE). The curator <strong>did not draft, line-edit in advance, or necessarily endorse</strong> the interpretations, feasibility scores, legal-fiscal warnings or comparative judgements presented here. All research, writing, charts and page assembly were carried out by artificial intelligence (<strong>Arena.ai — Agent Mode</strong>) under the instructions and constraints set out in the prompt — in particular the duty to prioritise official sources and not to invent data. So that this division of roles is beyond doubt, the <strong>full prompt is downloadable as a PDF</strong> from the floating <strong>☰ Menu</strong> button at the bottom-right of the screen (where both government programmes are also available as PDFs). Please read it: it is what allows you to distinguish what the curator <em>asked for</em> from what the AI <em>produced</em> — and to hold each side accountable only for its own part.</p>
     <p><strong>A call to responsible citizenship.</strong> No report, poll or artificial intelligence can vote for you — and none should. Before deciding, read at least the passages of the official programmes on the issues that most affect your life, check the figures directly at the TSE, the Central Bank, IBGE and the National Treasury, and be wary of promises that carry no cost, no timeline and no institutional path. Check your voter registration and polling place, take official photo ID, and vote <strong>correctly and consciously</strong>: the runoff takes place on <strong>25 October 2026, from 8 a.m. to 5 p.m. (Brasília time)</strong>. Voting consciously does not mean voting for one candidate or the other on this page’s recommendation — it recommends no one. It means voting in the knowledge of what each project proposes, what it costs and what it demands of institutions. That is how, with verifiable information and calm participation, democracy grows stronger.</p>
     <p class="intro-pub">Published on <time class="pub-datetime" data-pub="en" datetime="2026-10-23T14:33:57.033064-03:00">23 October 2026 at 14:33 (São Paulo time)</time> &middot; Curated by <strong>by rogerelizar</strong> &middot; Assembled by AI: <strong>Arena.ai — Agent Mode</strong>.</p>
   </div>
@@ -373,8 +463,8 @@ d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.datas
     <li>Nos gráficos, Lula aparece em <span class="votea">vermelho</span> e Flávio em <span class="voteb">azul</span>, cores associadas às respectivas legendas, apenas para facilitar a leitura.</li>
     <li>“Idêntica” significa equivalência funcional de objetivo <em>e</em> instrumento. “Similar divergente” significa mesmo problema, instrumento ou filosofia distintos — com o viés ideológico nomeado.</li>
     <li>Declarações de campanha posteriores ao registro são marcadas como <span class="badge neut">2º turno / declaração pública</span> para não serem confundidas com o texto protocolado.</li>
-    <li data-no-i18n><span class="i18n-pt"><strong>Idiomas:</strong> o <strong>português brasileiro é o idioma principal e autoritativo</strong> deste relatório; o <strong>inglês é o idioma secundário</strong> de acesso (botão “Opções” ou PT/EN no topo). Evidências literais dos programas, citações de página e títulos de fontes em português são preservados no original para manter a auditabilidade.</span><span class="i18n-en" hidden><strong>Languages:</strong> <strong>Brazilian Portuguese is the primary and authoritative language</strong> of this report; <strong>English is the secondary</strong> access language (“Options” button or PT/EN at the top). Verbatim programme evidence, page citations and Portuguese source titles are kept in the original to preserve auditability.</span></li>
-    <li data-no-i18n><span class="i18n-pt"><strong>Estilos visuais:</strong> além do <strong>Padrão</strong>, há os estilos <strong>🎮 Gamer</strong> e <strong>📰 Jornal</strong> (botão “Opções” ou atalhos no cabeçalho). São <strong>apenas apresentação</strong> — não alteram textos, dados, notas de viabilidade nem a ordem das seções.</span><span class="i18n-en" hidden><strong>Visual styles:</strong> besides <strong>Standard</strong>, there are <strong>🎮 Gamer</strong> and <strong>📰 Newspaper</strong> styles (“Options” button or header shortcuts). They change <strong>presentation only</strong> — never the text, data, feasibility scores or section order.</span></li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Idiomas:</strong> o <strong>português brasileiro é o idioma principal e autoritativo</strong> deste relatório; o <strong>inglês é o idioma secundário</strong> de acesso (botão flutuante ☰ Menu). Evidências literais dos programas, citações de página e títulos de fontes em português são preservados no original para manter a auditabilidade.</span><span class="i18n-en" hidden><strong>Languages:</strong> <strong>Brazilian Portuguese is the primary and authoritative language</strong> of this report; <strong>English is the secondary</strong> access language (floating ☰ Menu button). Verbatim programme evidence, page citations and Portuguese source titles are kept in the original to preserve auditability.</span></li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Estilos visuais:</strong> o estilo principal é o <strong>📰 Jornal — edição noturna (escuro)</strong>; alternativos: <strong>Padrão</strong> e <strong>🎮 Gamer</strong> (botão flutuante <strong>☰ Menu</strong>). São <strong>apenas apresentação</strong> — não alteram textos, dados, notas de viabilidade nem a ordem das seções.</span><span class="i18n-en" hidden><strong>Visual styles:</strong> the main style is <strong>📰 Newspaper — night edition (dark)</strong>; alternatives: <strong>Standard</strong> and <strong>🎮 Gamer</strong> (floating <strong>☰ Menu</strong> button). They change <strong>presentation only</strong> — never the text, data, feasibility scores or section order.</span></li>
   </ul>
 </section>
 
@@ -1118,12 +1208,26 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 <dialog id="optionsDialog" aria-labelledby="optionsTitle" data-no-i18n>
   <div class="opt-head">
     <div>
-      <h2 id="optionsTitle" class="no-i18n"><span class="i18n-pt">⚙ Opções</span><span class="i18n-en" hidden>⚙ Options</span></h2>
+      <h2 id="optionsTitle" class="no-i18n"><span class="i18n-pt">☰ Menu · Opções</span><span class="i18n-en" hidden>☰ Menu · Options</span></h2>
       <div class="small"><span class="i18n-pt">Suas escolhas ficam salvas neste navegador. Português é o idioma principal; inglês, o secundário.</span><span class="i18n-en" hidden>Your choices are saved in this browser. Portuguese is the primary language; English is secondary.</span></div>
     </div>
     <button type="button" class="opt-close" id="optionsClose"><span class="i18n-pt">Fechar ✕</span><span class="i18n-en" hidden>Close ✕</span></button>
   </div>
   <div class="opt-body">
+    <h3 class="no-i18n"><span class="i18n-pt">🧭 Índice (ir para a seção)</span><span class="i18n-en" hidden>🧭 Contents (jump to section)</span></h3>
+    <div class="menu-index">
+      <a href="#introduction"><span class="i18n-pt">Apresentação</span><span class="i18n-en" hidden>Introduction</span></a>
+      <a href="#methodology"><span class="i18n-pt">Como ler</span><span class="i18n-en" hidden>How to read</span></a>
+      <a href="#candidate_A_profile"><span class="i18n-pt">Perfis e votos</span><span class="i18n-en" hidden>Profiles &amp; votes</span></a>
+      <a href="#comparative_matrix"><span class="i18n-pt">Matriz comparativa</span><span class="i18n-en" hidden>Comparative matrix</span></a>
+      <a href="#feasibility_modeling"><span class="i18n-pt">Gráficos de viabilidade</span><span class="i18n-en" hidden>Feasibility charts</span></a>
+      <a href="#investigative_summary"><span class="i18n-pt">Sumário investigativo</span><span class="i18n-en" hidden>Investigative summary</span></a>
+      <a href="#sensitive_themes"><span class="i18n-pt">Temas sensíveis</span><span class="i18n-en" hidden>Sensitive issues</span></a>
+      <a href="#proposal_evolution"><span class="i18n-pt">Evolução 1º→2º turno</span><span class="i18n-en" hidden>Evolution: 1st → 2nd round</span></a>
+      <a href="#official_context"><span class="i18n-pt">Contexto oficial</span><span class="i18n-en" hidden>Official context</span></a>
+      <a href="#references"><span class="i18n-pt">Fontes</span><span class="i18n-en" hidden>Sources</span></a>
+    </div>
+
     <h3 class="no-i18n"><span class="i18n-pt">🌐 Idioma / Language</span><span class="i18n-en" hidden>🌐 Language / Idioma</span></h3>
     <div class="seg" role="group" aria-label="Idioma / Language">
       <button type="button" class="lang-set" data-lang="pt" aria-pressed="true">PT · Português brasileiro (principal)</button>
@@ -1133,18 +1237,18 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 
     <h3 class="no-i18n"><span class="i18n-pt">🎨 Tema</span><span class="i18n-en" hidden>🎨 Theme</span></h3>
     <div class="seg" role="group" aria-label="Tema / Theme">
-      <button type="button" class="theme-set" data-theme="light" aria-pressed="true"><span class="i18n-pt">☀ Claro</span><span class="i18n-en" hidden>☀ Light</span></button>
-      <button type="button" class="theme-set" data-theme="dark" aria-pressed="false"><span class="i18n-pt">🌙 Escuro</span><span class="i18n-en" hidden>🌙 Dark</span></button>
+      <button type="button" class="theme-set" data-theme="light" aria-pressed="false"><span class="i18n-pt">☀ Claro</span><span class="i18n-en" hidden>☀ Light</span></button>
+      <button type="button" class="theme-set" data-theme="dark" aria-pressed="true"><span class="i18n-pt">🌙 Escuro</span><span class="i18n-en" hidden>🌙 Dark</span></button>
       <button type="button" class="theme-set" data-theme="auto" aria-pressed="false"><span class="i18n-pt">Automático (sistema)</span><span class="i18n-en" hidden>Automatic (system)</span></button>
     </div>
 
     <h3 class="no-i18n"><span class="i18n-pt">🖼️ Estilo visual</span><span class="i18n-en" hidden>🖼️ Visual style</span></h3>
     <div class="seg" role="group" aria-label="Estilo visual / Visual style">
-      <button type="button" class="style-set" data-style="standard" aria-pressed="true">🖥 <span class="i18n-pt">Padrão</span><span class="i18n-en" hidden>Standard</span></button>
+      <button type="button" class="style-set" data-style="standard" aria-pressed="false">🖥 <span class="i18n-pt">Padrão</span><span class="i18n-en" hidden>Standard</span></button>
       <button type="button" class="style-set" data-style="gamer" aria-pressed="false">🎮 Gamer</button>
-      <button type="button" class="style-set" data-style="news" aria-pressed="false">📰 <span class="i18n-pt">Jornal de notícias</span><span class="i18n-en" hidden>News newspaper</span></button>
+      <button type="button" class="style-set" data-style="news" aria-pressed="true">📰 <span class="i18n-pt">Jornal de notícias</span><span class="i18n-en" hidden>News newspaper</span></button>
     </div>
-    <p class="small"><span class="i18n-pt"><strong>Padrão:</strong> layout limpo original. <strong>Gamer:</strong> neon escuro, brilhos e tipografia de impacto (usa esquema escuro, inclusive nos gráficos). <strong>Jornal:</strong> papel, serifadas, manchetes e colunas editoriais (usa esquema claro). O conteúdo é idêntico nos três.</span><span class="i18n-en" hidden><strong>Standard:</strong> the original clean layout. <strong>Gamer:</strong> dark neon, glow and bold type (forces a dark scheme, charts included). <strong>Newspaper:</strong> paper, serifs, headlines and editorial columns (forces a light scheme). The content is identical in all three.</span></p>
+    <p class="small"><span class="i18n-pt"><strong>Padrão:</strong> layout limpo original. <strong>Gamer:</strong> neon escuro, brilhos e tipografia de impacto (usa esquema escuro, inclusive nos gráficos). <strong>Jornal:</strong> edição noturna — papel escuro, serifadas claras, manchetes e colunas editoriais (usa esquema escuro; é o estilo principal da página). O conteúdo é idêntico nos três.</span><span class="i18n-en" hidden><strong>Standard:</strong> the original clean layout. <strong>Gamer:</strong> dark neon, glow and bold type (forces a dark scheme, charts included). <strong>Newspaper:</strong> night edition — dark paper, light serifs, headlines and editorial columns (forces a dark scheme; it is the page’s main style). The content is identical in all three.</span></p>
 
     <h3 class="no-i18n"><span class="i18n-pt">♿ Acessibilidade</span><span class="i18n-en" hidden>♿ Accessibility</span></h3>
     <div class="small"><span class="i18n-pt"><strong>Tamanho do texto:</strong></span><span class="i18n-en" hidden><strong>Text size:</strong></span></div>
@@ -1157,6 +1261,7 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
     <label class="switchrow"><input type="checkbox" id="accLinks"> <span><span class="i18n-pt"><strong>Sublinhar todos os links</strong> — não depender só da cor para identificar links.</span><span class="i18n-en" hidden><strong>Underline all links</strong> — do not rely on colour alone to identify links.</span></span></label>
     <label class="switchrow"><input type="checkbox" id="accMotion"> <span><span class="i18n-pt"><strong>Reduzir movimento</strong> — desativa rolagem suave e transições.</span><span class="i18n-en" hidden><strong>Reduce motion</strong> — disables smooth scrolling and transitions.</span></span></label>
     <button type="button" class="btn" id="prefsReset"><span class="i18n-pt">Restaurar padrões</span><span class="i18n-en" hidden>Reset to defaults</span></button>
+    <button type="button" class="btn js-to-top"><span class="i18n-pt">⬆ Voltar ao topo</span><span class="i18n-en" hidden>⬆ Back to top</span></button>
 
     <h3 class="no-i18n"><span class="i18n-pt">⬇ Downloads em PDF</span><span class="i18n-en" hidden>⬇ PDF downloads</span></h3>
     <p class="small"><span class="i18n-pt">Arquivos oficiais e de transparência. Os programas são os PDFs registrados no TSE; o prompt reproduz o pedido original do curador na íntegra.</span><span class="i18n-en" hidden>Official and transparency files. The programmes are the PDFs filed with the TSE; the prompt reproduces the curator’s original request in full.</span></p>
@@ -1175,8 +1280,9 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 "use strict";
 var PUB_ISO = "2026-10-23T14:33:57.033064-03:00";
 var CHAVE = "analise2026_prefs";
-var prefs = {lang:"pt", theme:"light", style:"standard", font:"normal", contrast:"normal", links:"default", motion:"full"};
+var prefs = {lang:"pt", theme:"dark", style:"news", font:"normal", contrast:"normal", links:"default", motion:"full"};
 try{ Object.assign(prefs, JSON.parse(localStorage.getItem(CHAVE)||"{}")); }catch(e){}
+if(!prefs.v4){ prefs.style="news"; prefs.theme="dark"; prefs.v4=1; }
 var root = document.documentElement;
 
 var EN_H2 = {
@@ -1312,7 +1418,7 @@ function aplicarBlocos(lang){
   trocarBloco(document.querySelector("h1"), "Two competing projects for Brazil: a complete comparative analysis of the government programmes", lang);
   trocarBloco(document.querySelector(".subtitle"), "<strong>Candidate A — Luiz Inácio Lula da Silva (PT, No. 13)</strong>, incumbent president seeking a fourth term, and <strong>Candidate B — Flávio Bolsonaro (PL, No. 22)</strong>, senator for Rio de Janeiro. A comparative matrix by policy area, interactive feasibility and cost modelling, legal-fiscal fact-checking against official sources, and how the proposals evolved between the first round and the runoff.", lang);
   var pills = document.querySelectorAll(".pill");
-  ["Cut-off date: 23 October 2026 (eve of the runoff, 25 Oct 2026)","Primary sources: PDFs filed with the TSE (DivulgaCandContas)","Primary language: Brazilian Portuguese · Secondary: English (Options button)","Stance: strict neutrality — no voting recommendation"].forEach(function(en,i){ trocarBloco(pills[i], en, lang); });
+  ["Cut-off date: 23 October 2026 (eve of the runoff, 25 Oct 2026)","Primary sources: PDFs filed with the TSE (DivulgaCandContas)","Primary language: Brazilian Portuguese · Secondary: English (☰ Menu button)","Stance: strict neutrality — no voting recommendation"].forEach(function(en,i){ trocarBloco(pills[i], en, lang); });
   var kb = document.querySelectorAll(".kpi b"), ks = document.querySelectorAll(".kpi span");
   ["47.03% × 45.16%","84 × 76 pages","12 modelled areas","Runoff convergence"].forEach(function(en,i){ trocarBloco(kb[i], en, lang); });
   ["First-round result (valid votes): Flávio ahead of Lula by 2,224,965 votes — the narrowest first-round gap since redemocratisation. See Section 1.",
@@ -1389,10 +1495,10 @@ function aplicarIdioma(lang){
 function aplicarTema(pref){
   prefs.theme = pref; root.dataset.themePref = pref;
   var dark = pref==="dark" || (pref==="auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  if(prefs.style==="gamer") dark=true; if(prefs.style==="news") dark=false;
+  if(prefs.style==="gamer"||prefs.style==="news") dark=true;
   root.dataset.theme = dark ? "dark" : "light";
   marcarSeg(".theme-set", "theme", pref);
-  if(typeof Chart!=="undefined"){ Chart.defaults.color = prefs.style==="gamer" ? "#a5f3fc" : (prefs.style==="news" ? "#3a3428" : (dark ? "#cfe3f7" : "#666")); Chart.defaults.borderColor = prefs.style==="gamer" ? "rgba(34,211,238,.28)" : (dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)");
+  if(typeof Chart!=="undefined"){ Chart.defaults.color = prefs.style==="gamer" ? "#a5f3fc" : (prefs.style==="news" ? "#e8dcc0" : (dark ? "#cfe3f7" : "#666")); Chart.defaults.borderColor = prefs.style==="gamer" ? "rgba(34,211,238,.28)" : (prefs.style==="news" ? "rgba(232,220,192,.22)" : (dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)"));
     if(Chart.instances) Object.values(Chart.instances).forEach(function(ch){ try{ ch.update(); }catch(e){} }); }
   salvar();
 }
@@ -1406,7 +1512,7 @@ function aplicarAcessibilidade(){
 // Ligações dos controles
 document.querySelectorAll(".lang-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarIdioma(b.dataset.lang); }); });
 document.querySelectorAll(".theme-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarTema(b.dataset.theme); }); });
-function aplicarEstilo(s){ if(s!=="gamer"&&s!=="news") s="standard"; prefs.style=s; root.dataset.style=s; document.querySelectorAll(".style-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style===s)); }); aplicarTema(prefs.theme||"light"); salvar(); }
+function aplicarEstilo(s){ if(s!=="gamer"&&s!=="news") s="standard"; prefs.style=s; root.dataset.style=s; document.querySelectorAll(".style-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style===s)); }); aplicarTema(prefs.theme||"dark"); salvar(); }
 document.querySelectorAll(".style-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarEstilo(b.dataset.style); }); });
 document.querySelectorAll(".font-set").forEach(function(b){ b.addEventListener("click", function(){ prefs.font=b.dataset.font; aplicarAcessibilidade(); }); });
 var acC=document.getElementById("accContrast"), acL=document.getElementById("accLinks"), acM=document.getElementById("accMotion");
@@ -1414,7 +1520,7 @@ if(acC) acC.addEventListener("change", function(){ prefs.contrast = acC.checked?
 if(acL) acL.addEventListener("change", function(){ prefs.links = acL.checked?"underlined":"default"; aplicarAcessibilidade(); });
 if(acM) acM.addEventListener("change", function(){ prefs.motion = acM.checked?"reduce":"full"; aplicarAcessibilidade(); });
 var rst=document.getElementById("prefsReset");
-if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"light",style:"standard",font:"normal",contrast:"normal",links:"default",motion:"full"}; aplicarEstilo("standard"); aplicarTema("light"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
+if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"dark",style:"news",font:"normal",contrast:"normal",links:"default",motion:"full",v4:1}; aplicarEstilo("news"); aplicarTema("dark"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
 // Diálogo Opções
 var dlg = document.getElementById("optionsDialog"), ultimoFoco = null;
 function abrirOpcoes(){ ultimoFoco = document.activeElement; if(!dlg) return; if(typeof dlg.showModal==="function"){ if(!dlg.open) dlg.showModal(); } else { dlg.setAttribute("open",""); } var f=dlg.querySelector(".opt-close"); if(f) f.focus(); }
@@ -1422,9 +1528,10 @@ function fecharOpcoes(){ if(!dlg) return; if(typeof dlg.close==="function" && dl
 document.querySelectorAll(".js-open-options").forEach(function(b){ b.addEventListener("click", abrirOpcoes); });
 var fechar=document.getElementById("optionsClose"); if(fechar) fechar.addEventListener("click", fecharOpcoes);
 if(dlg) dlg.addEventListener("click", function(ev){ var r=dlg.getBoundingClientRect(); if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom) fecharOpcoes(); });
+document.querySelectorAll("#optionsDialog a[href^='#']").forEach(function(a){ a.addEventListener("click", fecharOpcoes); });
 // Inicialização (português é o padrão principal)
-aplicarTema(prefs.theme||"light");
-aplicarEstilo(prefs.style||"standard");
+aplicarTema(prefs.theme||"dark");
+aplicarEstilo(prefs.style||"news");
 aplicarAcessibilidade();
 aplicarIdioma(prefs.lang==="en" ? "en" : "pt");
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener && window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if(prefs.theme==="auto") aplicarTema("auto"); });
@@ -1449,6 +1556,7 @@ if(top) top.addEventListener("click", function(){
   var reduce = document.documentElement.dataset.motion === "reduce";
   window.scrollTo({top:0, behavior: reduce ? "auto" : "smooth"});
 });
+document.querySelectorAll(".js-to-top").forEach(function(b){ b.addEventListener("click", function(){ var d=document.getElementById("optionsDialog"); if(d && d.open) d.close(); var r2=document.documentElement.dataset.motion==="reduce"; window.scrollTo({top:0, behavior: r2 ? "auto" : "smooth"}); }); });
 var links = {};
 document.querySelectorAll("nav.toc a[href^='#']").forEach(function(a){ links[a.getAttribute("href").slice(1)] = a; });
 if("IntersectionObserver" in window){
