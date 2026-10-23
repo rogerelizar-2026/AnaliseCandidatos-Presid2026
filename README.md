@@ -1,0 +1,1 @@
+# AnaliseCandidatos-Presid2026
