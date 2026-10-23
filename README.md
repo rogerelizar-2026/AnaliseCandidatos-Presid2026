@@ -26,8 +26,8 @@ As citações "p. X" no relatório referem-se à paginação impressa de cada PD
 
 ## Idiomas, acessibilidade e downloads
 
-- **Português brasileiro é o idioma principal** (autoritativo); o **inglês é o secundário**. Alternância nos botões `PT | EN` do topo ou em **⚙ Opções**.
-- O botão **⚙ Opções** concentra: idioma, **tema claro/escuro/automático**, **acessibilidade** (tamanho do texto, alto contraste, links sublinhados, redução de movimento) e **downloads em PDF**.
+- **Português brasileiro é o idioma principal** (autoritativo); o **inglês é o secundário**. Alternância no **botão flutuante ☰ Menu**.
+- O **botão flutuante único ☰ Menu** (hambúrguer, canto inferior direito) concentra **todas** as opções — índice de seções, idioma, tema, estilo, acessibilidade e downloads: idioma, **tema claro/escuro/automático**, **acessibilidade** (tamanho do texto, alto contraste, links sublinhados, redução de movimento) e **downloads em PDF**.
 - Downloads: `fontes-primarias/PropostasLula.pdf`, `fontes-primarias/PropostasFlavio.pdf` e `downloads/Prompt-Gerador-da-Pagina.pdf` (prompt integral do curador **by rogerelizar**; gerador em `ferramentas/gerar_prompt_pdf.py`).
 - As preferências ficam salvas no navegador (`localStorage`). Na versão em inglês, citações literais, páginas dos PDFs e títulos de fontes permanecem em português para preservar a auditabilidade.
-- **Estilos visuais** (⚙ Opções ou atalhos no cabeçalho): **Padrão** (limpo), **🎮 Gamer** (neon escuro) e **📰 Jornal** (editorial em papel/serifa). Mudam só a apresentação — conteúdo, dados e notas são idênticos. Inclui barra de progresso de leitura, botão “voltar ao topo” e destaque da seção atual no sumário.
+- **Estilo principal: 📰 Jornal — edição noturna (escuro)**, com diagramação editorial (manchete, fios duplos, capitular, colunas) e tipografia fluida responsiva para celulares pequenos. Alternativos no ☰ Menu: **Padrão** (limpo) e **🎮 Gamer** (neon escuro). Mudam só a apresentação — conteúdo, dados e notas são idênticos. No celular (≤820px) o sumário superior some e a navegação fica no menu. Inclui barra de progresso de leitura e “voltar ao topo” dentro do menu.
