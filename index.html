@@ -352,16 +352,67 @@ html[data-style="gamer"] #menuFab{background:linear-gradient(90deg,#164e63,#701a
   #menuFab{min-height:56px;padding:13px 22px}
 }
 @media print{html[data-style="news"] body,html[data-style="news"] header.hero,html[data-style="news"] section,html[data-style="news"] .card,html[data-style="news"] table,html[data-style="news"] footer{background:#fff!important;color:#17202a!important}html[data-style="news"] h1,html[data-style="news"] h2,html[data-style="news"] h3,html[data-style="news"] .subtitle,html[data-style="news"] .byline,html[data-style="news"] .lead,html[data-style="news"] .kpi b{color:#17202a!important}html[data-style="news"] th{background:#eee!important}}
+/* ===== v5: Jornal DIURNO (tema claro = padrão) — o noturno vale só com data-theme=dark ===== */
+html[data-style="news"]:not([data-theme="dark"]){--ink:#211c12;--mut:#5c5546;--bg:#e9e2cf;--card:#fbf7ec;--line:#c9bfa5;--gold:#8a1f1f;--shadow:0 8px 24px rgba(60,48,20,.10)}
+html[data-style="news"]:not([data-theme="dark"]) body{background-color:#e9e2cf;background-image:none}
+html[data-style="news"]:not([data-theme="dark"]) ::selection{background:#fde68a;color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) :focus-visible{outline-color:#8a1f1f}
+html[data-style="news"]:not([data-theme="dark"]) header.hero{background:#f8f3e6;color:#211c12;border-bottom:4px double #211c12}
+html[data-style="news"]:not([data-theme="dark"]) .eyebrow{border-top:2px solid #211c12;border-bottom:1px solid #211c12;color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) h1{color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .subtitle{color:#3f392c}
+html[data-style="news"]:not([data-theme="dark"]) .byline{border-top-color:#8a8069;border-bottom-color:#8a8069;color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .pill{border-color:#8a8069;color:#3f392c}
+html[data-style="news"]:not([data-theme="dark"]) .kpi{border-color:#8a8069;background:transparent}
+html[data-style="news"]:not([data-theme="dark"]) .kpi b{color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .btn-hero{background:#211c12;color:#fbf7ec;border-color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .btn-ghost{color:#211c12;border-color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .btn-ghost[aria-pressed="true"]{background:#8a1f1f;color:#fff;border-color:#8a1f1f}
+html[data-style="news"]:not([data-theme="dark"]) nav.toc{background:#f8f3e6;border-bottom:4px double #211c12}
+html[data-style="news"]:not([data-theme="dark"]) nav.toc a{color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) nav.toc a:hover{background:#e7ddc4;color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) nav.toc a.active{background:#211c12;color:#fbf7ec}
+html[data-style="news"]:not([data-theme="dark"]) section{background:#fbf7ec;border-color:#b8ab8c}
+html[data-style="news"]:not([data-theme="dark"]) h2{color:#211c12;border-top:3px double #211c12;border-bottom:1px solid #211c12}
+html[data-style="news"]:not([data-theme="dark"]) h3{color:#211c12;border-bottom:1px dotted #8a8069}
+html[data-style="news"]:not([data-theme="dark"]) .kicker{color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .lead{color:#3f392c}
+html[data-style="news"]:not([data-theme="dark"]) .lead::first-letter{color:#8a1f1f}
+html[data-style="news"]:not([data-theme="dark"]) #introduction>div{column-rule:1px solid #c9bfa5}
+html[data-style="news"]:not([data-theme="dark"]) .card{background:#fffdf6;border-color:#b8ab8c}
+html[data-style="news"]:not([data-theme="dark"]) .chartbox{background:#fffdf6;border-color:#c9bfa5}
+html[data-style="news"]:not([data-theme="dark"]) table{background:#fffdf6}
+html[data-style="news"]:not([data-theme="dark"]) th{background:#f3ecd9;color:#211c12;border-bottom:3px double #211c12}
+html[data-style="news"]:not([data-theme="dark"]) th,html[data-style="news"]:not([data-theme="dark"]) td{border-right-color:#e6ddc8;border-bottom-color:#ddd2b8}
+html[data-style="news"]:not([data-theme="dark"]) tr:nth-child(even) td{background:#faf5e9}
+html[data-style="news"]:not([data-theme="dark"]) tbody tr:hover td{background:rgba(138,31,31,.06)}
+html[data-style="news"]:not([data-theme="dark"]) .callout{background:#fffdf6;border-color:#8a8069;border-left:4px solid #8a1f1f}
+html[data-style="news"]:not([data-theme="dark"]) .callout.good{border-left-color:#137547}
+html[data-style="news"]:not([data-theme="dark"]) .callout.info{border-left-color:#0b5fa5}
+html[data-style="news"]:not([data-theme="dark"]) .callout.danger{border-left-color:#a4133c}
+html[data-style="news"]:not([data-theme="dark"]) a{color:#7f1d1d}
+html[data-style="news"]:not([data-theme="dark"]) select,html[data-style="news"]:not([data-theme="dark"]) button.btn{background:#fffdf6;color:#211c12;border-color:#8a8069}
+html[data-style="news"]:not([data-theme="dark"]) button.btn.active{background:#211c12;color:#fbf7ec;border-color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .badge.neut{background:#efe8d8;color:#3f392c;border-color:#b8ab8c}
+html[data-style="news"]:not([data-theme="dark"]) .timeline{border-left-color:#b8ab8c}
+html[data-style="news"]:not([data-theme="dark"]) footer{background:#f8f3e6;color:#211c12;border-top:4px double #211c12}
+html[data-style="news"]:not([data-theme="dark"]) footer a{color:#7f1d1d}
+html[data-style="news"]:not([data-theme="dark"]) #readProgress{background:#8a1f1f}
+html[data-style="news"]:not([data-theme="dark"]) #menuFab{background:#211c12;color:#fbf7ec;border-color:#211c12;box-shadow:0 12px 28px rgba(60,48,20,.35)}
+html[data-style="news"]:not([data-theme="dark"]) dialog#optionsDialog{background:#fbf7ec;border-color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .seg button{border-color:#b8ab8c}
+html[data-style="news"]:not([data-theme="dark"]) .seg button[aria-pressed="true"]{background:#211c12;color:#fbf7ec;border-color:#211c12}
+html[data-style="news"]:not([data-theme="dark"]) .opt-close{background:#211c12;color:#fbf7ec}
 </style>
 <script>
 /* Aplica preferências salvas (idioma/tema/acessibilidade) o mais cedo possível. */
 (function(){try{var p=JSON.parse(localStorage.getItem("analise2026_prefs")||"{}");var d=document.documentElement;
 d.dataset.lang=(p.lang==="en"?"en":"pt");d.lang=(p.lang==="en"?"en":"pt-BR");
-if(!p.v4){p.style="news";p.theme="dark";}
-var pref=p.theme||"dark";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+if(!p.v5){p.style="news";p.theme="light";}
+var pref=p.theme||"light";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
 d.dataset.theme=dark?"dark":"light";d.dataset.themePref=pref;
-d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.style:"news";if(d.dataset.style!=="standard")d.dataset.theme="dark";d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
-}catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="dark";document.documentElement.dataset.style="news";}})();
+d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.style:"news";if(d.dataset.style==="gamer")d.dataset.theme="dark";d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
+}catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="light";document.documentElement.dataset.style="news";}})();
 </script>
 </head>
 <body>
@@ -464,7 +515,8 @@ d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.st
     <li>“Idêntica” significa equivalência funcional de objetivo <em>e</em> instrumento. “Similar divergente” significa mesmo problema, instrumento ou filosofia distintos — com o viés ideológico nomeado.</li>
     <li>Declarações de campanha posteriores ao registro são marcadas como <span class="badge neut">2º turno / declaração pública</span> para não serem confundidas com o texto protocolado.</li>
     <li data-no-i18n><span class="i18n-pt"><strong>Idiomas:</strong> o <strong>português brasileiro é o idioma principal e autoritativo</strong> deste relatório; o <strong>inglês é o idioma secundário</strong> de acesso (botão flutuante ☰ Menu). Evidências literais dos programas, citações de página e títulos de fontes em português são preservados no original para manter a auditabilidade.</span><span class="i18n-en" hidden><strong>Languages:</strong> <strong>Brazilian Portuguese is the primary and authoritative language</strong> of this report; <strong>English is the secondary</strong> access language (floating ☰ Menu button). Verbatim programme evidence, page citations and Portuguese source titles are kept in the original to preserve auditability.</span></li>
-    <li data-no-i18n><span class="i18n-pt"><strong>Estilos visuais:</strong> o estilo principal é o <strong>📰 Jornal — edição noturna (escuro)</strong>; alternativos: <strong>Padrão</strong> e <strong>🎮 Gamer</strong> (botão flutuante <strong>☰ Menu</strong>). São <strong>apenas apresentação</strong> — não alteram textos, dados, notas de viabilidade nem a ordem das seções.</span><span class="i18n-en" hidden><strong>Visual styles:</strong> the main style is <strong>📰 Newspaper — night edition (dark)</strong>; alternatives: <strong>Standard</strong> and <strong>🎮 Gamer</strong> (floating <strong>☰ Menu</strong> button). They change <strong>presentation only</strong> — never the text, data, feasibility scores or section order.</span></li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Estilos visuais:</strong> o estilo principal é o <strong>📰 Jornal (claro por padrão; edição noturna no tema escuro)</strong>; alternativos: <strong>Padrão</strong> e <strong>🎮 Gamer</strong> (botão flutuante <strong>☰ Menu</strong>). São <strong>apenas apresentação</strong> — não alteram textos, dados, notas de viabilidade nem a ordem das seções.</span><span class="i18n-en" hidden><strong>Visual styles:</strong> the main style is <strong>📰 Newspaper (light by default; night edition in the dark theme)</strong>; alternatives: <strong>Standard</strong> and <strong>🎮 Gamer</strong> (floating <strong>☰ Menu</strong> button). They change <strong>presentation only</strong> — never the text, data, feasibility scores or section order.</span></li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Rótulos simétricos (regra editorial):</strong> <strong>bolsonarismo</strong> e <strong>lulismo</strong> — e os derivados <strong>bolsonarista/lulista</strong> — só aparecem emparelhados, com o mesmo destaque tipográfico e o mesmo estatuto de fonte. Classificações como “extrema-direita”/“extrema-esquerda” exigiriam, para qualquer lado, <strong>citação direta do ponto (página) do programa original</strong> que as fundamentasse; como nenhum dos PDFs originais contém esses termos nem autoclassificação equivalente (busca integral verificada nos dois textos registrados no TSE), esta página <strong>não as aplica a nenhum dos dois lados</strong> — no espectro (Seção 1), apenas “esquerda”, “centro-esquerda” e “direita”.</span><span class="i18n-en" hidden><strong>Symmetric labels (editorial rule):</strong> <strong>Bolsonarismo</strong> and <strong>Lulismo</strong> — and their derivatives — appear only as a pair, with the same typographic emphasis and the same source status. Labels such as “far right”/“far left” would require, for either side, a <strong>direct citation of the passage (page) of the original programme</strong> grounding them; since neither original PDF contains those terms nor any equivalent self-classification (verified full-text search of both texts filed with the TSE), this page <strong>applies them to neither side</strong> — on the spectrum (Section 1), only “left”, “centre-left” and “right” are used.</span></li>
   </ul>
 </section>
 
@@ -520,7 +572,7 @@ d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.st
     <table>
       <thead><tr><th>Chapa</th><th>Partido / federação</th><th>Posição convencional no espectro*</th><th>Traço programático dominante</th></tr></thead>
       <tbody>
-        <tr><td rowspan="7"><strong>A — Lula</strong><br>“Brasil Pronto pra Mais”</td><td>PT (Fed. Brasil da Esperança)</td><td>Esquerda</td><td>Social-desenvolvimentismo, direitos trabalhistas e sociais</td></tr>
+        <tr><td rowspan="7"><strong>A — Lula</strong><br>“Brasil Pronto pra Mais”</td><td>PT (Fed. Brasil da Esperança)</td><td>Esquerda</td><td>Social-desenvolvimentismo, direitos trabalhistas e sociais (lulismo)</td></tr>
         <tr><td>PCdoB (Fed. Brasil da Esperança)</td><td>Esquerda</td><td>Socialismo democrático, soberania nacional</td></tr>
         <tr><td>PV (Fed. Brasil da Esperança)</td><td>Centro-esquerda</td><td>Ambientalismo, economia verde</td></tr>
         <tr><td>PSB (partido do vice)</td><td>Centro-esquerda / esquerda</td><td>Socialismo democrático, gestão e inovação no setor público</td></tr>
@@ -531,7 +583,7 @@ d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.st
       </tbody>
     </table>
   </div>
-  <p class="small">* Classificação convencional da ciência política brasileira para fins comparativos; partidos brasileiros são internamente heterogêneos. Federações partidárias devem atuar de forma unificada por no mínimo quatro anos (Lei nº 14.208/2021), o que dá maior previsibilidade à base formal de Lula; a base potencial de Flávio é eleitoralmente grande (PL), mas formalmente estreita.</p>
+  <p class="small">* Classificação convencional da ciência política brasileira para fins comparativos; partidos brasileiros são internamente heterogêneos. Federações partidárias devem atuar de forma unificada por no mínimo quatro anos (Lei nº 14.208/2021), o que dá maior previsibilidade à base formal de Lula; a base potencial de Flávio é eleitoralmente grande (PL), mas formalmente estreita. <span data-no-i18n><span class="i18n-pt">Os rótulos entre parênteses — <strong>lulismo</strong> (PT) e <strong>bolsonarismo</strong> (PL) — têm o mesmo destaque e a mesma base: uso convencional na literatura e no debate público para os movimentos liderados por cada candidato; nenhum dos programas originais usa esses termos (busca integral nos PDFs de 84 e 76 páginas registrados no TSE), e nenhum lado recebe o prefixo “extrema-” nesta classificação.</span><span class="i18n-en" hidden>The parenthetical labels — <strong>Lulismo</strong> (PT) and <strong>Bolsonarismo</strong> (PL) — carry the same emphasis and the same basis: conventional usage in the literature and public debate for the movements led by each candidate; neither original programme uses these terms (full-text search of the 84- and 76-page PDFs filed with the TSE), and neither side receives the “far-/extreme-” prefix in this classification.</span></span></p>
 </section>
 
 <!-- ============ MATRIZ ============ -->
@@ -907,7 +959,7 @@ d.dataset.style=(p.style==="gamer"||p.style==="news"||p.style==="standard")?p.st
     <table>
       <thead><tr><th>Tema</th><th>Lula (A)</th><th>Flávio (B)</th><th>Motivação político-econômica provável</th></tr></thead>
       <tbody>
-        <tr><td><strong>Anistia do 8 de janeiro</strong></td><td>Contra; defende punição dos responsáveis e já afirmou que vetaria anistia a Bolsonaro.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>A favor de anistia “ampla, geral e irrestrita”, incluindo o pai, Jair Bolsonaro (condenado a 27 anos); admite indulto se o Congresso não aprovar.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>B: coesão da base bolsonarista e libertação do líder. A: defesa institucional e eleitorado anti-golpe. Tema de maior carga simbólica do 2º turno.</td></tr>
+        <tr><td><strong>Anistia do 8 de janeiro</strong></td><td>Contra; defende punição dos responsáveis e já afirmou que vetaria anistia a Bolsonaro.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>A favor de anistia “ampla, geral e irrestrita”, incluindo o pai, Jair Bolsonaro (condenado a 27 anos); admite indulto se o Congresso não aprovar.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>B: coesão da base bolsonarista e libertação do líder. A: coesão da base lulista em torno da defesa institucional (eleitorado anti-golpe). Tema de maior carga simbólica do 2º turno.</td></tr>
         <tr><td><strong>STF e aborto/drogas</strong></td><td>Não propõe mudar competências do STF; programa não propõe descriminalizar o aborto (fala em direitos sexuais/reprodutivos e contraceptivos).<sup class="fn"><a href="#ref-aborto">[10]</a></sup></td><td>Restringir STF (programa) e indicar ministros “contra aborto e drogas” e “patriotas” (declarações).<sup class="fn"><a href="#ref-aborto">[10]</a></sup> Plano defende “vida desde a concepção” (p. 9).</td><td>Disputa pelo eleitorado evangélico/conservador e pelo controle futuro da Corte, onde tramita a descriminalização até 12 semanas.</td></tr>
         <tr><td><strong>Armas e munições</strong></td><td>Manter controle e rastreabilidade; acusa a liberalização passada de abastecer o crime (debate Band).</td><td>Defende acesso legal a armas; nega ter proposto fim da identificação de munições (debate Band).<sup class="fn"><a href="#ref-armas">[11]</a></sup></td><td>B: base armamentista/agro. A: eleitorado urbano preocupado com letalidade e feminicídio.</td></tr>
         <tr><td><strong>Jornada 6×1</strong></td><td>Bandeira histórica da campanha; PEC aprovada.</td><td>Chamou a PEC de “oportunista”, defendia jornada flexível/pagamento por hora; <strong>votou a favor em 14/10</strong> (“a maioria dos trabalhadores quer”).<sup class="fn"><a href="#ref-6x1-virada">[12]</a></sup></td><td>Clássico movimento ao eleitor mediano: tema com apoio majoritário e custo fiscal zero ao governo.</td></tr>
@@ -1237,8 +1289,8 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 
     <h3 class="no-i18n"><span class="i18n-pt">🎨 Tema</span><span class="i18n-en" hidden>🎨 Theme</span></h3>
     <div class="seg" role="group" aria-label="Tema / Theme">
-      <button type="button" class="theme-set" data-theme="light" aria-pressed="false"><span class="i18n-pt">☀ Claro</span><span class="i18n-en" hidden>☀ Light</span></button>
-      <button type="button" class="theme-set" data-theme="dark" aria-pressed="true"><span class="i18n-pt">🌙 Escuro</span><span class="i18n-en" hidden>🌙 Dark</span></button>
+      <button type="button" class="theme-set" data-theme="light" aria-pressed="true"><span class="i18n-pt">☀ Claro</span><span class="i18n-en" hidden>☀ Light</span></button>
+      <button type="button" class="theme-set" data-theme="dark" aria-pressed="false"><span class="i18n-pt">🌙 Escuro</span><span class="i18n-en" hidden>🌙 Dark</span></button>
       <button type="button" class="theme-set" data-theme="auto" aria-pressed="false"><span class="i18n-pt">Automático (sistema)</span><span class="i18n-en" hidden>Automatic (system)</span></button>
     </div>
 
@@ -1248,7 +1300,7 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
       <button type="button" class="style-set" data-style="gamer" aria-pressed="false">🎮 Gamer</button>
       <button type="button" class="style-set" data-style="news" aria-pressed="true">📰 <span class="i18n-pt">Jornal de notícias</span><span class="i18n-en" hidden>News newspaper</span></button>
     </div>
-    <p class="small"><span class="i18n-pt"><strong>Padrão:</strong> layout limpo original. <strong>Gamer:</strong> neon escuro, brilhos e tipografia de impacto (usa esquema escuro, inclusive nos gráficos). <strong>Jornal:</strong> edição noturna — papel escuro, serifadas claras, manchetes e colunas editoriais (usa esquema escuro; é o estilo principal da página). O conteúdo é idêntico nos três.</span><span class="i18n-en" hidden><strong>Standard:</strong> the original clean layout. <strong>Gamer:</strong> dark neon, glow and bold type (forces a dark scheme, charts included). <strong>Newspaper:</strong> night edition — dark paper, light serifs, headlines and editorial columns (forces a dark scheme; it is the page’s main style). The content is identical in all three.</span></p>
+    <p class="small"><span class="i18n-pt"><strong>Padrão:</strong> layout limpo original. <strong>Gamer:</strong> neon escuro, brilhos e tipografia de impacto (usa esquema escuro, inclusive nos gráficos). <strong>Jornal:</strong> papel claro no tema claro (padrão) e edição noturna no tema escuro; serifadas, manchetes e colunas editoriais — é o estilo principal da página. O conteúdo é idêntico nos três.</span><span class="i18n-en" hidden><strong>Standard:</strong> the original clean layout. <strong>Gamer:</strong> dark neon, glow and bold type (forces a dark scheme, charts included). <strong>Newspaper:</strong> light paper in the light theme (default) and a night edition in the dark theme; serifs, headlines and editorial columns — it is the page’s main style. The content is identical in all three.</span></p>
 
     <h3 class="no-i18n"><span class="i18n-pt">♿ Acessibilidade</span><span class="i18n-en" hidden>♿ Accessibility</span></h3>
     <div class="small"><span class="i18n-pt"><strong>Tamanho do texto:</strong></span><span class="i18n-en" hidden><strong>Text size:</strong></span></div>
@@ -1280,9 +1332,9 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 "use strict";
 var PUB_ISO = "2026-10-23T14:33:57.033064-03:00";
 var CHAVE = "analise2026_prefs";
-var prefs = {lang:"pt", theme:"dark", style:"news", font:"normal", contrast:"normal", links:"default", motion:"full"};
+var prefs = {lang:"pt", theme:"light", style:"news", font:"normal", contrast:"normal", links:"default", motion:"full"};
 try{ Object.assign(prefs, JSON.parse(localStorage.getItem(CHAVE)||"{}")); }catch(e){}
-if(!prefs.v4){ prefs.style="news"; prefs.theme="dark"; prefs.v4=1; }
+if(!prefs.v5){ prefs.style="news"; prefs.theme="light"; prefs.v4=1; prefs.v5=1; }
 var root = document.documentElement;
 
 var EN_H2 = {
@@ -1363,7 +1415,7 @@ var AREA_EN = {"Economia e impostos":"Economy & taxes","Segurança pública":"Pu
 var EN_MAP = {
 "Candidato A":"Candidate A","Candidato B":"Candidate B","Quem é:":"Who he is:","Vice:":"Running mate:","Posicionamento:":"Positioning:","Votos no 1º turno:":"First-round votes:","Leitura institucional:":"Institutional reading:","Coligação:":"Coalition:",
 "Esquerda":"Left","Centro-esquerda":"Centre-left","Centro-esquerda / esquerda":"Centre-left / Left","Direita":"Right",
-"Social-desenvolvimentismo, direitos trabalhistas e sociais":"Social developmentalism, labour and social rights","Socialismo democrático, soberania nacional":"Democratic socialism, national sovereignty","Ambientalismo, economia verde":"Environmentalism, green economy","Socialismo democrático, gestão e inovação no setor público":"Democratic socialism, public-sector management and innovation","Trabalhismo, desenvolvimentismo nacional":"Labourism (trabalhismo), national developmentalism","Socialismo, direitos humanos e de minorias":"Socialism, human and minority rights","Sustentabilidade, ética pública":"Sustainability, public ethics","Liberalismo econômico + conservadorismo moral/securitário (bolsonarismo)":"Economic liberalism + moral/security conservatism (Bolsonarismo)",
+"Social-desenvolvimentismo, direitos trabalhistas e sociais (lulismo)":"Social developmentalism, labour and social rights (Lulismo)","Socialismo democrático, soberania nacional":"Democratic socialism, national sovereignty","Ambientalismo, economia verde":"Environmentalism, green economy","Socialismo democrático, gestão e inovação no setor público":"Democratic socialism, public-sector management and innovation","Trabalhismo, desenvolvimentismo nacional":"Labourism (trabalhismo), national developmentalism","Socialismo, direitos humanos e de minorias":"Socialism, human and minority rights","Sustentabilidade, ética pública":"Sustainability, public ethics","Liberalismo econômico + conservadorismo moral/securitário (bolsonarismo)":"Economic liberalism + moral/security conservatism (Bolsonarismo)",
 "PL · vai ao 2º turno":"PL · advances to the runoff","PT · vai ao 2º turno":"PT · advances to the runoff","Demais candidaturas somadas":"All other candidacies combined","Partido isolado":"Standalone party (no coalition)",
 "1. Economia, contas públicas e impostos":"1. Economy, public accounts and taxes","2. Segurança pública e justiça penal":"2. Public security and criminal justice","3. Saúde (SUS)":"3. Health (SUS)","4. Educação":"4. Education","5. Proteção social, trabalho e renda":"5. Social protection, labour and income","6. Mulheres, igualdade e cuidados":"6. Women, equality and care","7. Habitação, cidades e saneamento":"7. Housing, cities and sanitation","8. Infraestrutura, logística e energia":"8. Infrastructure, logistics and energy","9. Agro, alimentos e terra":"9. Farming, food and land","10. Meio ambiente e clima":"10. Environment and climate","11. Democracia, Estado e mundo digital":"11. Democracy, the State and the digital world","12. Política externa, defesa e soberania":"12. Foreign policy, defence and sovereignty",
 "Economia e impostos":"Economy & taxes","Segurança pública":"Public security","Social e trabalho":"Social protection & labour","Mulheres e cuidados":"Women & care","Habitação e cidades":"Housing & cities","Infraestrutura e energia":"Infrastructure & energy","Agro e alimentos":"Farming & food","Meio ambiente e clima":"Environment & climate","Democracia e Estado":"Democracy & the State","Exterior e defesa":"Foreign policy & defence","Educação":"Education",
@@ -1495,10 +1547,10 @@ function aplicarIdioma(lang){
 function aplicarTema(pref){
   prefs.theme = pref; root.dataset.themePref = pref;
   var dark = pref==="dark" || (pref==="auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
-  if(prefs.style==="gamer"||prefs.style==="news") dark=true;
+  if(prefs.style==="gamer") dark=true;
   root.dataset.theme = dark ? "dark" : "light";
   marcarSeg(".theme-set", "theme", pref);
-  if(typeof Chart!=="undefined"){ Chart.defaults.color = prefs.style==="gamer" ? "#a5f3fc" : (prefs.style==="news" ? "#e8dcc0" : (dark ? "#cfe3f7" : "#666")); Chart.defaults.borderColor = prefs.style==="gamer" ? "rgba(34,211,238,.28)" : (prefs.style==="news" ? "rgba(232,220,192,.22)" : (dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)"));
+  if(typeof Chart!=="undefined"){ Chart.defaults.color = prefs.style==="gamer" ? "#a5f3fc" : (prefs.style==="news" ? (dark ? "#e8dcc0" : "#3a3428") : (dark ? "#cfe3f7" : "#666")); Chart.defaults.borderColor = prefs.style==="gamer" ? "rgba(34,211,238,.28)" : (prefs.style==="news" ? (dark ? "rgba(232,220,192,.22)" : "rgba(58,52,40,.18)") : (dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)"));
     if(Chart.instances) Object.values(Chart.instances).forEach(function(ch){ try{ ch.update(); }catch(e){} }); }
   salvar();
 }
@@ -1512,7 +1564,7 @@ function aplicarAcessibilidade(){
 // Ligações dos controles
 document.querySelectorAll(".lang-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarIdioma(b.dataset.lang); }); });
 document.querySelectorAll(".theme-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarTema(b.dataset.theme); }); });
-function aplicarEstilo(s){ if(s!=="gamer"&&s!=="news") s="standard"; prefs.style=s; root.dataset.style=s; document.querySelectorAll(".style-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style===s)); }); aplicarTema(prefs.theme||"dark"); salvar(); }
+function aplicarEstilo(s){ if(s!=="gamer"&&s!=="news") s="standard"; prefs.style=s; root.dataset.style=s; document.querySelectorAll(".style-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style===s)); }); aplicarTema(prefs.theme||"light"); salvar(); }
 document.querySelectorAll(".style-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarEstilo(b.dataset.style); }); });
 document.querySelectorAll(".font-set").forEach(function(b){ b.addEventListener("click", function(){ prefs.font=b.dataset.font; aplicarAcessibilidade(); }); });
 var acC=document.getElementById("accContrast"), acL=document.getElementById("accLinks"), acM=document.getElementById("accMotion");
@@ -1520,7 +1572,7 @@ if(acC) acC.addEventListener("change", function(){ prefs.contrast = acC.checked?
 if(acL) acL.addEventListener("change", function(){ prefs.links = acL.checked?"underlined":"default"; aplicarAcessibilidade(); });
 if(acM) acM.addEventListener("change", function(){ prefs.motion = acM.checked?"reduce":"full"; aplicarAcessibilidade(); });
 var rst=document.getElementById("prefsReset");
-if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"dark",style:"news",font:"normal",contrast:"normal",links:"default",motion:"full",v4:1}; aplicarEstilo("news"); aplicarTema("dark"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
+if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"light",style:"news",font:"normal",contrast:"normal",links:"default",motion:"full",v4:1,v5:1}; aplicarEstilo("news"); aplicarTema("light"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
 // Diálogo Opções
 var dlg = document.getElementById("optionsDialog"), ultimoFoco = null;
 function abrirOpcoes(){ ultimoFoco = document.activeElement; if(!dlg) return; if(typeof dlg.showModal==="function"){ if(!dlg.open) dlg.showModal(); } else { dlg.setAttribute("open",""); } var f=dlg.querySelector(".opt-close"); if(f) f.focus(); }
@@ -1530,7 +1582,7 @@ var fechar=document.getElementById("optionsClose"); if(fechar) fechar.addEventLi
 if(dlg) dlg.addEventListener("click", function(ev){ var r=dlg.getBoundingClientRect(); if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom) fecharOpcoes(); });
 document.querySelectorAll("#optionsDialog a[href^='#']").forEach(function(a){ a.addEventListener("click", fecharOpcoes); });
 // Inicialização (português é o padrão principal)
-aplicarTema(prefs.theme||"dark");
+aplicarTema(prefs.theme||"light");
 aplicarEstilo(prefs.style||"news");
 aplicarAcessibilidade();
 aplicarIdioma(prefs.lang==="en" ? "en" : "pt");
