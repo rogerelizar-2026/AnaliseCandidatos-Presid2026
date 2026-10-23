@@ -141,6 +141,118 @@ html[data-contrast="high"] body{font-weight:500}
 html[data-contrast="high"][data-theme="dark"]{--mut:#d5e5f5;--line:#7d9cc0}
 html[data-contrast="high"] section,html[data-contrast="high"] .card,html[data-contrast="high"] .tablebox{border-width:2px}
 @media print{.hero-actions,nav.toc button,.langquick,dialog#optionsDialog{display:none!important}html[data-theme="dark"]{--ink:#17202a;--mut:#5b6b7b;--bg:#fff;--card:#fff;--line:#dbe3ea}}
+
+/* ===== v3: UX (progresso, topo, índice ativo) + estilos Gamer/Jornal ===== */
+#readProgress{position:fixed;top:0;left:0;height:4px;width:100%;background:linear-gradient(90deg,var(--a),var(--gold),var(--b));transform-origin:0 50%;transform:scaleX(0);z-index:300}
+#toTop{position:fixed;right:16px;bottom:16px;z-index:120;background:#0e2233;color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .25s}
+#toTop.show{opacity:1;pointer-events:auto}
+nav.toc a.active{background:#fff;color:#0e2233;font-weight:700}
+.card{transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-2px)}
+tbody tr:hover td{background:rgba(201,162,39,.10)}
+button.btn,.seg button,.btn-ghost,.btn-hero,nav.toc button{min-height:40px}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv.in{opacity:1;transform:none}
+html[data-motion="reduce"] .rv{opacity:1;transform:none}
+/* ---------- 🎮 GAMER ---------- */
+html[data-style="gamer"]{--ink:#e6fbff;--mut:#9fd8e8;--bg:#05060f;--card:#0b1026;--line:rgba(34,211,238,.35);--gold:#d946ef;--shadow:0 0 22px rgba(34,211,238,.15),0 12px 34px rgba(0,0,0,.5);--radius:6px}
+html[data-style="gamer"] body{background-color:#05060f;background-image:radial-gradient(900px 500px at 15% -5%,rgba(217,70,239,.18),transparent 60%),radial-gradient(900px 520px at 90% 0%,rgba(34,211,238,.16),transparent 60%)}
+html[data-style="gamer"] ::selection{background:#d946ef;color:#fff}
+html[data-style="gamer"] :focus-visible{outline-color:#22d3ee}
+html[data-style="gamer"] header.hero{position:relative;background:linear-gradient(135deg,#070a1f,#0b1030 55%,#22082e);border-bottom:3px solid #22d3ee;box-shadow:0 0 34px rgba(34,211,238,.35)}
+html[data-style="gamer"] header.hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(165,243,252,.05) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(165,243,252,.04) 0 1px,transparent 1px 44px);pointer-events:none}
+html[data-style="gamer"] header.hero .wrap{position:relative}
+html[data-style="gamer"] .eyebrow{font-family:Consolas,"Courier New",monospace;color:#67e8f9}
+html[data-style="gamer"] h1{font-family:"Arial Black","Segoe UI Black",Impact,sans-serif;text-transform:uppercase;letter-spacing:.02em;text-shadow:0 0 6px rgba(103,232,249,.9),0 0 22px rgba(34,211,238,.65),3px 3px 0 rgba(217,70,239,.55)}
+html[data-style="gamer"] h2{font-family:"Arial Black","Segoe UI Black",Impact,sans-serif;text-transform:uppercase;font-size:1.28rem;color:#ecfeff;border-left:6px solid #22d3ee;text-shadow:0 0 12px rgba(34,211,238,.55)}
+html[data-style="gamer"] h3{color:#a5f3fc;text-transform:uppercase;letter-spacing:.03em}
+html[data-style="gamer"] .kicker{color:#f0abfc;font-family:Consolas,"Courier New",monospace}
+html[data-style="gamer"] a{color:#67e8f9}
+html[data-style="gamer"] nav.toc{background:rgba(5,8,24,.96);border-bottom:2px solid #d946ef;box-shadow:0 0 18px rgba(217,70,239,.35)}
+html[data-style="gamer"] nav.toc a{color:#cffafe;font-family:Consolas,"Courier New",monospace;text-transform:uppercase;font-size:.8rem}
+html[data-style="gamer"] nav.toc a.active{background:#22d3ee;color:#04121a}
+html[data-style="gamer"] section{background:linear-gradient(180deg,#0c1230,#080d24);border:1px solid rgba(34,211,238,.45);box-shadow:0 0 0 1px rgba(217,70,239,.12),var(--shadow)}
+html[data-style="gamer"] .card{background:#0a1128;border-color:rgba(34,211,238,.3)}
+html[data-style="gamer"] .kpi{background:rgba(10,17,40,.85);border-color:rgba(103,232,249,.5);clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+html[data-style="gamer"] .kpi b{color:#f0abfc;text-shadow:0 0 10px rgba(217,70,239,.7);font-family:Consolas,"Courier New",monospace}
+html[data-style="gamer"] .pill{border-radius:4px;border-color:rgba(103,232,249,.6);font-family:Consolas,"Courier New",monospace;font-size:.78rem}
+html[data-style="gamer"] .byline{border-left-color:#d946ef;background:rgba(217,70,239,.10)}
+html[data-style="gamer"] table{background:#0a1128}
+html[data-style="gamer"] th{background:#111a3d;color:#67e8f9;font-family:Consolas,"Courier New",monospace;text-transform:uppercase;font-size:.82rem}
+html[data-style="gamer"] tr:nth-child(even) td{background:#0d1430}
+html[data-style="gamer"] tbody tr:hover td{background:rgba(34,211,238,.12)}
+html[data-style="gamer"] .badge{border-radius:3px;font-family:Consolas,"Courier New",monospace}
+html[data-style="gamer"] .badge.a{box-shadow:0 0 8px rgba(248,113,113,.55)}
+html[data-style="gamer"] .badge.b{box-shadow:0 0 8px rgba(96,165,250,.55)}
+html[data-style="gamer"] .callout{background:#0a1128}
+html[data-style="gamer"] .callout.info{border-color:#22d3ee;box-shadow:0 0 12px rgba(34,211,238,.25)}
+html[data-style="gamer"] .callout.warn{border-color:#facc15;box-shadow:0 0 12px rgba(250,204,21,.2)}
+html[data-style="gamer"] .callout.danger{border-color:#f472b6;box-shadow:0 0 12px rgba(244,114,182,.25)}
+html[data-style="gamer"] .callout.good{border-color:#4ade80;box-shadow:0 0 12px rgba(74,222,128,.2)}
+html[data-style="gamer"] .btn-hero,html[data-style="gamer"] nav.toc button.options-nav{background:linear-gradient(90deg,#22d3ee,#d946ef);color:#fff;border:none;box-shadow:0 0 14px rgba(217,70,239,.55)}
+html[data-style="gamer"] .btn-ghost{border-color:rgba(103,232,249,.7);color:#cffafe;border-radius:3px}
+html[data-style="gamer"] .btn-ghost[aria-pressed="true"]{background:#22d3ee;color:#04121a}
+html[data-style="gamer"] #toTop{background:linear-gradient(90deg,#164e63,#701a75);box-shadow:0 0 16px rgba(34,211,238,.6)}
+html[data-style="gamer"] #readProgress{background:linear-gradient(90deg,#22d3ee,#d946ef)}
+html[data-style="gamer"] footer{background:#04040c;color:#a5f3fc;border-top:3px solid #d946ef}
+html[data-style="gamer"] footer a{color:#f0abfc}
+html[data-style="gamer"] dialog#optionsDialog{background:#0b1026;border-color:#22d3ee;box-shadow:0 0 30px rgba(34,211,238,.4)}
+html[data-style="gamer"] .seg button[aria-pressed="true"]{background:#22d3ee;color:#04121a;border-color:#22d3ee}
+html[data-style="gamer"] .opt-close{background:linear-gradient(90deg,#22d3ee,#d946ef);color:#fff}
+html[data-style="gamer"] .votea{color:#fca5a5}
+html[data-style="gamer"] .voteb{color:#93c5fd}
+html[data-style="gamer"] .timeline{border-left-color:rgba(34,211,238,.5)}
+/* ---------- 📰 JORNAL ---------- */
+html[data-style="news"]{--ink:#211c12;--mut:#5c5546;--bg:#e9e2cf;--card:#fbf7ec;--line:#c9bfa5;--gold:#8a1f1f;--shadow:none;--radius:2px}
+html[data-style="news"] body{font-family:Georgia,"Times New Roman",serif;background:#e9e2cf}
+html[data-style="news"] ::selection{background:#fde68a}
+html[data-style="news"] :focus-visible{outline-color:#8a1f1f}
+html[data-style="news"] header.hero{background:#f8f3e6;color:#211c12;border-bottom:4px double #211c12;padding-top:30px}
+html[data-style="news"] .eyebrow{text-align:center;border-top:2px solid #211c12;border-bottom:1px solid #211c12;padding:6px 0;opacity:1;font-size:.74rem}
+html[data-style="news"] h1{font-family:Georgia,"Times New Roman",serif;font-weight:900;text-align:center;font-size:2.4rem;line-height:1.12;max-width:none;margin:.7rem 0}
+html[data-style="news"] .subtitle{text-align:center;margin:0 auto;font-style:italic}
+html[data-style="news"] .byline{background:transparent;border-left:none;border-top:1px solid #8a8069;border-bottom:1px solid #8a8069;border-radius:0;text-align:center;margin-left:auto;margin-right:auto}
+html[data-style="news"] .hero-actions{justify-content:center}
+html[data-style="news"] .btn-hero{background:#211c12;color:#fbf7ec;border-color:#211c12;border-radius:2px}
+html[data-style="news"] .btn-ghost{background:transparent;color:#211c12;border-color:#211c12;border-radius:2px}
+html[data-style="news"] .btn-ghost[aria-pressed="true"]{background:#8a1f1f;color:#fff;border-color:#8a1f1f}
+html[data-style="news"] .meta{justify-content:center}
+html[data-style="news"] .pill{background:transparent;border-color:#8a8069;border-radius:2px;color:#3f392c;font-size:.8rem}
+html[data-style="news"] .kpi{background:transparent;border:1px solid #8a8069;border-radius:0}
+html[data-style="news"] .kpi b{font-size:1.45rem}
+html[data-style="news"] nav.toc{background:#f8f3e6;border-bottom:4px double #211c12;box-shadow:none}
+html[data-style="news"] nav.toc a{color:#211c12;font-size:.84rem}
+html[data-style="news"] nav.toc a:hover{background:#e7ddc4;color:#211c12}
+html[data-style="news"] nav.toc a.active{background:#211c12;color:#fbf7ec}
+html[data-style="news"] nav.toc button.options-nav{background:#8a1f1f;color:#fff;border-color:#5f1515;border-radius:2px}
+html[data-style="news"] .langquick button{color:#211c12;border-color:#211c12}
+html[data-style="news"] .langquick button[aria-pressed="true"]{background:#211c12;color:#fbf7ec}
+html[data-style="news"] section{border-radius:0;box-shadow:none;border:1px solid #b8ab8c}
+html[data-style="news"] h2{font-family:Georgia,"Times New Roman",serif;font-weight:900;color:#211c12;border-left:none;border-top:3px double #211c12;border-bottom:1px solid #211c12;padding:8px 0 6px;font-variant:small-caps}
+html[data-style="news"] h3{font-family:Georgia,"Times New Roman",serif;color:#211c12;border-bottom:1px dotted #8a8069;padding-bottom:3px}
+html[data-style="news"] section p{text-align:justify;hyphens:auto}
+html[data-style="news"] .lead{color:#3f392c;font-size:1.04rem}
+html[data-style="news"] .lead::first-letter{font-size:2.2em;font-weight:900;float:left;line-height:.85;padding-right:6px;color:#8a1f1f}
+html[data-style="news"] #introduction>div{columns:2;column-gap:2.2rem;column-rule:1px solid #c9bfa5}
+html[data-style="news"] .intro-pub{column-span:all}
+html[data-style="news"] .card{background:#fffdf6;border-color:#b8ab8c;border-radius:0}
+html[data-style="news"] table{background:#fffdf6;font-size:.9rem}
+html[data-style="news"] th{background:#f3ecd9;color:#211c12;font-variant:small-caps;border-bottom:3px double #211c12}
+html[data-style="news"] tr:nth-child(even) td{background:#faf5e9}
+html[data-style="news"] .badge{border-radius:2px}
+html[data-style="news"] .callout{border-radius:0;background:#fffdf6;border:1px solid #8a8069;border-left:4px solid #8a1f1f}
+html[data-style="news"] .callout.good{border-left-color:#137547}
+html[data-style="news"] a{color:#7f1d1d}
+html[data-style="news"] footer{background:#f8f3e6;color:#211c12;border-top:4px double #211c12}
+html[data-style="news"] footer a{color:#7f1d1d}
+html[data-style="news"] #toTop{background:#211c12;border-radius:2px}
+html[data-style="news"] #readProgress{background:#8a1f1f}
+html[data-style="news"] dialog#optionsDialog{border-radius:2px;border:2px solid #211c12}
+html[data-style="news"] .seg button{border-radius:2px}
+html[data-style="news"] .seg button[aria-pressed="true"]{background:#211c12}
+html[data-style="news"] .opt-close{background:#211c12;border-radius:2px}
+@media(max-width:760px){html[data-style="news"] #introduction>div{columns:1}html[data-style="news"] h1{font-size:1.7rem}html[data-style="gamer"] h1{font-size:1.4rem}}
+@media print{#readProgress,#toTop{display:none!important}.rv{opacity:1!important;transform:none!important}html[data-style="gamer"],html[data-style="news"]{--ink:#17202a;--mut:#5b6b7b;--bg:#fff;--card:#fff}html[data-style="gamer"] h1,html[data-style="gamer"] h2{text-shadow:none;color:#17202a}}
 </style>
 <script>
 /* Aplica preferências salvas (idioma/tema/acessibilidade) o mais cedo possível. */
@@ -148,12 +260,14 @@ html[data-contrast="high"] section,html[data-contrast="high"] .card,html[data-co
 d.dataset.lang=(p.lang==="en"?"en":"pt");d.lang=(p.lang==="en"?"en":"pt-BR");
 var pref=p.theme||"light";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
 d.dataset.theme=dark?"dark":"light";d.dataset.themePref=pref;
-d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
+d.dataset.style=(p.style==="gamer"||p.style==="news")?p.style:"standard";d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
 }catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="light";}})();
 </script>
 </head>
 <body>
 <a class="skip" href="#introduction"><span class="i18n-pt">Ir para o conteúdo</span><span class="i18n-en" hidden>Skip to content</span></a>
+<div id="readProgress" aria-hidden="true"></div>
+<button type="button" id="toTop" data-no-i18n><span class="i18n-pt">⬆ Topo</span><span class="i18n-en" hidden>⬆ Top</span></button>
 
 <header class="hero">
   <div class="wrap">
@@ -167,6 +281,9 @@ d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.datase
       <button type="button" class="btn-hero js-open-options" aria-haspopup="dialog"><span class="i18n-pt">⚙ Opções — acessibilidade, tema, idioma e downloads (PDF)</span><span class="i18n-en" hidden>⚙ Options — accessibility, theme, language &amp; downloads (PDF)</span></button>
       <button type="button" class="btn-ghost lang-set" data-lang="pt" aria-pressed="true" title="Português brasileiro (idioma principal)">PT · Português</button>
       <button type="button" class="btn-ghost lang-set" data-lang="en" aria-pressed="false" title="English (secondary language)">EN · English</button>
+      <button type="button" class="btn-ghost style-set" data-style="standard" aria-pressed="true">🖥 <span class="i18n-pt">Padrão</span><span class="i18n-en" hidden>Standard</span></button>
+      <button type="button" class="btn-ghost style-set" data-style="gamer" aria-pressed="false">🎮 Gamer</button>
+      <button type="button" class="btn-ghost style-set" data-style="news" aria-pressed="false">📰 <span class="i18n-pt">Jornal</span><span class="i18n-en" hidden>Newspaper</span></button>
     </div>
     <div class="meta">
       <span class="pill">Data de corte: 23 de outubro de 2026 (véspera do 2º turno, em 25/10/2026)</span>
@@ -257,6 +374,7 @@ d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.datase
     <li>“Idêntica” significa equivalência funcional de objetivo <em>e</em> instrumento. “Similar divergente” significa mesmo problema, instrumento ou filosofia distintos — com o viés ideológico nomeado.</li>
     <li>Declarações de campanha posteriores ao registro são marcadas como <span class="badge neut">2º turno / declaração pública</span> para não serem confundidas com o texto protocolado.</li>
     <li data-no-i18n><span class="i18n-pt"><strong>Idiomas:</strong> o <strong>português brasileiro é o idioma principal e autoritativo</strong> deste relatório; o <strong>inglês é o idioma secundário</strong> de acesso (botão “Opções” ou PT/EN no topo). Evidências literais dos programas, citações de página e títulos de fontes em português são preservados no original para manter a auditabilidade.</span><span class="i18n-en" hidden><strong>Languages:</strong> <strong>Brazilian Portuguese is the primary and authoritative language</strong> of this report; <strong>English is the secondary</strong> access language (“Options” button or PT/EN at the top). Verbatim programme evidence, page citations and Portuguese source titles are kept in the original to preserve auditability.</span></li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Estilos visuais:</strong> além do <strong>Padrão</strong>, há os estilos <strong>🎮 Gamer</strong> e <strong>📰 Jornal</strong> (botão “Opções” ou atalhos no cabeçalho). São <strong>apenas apresentação</strong> — não alteram textos, dados, notas de viabilidade nem a ordem das seções.</span><span class="i18n-en" hidden><strong>Visual styles:</strong> besides <strong>Standard</strong>, there are <strong>🎮 Gamer</strong> and <strong>📰 Newspaper</strong> styles (“Options” button or header shortcuts). They change <strong>presentation only</strong> — never the text, data, feasibility scores or section order.</span></li>
   </ul>
 </section>
 
@@ -1020,6 +1138,14 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
       <button type="button" class="theme-set" data-theme="auto" aria-pressed="false"><span class="i18n-pt">Automático (sistema)</span><span class="i18n-en" hidden>Automatic (system)</span></button>
     </div>
 
+    <h3 class="no-i18n"><span class="i18n-pt">🖼️ Estilo visual</span><span class="i18n-en" hidden>🖼️ Visual style</span></h3>
+    <div class="seg" role="group" aria-label="Estilo visual / Visual style">
+      <button type="button" class="style-set" data-style="standard" aria-pressed="true">🖥 <span class="i18n-pt">Padrão</span><span class="i18n-en" hidden>Standard</span></button>
+      <button type="button" class="style-set" data-style="gamer" aria-pressed="false">🎮 Gamer</button>
+      <button type="button" class="style-set" data-style="news" aria-pressed="false">📰 <span class="i18n-pt">Jornal de notícias</span><span class="i18n-en" hidden>News newspaper</span></button>
+    </div>
+    <p class="small"><span class="i18n-pt"><strong>Padrão:</strong> layout limpo original. <strong>Gamer:</strong> neon escuro, brilhos e tipografia de impacto (usa esquema escuro, inclusive nos gráficos). <strong>Jornal:</strong> papel, serifadas, manchetes e colunas editoriais (usa esquema claro). O conteúdo é idêntico nos três.</span><span class="i18n-en" hidden><strong>Standard:</strong> the original clean layout. <strong>Gamer:</strong> dark neon, glow and bold type (forces a dark scheme, charts included). <strong>Newspaper:</strong> paper, serifs, headlines and editorial columns (forces a light scheme). The content is identical in all three.</span></p>
+
     <h3 class="no-i18n"><span class="i18n-pt">♿ Acessibilidade</span><span class="i18n-en" hidden>♿ Accessibility</span></h3>
     <div class="small"><span class="i18n-pt"><strong>Tamanho do texto:</strong></span><span class="i18n-en" hidden><strong>Text size:</strong></span></div>
     <div class="seg" role="group" aria-label="Tamanho do texto / Text size">
@@ -1049,7 +1175,7 @@ document.querySelectorAll(".dep-toggle").forEach(btn => {
 "use strict";
 var PUB_ISO = "2026-10-23T14:33:57.033064-03:00";
 var CHAVE = "analise2026_prefs";
-var prefs = {lang:"pt", theme:"light", font:"normal", contrast:"normal", links:"default", motion:"full"};
+var prefs = {lang:"pt", theme:"light", style:"standard", font:"normal", contrast:"normal", links:"default", motion:"full"};
 try{ Object.assign(prefs, JSON.parse(localStorage.getItem(CHAVE)||"{}")); }catch(e){}
 var root = document.documentElement;
 
@@ -1263,9 +1389,10 @@ function aplicarIdioma(lang){
 function aplicarTema(pref){
   prefs.theme = pref; root.dataset.themePref = pref;
   var dark = pref==="dark" || (pref==="auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  if(prefs.style==="gamer") dark=true; if(prefs.style==="news") dark=false;
   root.dataset.theme = dark ? "dark" : "light";
   marcarSeg(".theme-set", "theme", pref);
-  if(typeof Chart!=="undefined"){ Chart.defaults.color = dark ? "#cfe3f7" : "#666"; Chart.defaults.borderColor = dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)";
+  if(typeof Chart!=="undefined"){ Chart.defaults.color = prefs.style==="gamer" ? "#a5f3fc" : (prefs.style==="news" ? "#3a3428" : (dark ? "#cfe3f7" : "#666")); Chart.defaults.borderColor = prefs.style==="gamer" ? "rgba(34,211,238,.28)" : (dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)");
     if(Chart.instances) Object.values(Chart.instances).forEach(function(ch){ try{ ch.update(); }catch(e){} }); }
   salvar();
 }
@@ -1279,13 +1406,15 @@ function aplicarAcessibilidade(){
 // Ligações dos controles
 document.querySelectorAll(".lang-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarIdioma(b.dataset.lang); }); });
 document.querySelectorAll(".theme-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarTema(b.dataset.theme); }); });
+function aplicarEstilo(s){ if(s!=="gamer"&&s!=="news") s="standard"; prefs.style=s; root.dataset.style=s; document.querySelectorAll(".style-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.style===s)); }); aplicarTema(prefs.theme||"light"); salvar(); }
+document.querySelectorAll(".style-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarEstilo(b.dataset.style); }); });
 document.querySelectorAll(".font-set").forEach(function(b){ b.addEventListener("click", function(){ prefs.font=b.dataset.font; aplicarAcessibilidade(); }); });
 var acC=document.getElementById("accContrast"), acL=document.getElementById("accLinks"), acM=document.getElementById("accMotion");
 if(acC) acC.addEventListener("change", function(){ prefs.contrast = acC.checked?"high":"normal"; aplicarAcessibilidade(); });
 if(acL) acL.addEventListener("change", function(){ prefs.links = acL.checked?"underlined":"default"; aplicarAcessibilidade(); });
 if(acM) acM.addEventListener("change", function(){ prefs.motion = acM.checked?"reduce":"full"; aplicarAcessibilidade(); });
 var rst=document.getElementById("prefsReset");
-if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"light",font:"normal",contrast:"normal",links:"default",motion:"full"}; aplicarTema("light"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
+if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"light",style:"standard",font:"normal",contrast:"normal",links:"default",motion:"full"}; aplicarEstilo("standard"); aplicarTema("light"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
 // Diálogo Opções
 var dlg = document.getElementById("optionsDialog"), ultimoFoco = null;
 function abrirOpcoes(){ ultimoFoco = document.activeElement; if(!dlg) return; if(typeof dlg.showModal==="function"){ if(!dlg.open) dlg.showModal(); } else { dlg.setAttribute("open",""); } var f=dlg.querySelector(".opt-close"); if(f) f.focus(); }
@@ -1295,11 +1424,55 @@ var fechar=document.getElementById("optionsClose"); if(fechar) fechar.addEventLi
 if(dlg) dlg.addEventListener("click", function(ev){ var r=dlg.getBoundingClientRect(); if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom) fecharOpcoes(); });
 // Inicialização (português é o padrão principal)
 aplicarTema(prefs.theme||"light");
+aplicarEstilo(prefs.style||"standard");
 aplicarAcessibilidade();
 aplicarIdioma(prefs.lang==="en" ? "en" : "pt");
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener && window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if(prefs.theme==="auto") aplicarTema("auto"); });
 })();
 </script>
 
+
+<script>
+/* ===== UX: progresso de leitura, voltar ao topo, índice ativo, reveal suave ===== */
+(function(){
+"use strict";
+var bar = document.getElementById("readProgress"), top = document.getElementById("toTop"), ticking = false;
+function onScroll(){
+  var y = window.scrollY || 0, max = document.documentElement.scrollHeight - window.innerHeight;
+  if(bar) bar.style.transform = "scaleX(" + (max > 0 ? Math.min(1, y / max) : 0) + ")";
+  if(top) top.classList.toggle("show", y > 700);
+  ticking = false;
+}
+window.addEventListener("scroll", function(){ if(!ticking){ ticking = true; requestAnimationFrame(onScroll); } }, {passive:true});
+onScroll();
+if(top) top.addEventListener("click", function(){
+  var reduce = document.documentElement.dataset.motion === "reduce";
+  window.scrollTo({top:0, behavior: reduce ? "auto" : "smooth"});
+});
+var links = {};
+document.querySelectorAll("nav.toc a[href^='#']").forEach(function(a){ links[a.getAttribute("href").slice(1)] = a; });
+if("IntersectionObserver" in window){
+  var obs = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      document.querySelectorAll("nav.toc a.active").forEach(function(x){ x.classList.remove("active"); x.removeAttribute("aria-current"); });
+      var a = links[e.target.id];
+      if(a){ a.classList.add("active"); a.setAttribute("aria-current","true"); }
+    });
+  }, {rootMargin:"-35% 0px -55% 0px"});
+  Object.keys(links).forEach(function(id){ var el = document.getElementById(id); if(el) obs.observe(el); });
+}
+var reduz = document.documentElement.dataset.motion === "reduce" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(!reduz && "IntersectionObserver" in window){
+  var secs = document.querySelectorAll("main section");
+  secs.forEach(function(s){ s.classList.add("rv"); });
+  var ro = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); ro.unobserve(e.target); } });
+  }, {threshold:.05});
+  secs.forEach(function(s){ ro.observe(s); });
+  setTimeout(function(){ secs.forEach(function(s){ s.classList.add("in"); }); }, 4000);
+}
+})();
+</script>
 </body>
 </html>
