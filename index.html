@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eleições Presidenciais 2026 — Análise Comparativa dos Programas de Governo | Lula (PT) × Flávio Bolsonaro (PL)</title>
+<meta name="description" content="Relatório investigativo e comparativo bilíngue (português brasileiro como idioma principal e inglês como secundário) dos programas de governo registrados no TSE para o 2º turno presidencial de 2026, com matriz de políticas, modelagem de viabilidade em Chart.js e checagem jurídico-fiscal em fontes oficiais.">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--a:#b91c1c;--a2:#7f1d1d;--b:#1d4ed8;--b2:#1e3a5f;--ink:#17202a;--mut:#5b6b7b;--bg:#f4f6f8;--card:#fff;--line:#dbe3ea;--ok:#137547;--warn:#9a6b00;--bad:#a4133c;--gold:#c9a227;--radius:14px;--shadow:0 8px 28px rgba(20,35,55,.08)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:16.5px}
+a{color:#0b5fa5}
+header.hero{background:linear-gradient(135deg,#0e2233 0%,#173a5a 55%,#274e13 130%);color:#fff;padding:44px 20px 30px;border-bottom:6px solid var(--gold)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;opacity:.85;font-weight:700}
+h1{font-size:2rem;line-height:1.2;margin:.4rem 0 .6rem;max-width:950px}
+.subtitle{font-size:1.08rem;max-width:920px;opacity:.95;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:999px;font-size:.85rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:18px 0 4px}
+.kpi{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);border-radius:12px;padding:12px 14px}
+.kpi b{font-size:1.25rem;display:block;line-height:1.2}
+.kpi span{font-size:.86rem;opacity:.92}
+nav.toc{position:sticky;top:0;background:#0e2233;z-index:50;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+nav.toc .wrap{display:flex;gap:4px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+nav.toc a{color:#dbeafe;text-decoration:none;font-size:.88rem;padding:5px 9px;border-radius:8px}
+nav.toc a:hover{background:rgba(255,255,255,.14);color:#fff}
+main{padding:22px 0 10px}
+section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 26px 18px;margin:0 0 20px}
+h2{font-size:1.5rem;line-height:1.25;margin:0 0 6px;color:#0e2233;border-left:6px solid var(--gold);padding-left:12px}
+h3{font-size:1.14rem;margin:22px 0 6px;color:#13314e}
+h4{margin:16px 0 4px;font-size:1rem}
+.lead{color:var(--mut);margin-top:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}h1{font-size:1.55rem}section{padding:20px 16px}}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fbfcfd}
+.card.a{border-top:6px solid var(--a)}.card.b{border-top:6px solid var(--b)}
+.badge{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;vertical-align:middle}
+.badge.a{background:#fde8e8;color:var(--a2);border:1px solid #f3b4b4}
+.badge.b{background:#e3ecfd;color:var(--b2);border:1px solid #a9c3f5}
+.badge.ok{background:#e2f4e9;color:#0c5b36;border:1px solid #9fd4b6}
+.badge.warn{background:#fff3d6;color:#6b4e00;border:1px solid #ecd28a}
+.badge.bad{background:#fde6ee;color:#7a0f2e;border:1px solid #f0aec6}
+.badge.neut{background:#e9eef3;color:#33475c;border:1px solid #c4d2df}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:760px;background:#fff;font-size:.92rem}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid #edf1f5;padding:9px 10px;vertical-align:top;text-align:left}
+th{background:#eef3f8;color:#0e2233;position:sticky;top:0}
+tr:nth-child(even) td{background:#fafcfe}
+td ul{margin:2px 0 2px 16px;padding:0}
+.small{font-size:.86rem;color:var(--mut)}
+.callout{border-radius:12px;padding:14px 16px;margin:14px 0;border:1px solid}
+.callout.info{background:#eef6ff;border-color:#bcd8f5}
+.callout.warn{background:#fff8e1;border-color:#ecd28a}
+.callout.danger{background:#fff0f3;border-color:#f3b8c9}
+.callout.good{background:#eaf7ef;border-color:#a9d8bc}
+.chartbox{position:relative;height:430px;margin:10px 0 4px}
+.chartbox.smallh{height:340px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.controls label{font-weight:600;font-size:.92rem}
+select,button.btn{font:inherit;font-size:.92rem;padding:7px 10px;border-radius:9px;border:1px solid #b9c8d6;background:#fff;cursor:pointer}
+button.btn.active{background:#0e2233;color:#fff;border-color:#0e2233}
+sup.fn{font-size:.72rem}
+sup.fn a{text-decoration:none;font-weight:700}
+.refs{font-size:.9rem}
+.refs li{margin-bottom:7px;word-break:break-word}
+footer{background:#0e2233;color:#dbeafe;padding:26px 0 34px;margin-top:8px;font-size:.92rem}
+footer a{color:#93c5fd}
+.votea{color:var(--a);font-weight:800}.voteb{color:var(--b);font-weight:800}
+.timeline{border-left:4px solid #cbd8e6;margin-left:8px;padding-left:18px}
+.timeline div{margin:0 0 12px}
+.kicker{font-weight:800;color:#0e2233}
+hr.sep{border:none;border-top:1px dashed var(--line);margin:18px 0}
+.printnote{display:none}
+@media print{nav.toc,.controls{display:none}body{background:#fff}section{box-shadow:none;break-inside:avoid}.printnote{display:block}}
+
+/* ===== v2: temas, acessibilidade, Opções, bilíngue ===== */
+[hidden]{display:none!important}
+html[data-font="large"] body{font-size:18.5px}
+html[data-font="xlarge"] body{font-size:20.5px;line-height:1.75}
+html[data-font="large"] table,html[data-font="xlarge"] table{font-size:1rem}
+html[data-motion="reduce"]{scroll-behavior:auto}
+html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{animation:none!important;transition:none!important}
+html[data-links="underlined"] a{text-decoration:underline}
+:focus-visible{outline:3px solid #f59e0b;outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-9999px;top:0;background:#0e2233;color:#fff;padding:10px 14px;z-index:200;border-radius:0 0 10px 0}
+.skip:focus{left:0}
+.byline{margin-top:10px;font-size:.98rem;background:rgba(255,255,255,.12);border-left:4px solid var(--gold);padding:8px 12px;max-width:920px;border-radius:0 8px 8px 0}
+.hero-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.btn-hero{background:var(--gold);color:#17202a;border:1px solid #a88414;font-weight:800;padding:9px 16px;border-radius:10px;cursor:pointer;font:inherit}
+.btn-hero:hover{filter:brightness(1.07)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.5);padding:8px 12px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700}
+.btn-ghost[aria-pressed="true"]{background:#fff;color:#0e2233}
+nav.toc .wrap{align-items:center}
+nav.toc button.options-nav{margin-left:auto;background:var(--gold);color:#17202a;border:1px solid #a88414;font-weight:800;padding:6px 14px;border-radius:9px;cursor:pointer;font:inherit;font-size:.9rem}
+.langquick{display:inline-flex;gap:2px;margin-left:6px}
+.langquick button{background:transparent;color:#dbeafe;border:1px solid rgba(255,255,255,.45);padding:4px 9px;border-radius:8px;cursor:pointer;font:inherit;font-size:.85rem;font-weight:700}
+.langquick button[aria-pressed="true"]{background:#fff;color:#0e2233}
+dialog#optionsDialog{border:1px solid var(--line);border-radius:16px;padding:0;max-width:680px;width:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+dialog#optionsDialog::backdrop{background:rgba(5,15,28,.62)}
+.opt-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px 8px;border-bottom:1px solid var(--line)}
+.opt-head h2{border:none;padding:0;font-size:1.3rem;margin:0}
+.opt-body{padding:10px 20px 20px;max-height:72vh;overflow:auto}
+.opt-body h3{margin:18px 0 6px;font-size:1.02rem}
+.opt-close{background:#0e2233;color:#fff;border:none;border-radius:9px;padding:7px 12px;cursor:pointer;font:inherit;font-weight:700}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.seg button{padding:7px 12px;border-radius:9px;border:1px solid #b9c8d6;background:var(--card);color:var(--ink);cursor:pointer;font:inherit;font-size:.92rem}
+.seg button[aria-pressed="true"]{background:#0e2233;color:#fff;border-color:#0e2233}
+.switchrow{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.switchrow input{width:20px;height:20px;margin-top:3px;flex:none}
+.dl-list{list-style:none;margin:8px 0;padding:0}
+.dl-list li{border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin:0 0 9px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.dl-list a.dl-btn{background:#137547;color:#fff;text-decoration:none;font-weight:800;padding:8px 13px;border-radius:9px;white-space:nowrap}
+.intro-pub{border-top:2px dashed var(--line);padding-top:12px;font-weight:600}
+/* Tema escuro */
+html[data-theme="dark"]{--ink:#e8eef5;--mut:#a9bcd0;--bg:#0b1420;--card:#121e2e;--line:#2b3d55;--shadow:0 8px 28px rgba(0,0,0,.45)}
+html[data-theme="dark"] a{color:#7cc0ff}
+html[data-theme="dark"] h2,html[data-theme="dark"] .kicker{color:#eaf2fc}
+html[data-theme="dark"] h3{color:#cfe3f7}
+html[data-theme="dark"] .card{background:#16253a}
+html[data-theme="dark"] table{background:#121e2e}
+html[data-theme="dark"] th{background:#1d3049;color:#eaf2fc}
+html[data-theme="dark"] th,html[data-theme="dark"] td{border-right-color:#243750}
+html[data-theme="dark"] tr:nth-child(even) td{background:#152439}
+html[data-theme="dark"] .callout.info{background:#12293f;border-color:#2f5a86}
+html[data-theme="dark"] .callout.warn{background:#33290d;border-color:#8a6d1f}
+html[data-theme="dark"] .callout.danger{background:#351625;border-color:#8a3a56}
+html[data-theme="dark"] .callout.good{background:#123324;border-color:#2f7a52}
+html[data-theme="dark"] select,html[data-theme="dark"] button.btn{background:#16253a;color:#e8eef5;border-color:#3d5a7d}
+html[data-theme="dark"] button.btn.active{background:#e8eef5;color:#0e2233}
+html[data-theme="dark"] .seg button{border-color:#3d5a7d}
+html[data-theme="dark"] .seg button[aria-pressed="true"]{background:#e8eef5;color:#0e2233}
+html[data-theme="dark"] .opt-close{background:#e8eef5;color:#0e2233}
+html[data-theme="dark"] .badge.neut{background:#223a56;color:#cfe3f7;border-color:#3d5a7d}
+/* Alto contraste */
+html[data-contrast="high"]{--mut:#24303c;--line:#64798e}
+html[data-contrast="high"] body{font-weight:500}
+html[data-contrast="high"][data-theme="dark"]{--mut:#d5e5f5;--line:#7d9cc0}
+html[data-contrast="high"] section,html[data-contrast="high"] .card,html[data-contrast="high"] .tablebox{border-width:2px}
+@media print{.hero-actions,nav.toc button,.langquick,dialog#optionsDialog{display:none!important}html[data-theme="dark"]{--ink:#17202a;--mut:#5b6b7b;--bg:#fff;--card:#fff;--line:#dbe3ea}}
+</style>
+<script>
+/* Aplica preferências salvas (idioma/tema/acessibilidade) o mais cedo possível. */
+(function(){try{var p=JSON.parse(localStorage.getItem("analise2026_prefs")||"{}");var d=document.documentElement;
+d.dataset.lang=(p.lang==="en"?"en":"pt");d.lang=(p.lang==="en"?"en":"pt-BR");
+var pref=p.theme||"light";var dark=pref==="dark"||(pref==="auto"&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+d.dataset.theme=dark?"dark":"light";d.dataset.themePref=pref;
+d.dataset.font=p.font||"normal";d.dataset.contrast=p.contrast||"normal";d.dataset.links=p.links||"default";d.dataset.motion=p.motion||"full";
+}catch(e){document.documentElement.dataset.lang="pt";document.documentElement.dataset.theme="light";}})();
+</script>
+</head>
+<body>
+<a class="skip" href="#introduction"><span class="i18n-pt">Ir para o conteúdo</span><span class="i18n-en" hidden>Skip to content</span></a>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Eleições Gerais 2026 &middot; 2º turno presidencial &middot; Relatório analítico independente</div>
+    <h1>Dois projetos de Brasil em disputa: análise comparativa completa dos programas de governo</h1>
+    <p class="subtitle"><strong>Candidato A — Luiz Inácio Lula da Silva (PT, nº 13)</strong>, presidente em busca do quarto mandato, e <strong>Candidato B — Flávio Bolsonaro (PL, nº 22)</strong>, senador pelo Rio de Janeiro. Matriz comparativa por área, modelagem interativa de viabilidade e custo, checagem jurídico-fiscal em fontes oficiais e evolução das propostas entre o 1º e o 2º turno.</p>
+    <div class="byline" data-no-i18n>
+      <span class="i18n-pt">Curadoria: <strong>by rogerelizar</strong> &middot; Pesquisa, redação, gráficos e montagem por inteligência artificial: <strong>Arena.ai — Agent Mode</strong>. O curador forneceu apenas o prompt e os PDFs oficiais (ver Apresentação).</span><span class="i18n-en" hidden>Curated by <strong>by rogerelizar</strong> &middot; Research, writing, charts and assembly by artificial intelligence: <strong>Arena.ai — Agent Mode</strong>. The curator supplied only the prompt and the official PDFs (see Introduction).</span>
+    </div>
+    <div class="hero-actions" data-no-i18n>
+      <button type="button" class="btn-hero js-open-options" aria-haspopup="dialog"><span class="i18n-pt">⚙ Opções — acessibilidade, tema, idioma e downloads (PDF)</span><span class="i18n-en" hidden>⚙ Options — accessibility, theme, language &amp; downloads (PDF)</span></button>
+      <button type="button" class="btn-ghost lang-set" data-lang="pt" aria-pressed="true" title="Português brasileiro (idioma principal)">PT · Português</button>
+      <button type="button" class="btn-ghost lang-set" data-lang="en" aria-pressed="false" title="English (secondary language)">EN · English</button>
+    </div>
+    <div class="meta">
+      <span class="pill">Data de corte: 23 de outubro de 2026 (véspera do 2º turno, em 25/10/2026)</span>
+      <span class="pill">Fontes primárias: PDFs registrados no TSE (DivulgaCandContas)</span>
+      <span class="pill">Idioma principal: português brasileiro · Secundário: English (botão Opções)</span>
+      <span class="pill">Postura: neutralidade estrita — sem recomendação de voto</span>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>47,03% × 45,16%</b><span>Resultado do 1º turno (votos válidos): Flávio à frente de Lula por 2.224.965 votos — a menor diferença de 1º turno da redemocratização. Ver Seção 1.</span></div>
+      <div class="kpi"><b>84 × 76 páginas</b><span>Programa de Lula: 13 diretrizes. Programa de Flávio (“Para o Brasil Vencer o Atraso”): 9 eixos em formato de “jornada do cidadão”.</span></div>
+      <div class="kpi"><b>12 áreas modeladas</b><span>Tempo × custo fiscal, impacto × dependências e risco × tempo, com notas auditáveis (Seção 3).</span></div>
+      <div class="kpi"><b>Convergência de 2º turno</b><span>Os dois passaram a prometer manter o Bolsa Família, apoiar o fim da escala 6×1 e “comprar dívidas” — o que amplia o desafio fiscal de ambos.</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Índice do relatório">
+  <div class="wrap">
+    <a href="#introduction" data-no-i18n><span class="i18n-pt">Apresentação</span><span class="i18n-en" hidden>Introduction</span></a>
+    <a href="#methodology">Como ler</a>
+    <a href="#candidate_A_profile">Perfis e votos</a>
+    <a href="#comparative_matrix">Matriz comparativa</a>
+    <a href="#feasibility_modeling">Gráficos de viabilidade</a>
+    <a href="#investigative_summary">Sumário investigativo</a>
+    <a href="#sensitive_themes">Temas sensíveis</a>
+    <a href="#proposal_evolution">Evolução 1º→2º turno</a>
+    <a href="#official_context">Contexto oficial</a>
+    <a href="#references">Fontes</a>
+    <button type="button" class="options-nav js-open-options" aria-haspopup="dialog" data-no-i18n><span class="i18n-pt">⚙ Opções</span><span class="i18n-en" hidden>⚙ Options</span></button>
+    <span class="langquick" data-no-i18n><button type="button" class="lang-set" data-lang="pt" aria-pressed="true">PT</button><button type="button" class="lang-set" data-lang="en" aria-pressed="false">EN</button></span>
+  </div>
+</nav>
+
+<main class="wrap">
+
+
+<!-- ============ APRESENTAÇÃO / INTRODUCTION ============ -->
+<section id="introduction" data-no-i18n>
+  <h2 class="no-i18n"><span class="i18n-pt">Apresentação — transparência, isenção do curador e voto consciente</span><span class="i18n-en" hidden>Introduction — transparency, curator disclaimer and responsible voting</span></h2>
+
+  <div class="i18n-pt">
+    <p>Seja bem-vindo e bem-vinda. Esta página reúne, em linguagem clara e com fontes verificáveis, a comparação integral entre os dois programas de governo que disputam o segundo turno da eleição presidencial brasileira de 2026. Ela foi concebida para ajudar você a decidir com base em documentos — não em slogans, cortes de vídeo ou boatos. Aqui, cada afirmação relevante indica a página do programa oficial ou a fonte institucional correspondente, para que a conferência esteja sempre a um clique de distância.</p>
+    <p><strong>Disclaimer — isenção e limites de responsabilidade do curador.</strong> A curadoria desta publicação, assinada como <strong>by rogerelizar</strong>, limitou-se estritamente a <strong>formular o prompt</strong> (o pedido de análise) e a <strong>anexar os dois PDFs oficiais</strong> registrados no Tribunal Superior Eleitoral. O curador <strong>não redigiu, não revisou previamente linha a linha nem endossa necessariamente</strong> as interpretações, as notas de viabilidade, os alertas jurídico-fiscais ou quaisquer juízos comparativos aqui apresentados. Toda a pesquisa, a redação, os gráficos e a montagem desta página foram executados por inteligência artificial (<strong>Arena.ai — Agent Mode</strong>), sob as instruções e restrições constantes do prompt — em especial a obrigação de priorizar fontes oficiais e de não inventar dados. Para que não reste dúvida sobre essa divisão de papéis, o <strong>prompt completo pode ser baixado em PDF</strong> no botão <button type="button" class="btn js-open-options"><strong>⚙ Opções</strong></button> (onde também estão os dois programas de governo em PDF). Recomenda-se lê-lo: é ele que permite distinguir o que foi <em>pedido</em> pelo curador daquilo que foi <em>produzido</em> pela IA — e cobrar de cada parte apenas a sua responsabilidade.</p>
+    <p><strong>Um chamado à cidadania responsável.</strong> Nenhum relatório, pesquisa ou inteligência artificial pode votar por você — e nenhum deveria. Antes de decidir, leia ao menos os trechos dos programas oficiais sobre os temas que mais afetam a sua vida, confira os números diretamente no TSE, no Banco Central, no IBGE e no Tesouro Nacional, e desconfie de promessas que não apresentam custo, prazo nem caminho institucional. Verifique seu título e seu local de votação, leve um documento oficial com foto e vote de forma <strong>correta e consciente</strong>: o segundo turno será em <strong>25 de outubro de 2026, das 8h às 17h (horário de Brasília)</strong>. Votar consciente não é votar neste ou naquele candidato por indicação desta página — que não recomenda voto a ninguém. É votar sabendo o que cada projeto propõe, o que ele custa e o que ele exige das instituições. É assim, com informação verificável e participação serena, que a democracia se fortalece.</p>
+    <p class="intro-pub">Publicado em <time class="pub-datetime" data-pub="pt" datetime="2026-10-23T14:33:57.033064-03:00">23 de outubro de 2026 às 14h33 (horário de São Paulo)</time> &middot; Curadoria: <strong>by rogerelizar</strong> &middot; Montagem por IA: <strong>Arena.ai — Agent Mode</strong>.</p>
+  </div>
+
+  <div class="i18n-en" hidden>
+    <p>Welcome. This page brings together, in clear language and with verifiable sources, a full comparison of the two government programmes contesting the runoff of Brazil’s 2026 presidential election. It was designed to help you decide on the basis of documents — not slogans, video clips or rumours. Every material claim points to the page of the official programme or to the corresponding institutional source, so fact-checking is always one click away. <em>Brazilian Portuguese is the primary and authoritative language of this report; English is provided as a secondary access language. Verbatim programme evidence, page citations and Portuguese source titles are preserved in the original to keep the audit trail intact.</em></p>
+    <p><strong>Disclaimer — scope and limits of the curator’s responsibility.</strong> The curator of this publication, signed <strong>by rogerelizar</strong>, did no more than <strong>write the prompt</strong> (the analysis request) and <strong>attach the two official PDFs</strong> filed with Brazil’s Superior Electoral Court (TSE). The curator <strong>did not draft, line-edit in advance, or necessarily endorse</strong> the interpretations, feasibility scores, legal-fiscal warnings or comparative judgements presented here. All research, writing, charts and page assembly were carried out by artificial intelligence (<strong>Arena.ai — Agent Mode</strong>) under the instructions and constraints set out in the prompt — in particular the duty to prioritise official sources and not to invent data. So that this division of roles is beyond doubt, the <strong>full prompt is downloadable as a PDF</strong> from the <button type="button" class="btn js-open-options"><strong>⚙ Options</strong></button> button (where both government programmes are also available as PDFs). Please read it: it is what allows you to distinguish what the curator <em>asked for</em> from what the AI <em>produced</em> — and to hold each side accountable only for its own part.</p>
+    <p><strong>A call to responsible citizenship.</strong> No report, poll or artificial intelligence can vote for you — and none should. Before deciding, read at least the passages of the official programmes on the issues that most affect your life, check the figures directly at the TSE, the Central Bank, IBGE and the National Treasury, and be wary of promises that carry no cost, no timeline and no institutional path. Check your voter registration and polling place, take official photo ID, and vote <strong>correctly and consciously</strong>: the runoff takes place on <strong>25 October 2026, from 8 a.m. to 5 p.m. (Brasília time)</strong>. Voting consciously does not mean voting for one candidate or the other on this page’s recommendation — it recommends no one. It means voting in the knowledge of what each project proposes, what it costs and what it demands of institutions. That is how, with verifiable information and calm participation, democracy grows stronger.</p>
+    <p class="intro-pub">Published on <time class="pub-datetime" data-pub="en" datetime="2026-10-23T14:33:57.033064-03:00">23 October 2026 at 14:33 (São Paulo time)</time> &middot; Curated by <strong>by rogerelizar</strong> &middot; Assembled by AI: <strong>Arena.ai — Agent Mode</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ METODOLOGIA ============ -->
+<section id="methodology">
+  <h2>Como ler este relatório — método, limites e garantias contra invenção de dados</h2>
+  <p class="lead">Este documento separa rigorosamente três planos: <strong>(i) o que está escrito nos PDFs</strong> (com página citada), <strong>(ii) o que foi declarado publicamente depois</strong> (TV, debates e sabatinas do 2º turno, com fonte jornalística) e <strong>(iii) a avaliação analítica do autor</strong> (notas de viabilidade). Misturar esses planos é o erro mais comum em comparativos eleitorais.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <h3 style="margin-top:2px">1. Fontes primárias</h3>
+      <ul>
+        <li><strong>PropostasLula.pdf</strong> — <em>Diretrizes para o Programa de Transformação do Brasil: um país soberano, democrático, desenvolvido, sustentável e criativo</em>, 84 páginas, registrado em 7/8/2026.<sup class="fn"><a href="#ref-tse-planos" title="Página oficial do TSE com os planos">[TSE-1]</a></sup></li>
+        <li><strong>PropostasFlavio.pdf</strong> — <em>Diretrizes do Plano de Governo Flávio Bolsonaro 2027–2030</em> (“Para o Brasil Vencer o Atraso”), 76 páginas, registrado em 13/8/2026.<sup class="fn"><a href="#ref-tse-planos">[TSE-1]</a></sup></li>
+        <li>Cópias integrais estão na pasta <code>fontes-primarias/</code> deste repositório para conferência página a página. As citações “p. X” referem-se à <strong>paginação impressa</strong> de cada PDF.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:2px">2. Fontes oficiais de checagem</h3>
+      <p>Conforme solicitado, a checagem priorizou: <strong>TSE</strong> (resultados e DivulgaCandContas), <strong>Constituição Federal</strong>, <strong>Lei nº 8.213/1991</strong> (auxílio-reclusão), <strong>Lei nº 13.260/2016</strong> (terrorismo), <strong>LGPD — Lei nº 13.709/2018</strong>, <strong>Banco Central</strong>, <strong>IBGE</strong>, <strong>INPE/TerraBrasilis (PRODES)</strong> e <strong>Tesouro Nacional / Tesouro Transparente</strong>, complementadas pela LC nº 200/2023 (arcabouço fiscal) e pela LC nº 101/2000 (LRF). Todas as afirmações de contexto trazem nota com link.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:2px">3. O que são as “notas” dos gráficos</h3>
+      <p>As notas de 0 a 10 da Seção 3 <strong>não são previsões oficiais</strong>: são uma codificação transparente e auditável do texto dos programas, feita com régua única para os dois candidatos (ver Tabela de régua). Servem para comparar ordens de grandeza — não para substituir estudo de impacto orçamentário, que <strong>nenhum dos dois programas apresenta de forma completa</strong>.</p>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <strong>Regra anti-invenção adotada:</strong> quando um número exato não pôde ser verificado em fonte oficial até 23/10/2026, o texto registra expressamente <em>“Dado pendente de verificação no TSE”</em> (ou na fonte competente). Isso ocorre, por exemplo, no custo fechado da “compra de dívidas” de Flávio e na composição final diplomada do Congresso de 2027. Os votos do 1º turno, ao contrário, foram <strong>verificados</strong> na totalização final do TSE (Seção 1).
+  </div>
+
+  <h3>Convenções de leitura</h3>
+  <ul>
+    <li><span class="badge a">Candidato A</span> = <strong>Lula (PT, 13)</strong> &middot; <span class="badge b">Candidato B</span> = <strong>Flávio Bolsonaro (PL, 22)</strong>. A ordem segue o número de urna (13 antes de 22), sem juízo de preferência.</li>
+    <li>Nos gráficos, Lula aparece em <span class="votea">vermelho</span> e Flávio em <span class="voteb">azul</span>, cores associadas às respectivas legendas, apenas para facilitar a leitura.</li>
+    <li>“Idêntica” significa equivalência funcional de objetivo <em>e</em> instrumento. “Similar divergente” significa mesmo problema, instrumento ou filosofia distintos — com o viés ideológico nomeado.</li>
+    <li>Declarações de campanha posteriores ao registro são marcadas como <span class="badge neut">2º turno / declaração pública</span> para não serem confundidas com o texto protocolado.</li>
+    <li data-no-i18n><span class="i18n-pt"><strong>Idiomas:</strong> o <strong>português brasileiro é o idioma principal e autoritativo</strong> deste relatório; o <strong>inglês é o idioma secundário</strong> de acesso (botão “Opções” ou PT/EN no topo). Evidências literais dos programas, citações de página e títulos de fontes em português são preservados no original para manter a auditabilidade.</span><span class="i18n-en" hidden><strong>Languages:</strong> <strong>Brazilian Portuguese is the primary and authoritative language</strong> of this report; <strong>English is the secondary</strong> access language (“Options” button or PT/EN at the top). Verbatim programme evidence, page citations and Portuguese source titles are kept in the original to preserve auditability.</span></li>
+  </ul>
+</section>
+
+<!-- ============ PERFIS ============ -->
+<section id="electoral_profiles">
+  <h2>1. Quem são as chapas, quantos votos tiveram e com quem governariam</h2>
+  <p class="lead">Dados eleitorais e institucionais verificados. O 1º turno ocorreu em 4 de outubro de 2026; o 2º turno será em 25 de outubro de 2026.<sup class="fn"><a href="#ref-tse-resultado">[TSE-2]</a></sup></p>
+
+  <div class="grid2">
+    <article class="card a" id="candidate_A_profile">
+      <h3 style="margin-top:2px"><span class="badge a">Candidato A · nº 13</span><br>Luiz Inácio Lula da Silva — PT</h3>
+      <ul>
+        <li><strong>Quem é:</strong> presidente da República (2003–2010; 2023–presente), candidato a um inédito quarto mandato. Natural de Caetés (PE).</li>
+        <li><strong>Vice:</strong> <strong>Geraldo Alckmin (PSB)</strong>, atual vice-presidente, repetindo a chapa de 2022.<sup class="fn"><a href="#ref-registro-lula">[1]</a></sup></li>
+        <li><strong>Coligação “Brasil Pronto pra Mais” (7 partidos):</strong> Federação Brasil da Esperança (PT, PCdoB, PV) + PSB + PDT + Federação PSOL–REDE (PSOL, REDE).<sup class="fn"><a href="#ref-registro-lula">[1]</a></sup><sup class="fn"><a href="#ref-tse-lista">[TSE-3]</a></sup></li>
+        <li><strong>Posicionamento:</strong> esquerda / centro-esquerda. O programa se define contra o “projeto liberal-conservador” (p. 7) e a favor de um Brasil “popular, democrático, soberano e justo”, com Estado planejador e indutor do desenvolvimento — na literatura, <strong>desenvolvimentismo inclusivo (social-desenvolvimentismo)</strong>.</li>
+        <li><strong>Votos no 1º turno:</strong> <span class="votea">53.879.538 votos (45,16% dos válidos)</span> — 2º lugar.</li>
+        <li><strong>Leitura institucional:</strong> coligação programaticamente coesa à esquerda, mas minoritária sozinha no Congresso; a governabilidade dependeria, como em 2023–2026, de negociação com partidos de centro fora da coligação formal — negociação hoje mediada pelas emendas parlamentares, que o próprio programa critica (R$ 50 bilhões em 2026, p. 15–16).</li>
+      </ul>
+    </article>
+
+    <article class="card b" id="candidate_B_profile">
+      <h3 style="margin-top:2px"><span class="badge b">Candidato B · nº 22</span><br>Flávio Bolsonaro — PL</h3>
+      <ul>
+        <li><strong>Quem é:</strong> senador pelo Rio de Janeiro (2019–presente), advogado, filho mais velho do ex-presidente Jair Bolsonaro. Natural de Resende (RJ). Disputa a Presidência pela primeira vez.</li>
+        <li><strong>Vice:</strong> <strong>Alfredo Gaspar (PL-AL)</strong>, deputado federal, ex-promotor e ex-procurador-geral de Justiça de Alagoas, ex-secretário estadual de Segurança e relator da CPMI do INSS.<sup class="fn"><a href="#ref-vice-flavio">[2]</a></sup></li>
+        <li><strong>Coligação:</strong> <strong>nenhuma — partido isolado (PL), chapa “puro-sangue”</strong>. PP, União Brasil, Republicanos e Podemos optaram pela neutralidade nacional.<sup class="fn"><a href="#ref-vice-flavio">[2]</a></sup></li>
+        <li><strong>Posicionamento:</strong> direita. O programa se autodefine como alternativa <strong>“liberal, conservadora, reformista”</strong> (p. 12): liberalismo econômico (menos impostos, desestatização, abertura) combinado a conservadorismo moral e agenda securitária punitiva.</li>
+        <li><strong>Votos no 1º turno:</strong> <span class="voteb">56.104.503 votos (47,03% dos válidos)</span> — 1º lugar.</li>
+        <li><strong>Leitura institucional:</strong> isolamento formal compensado parcialmente pela bancada própria do PL — a imprensa reporta 121 deputados e 28 senadores eleitos pelo partido em 2026.<sup class="fn"><a href="#ref-pl-bancada">[3]</a></sup> <em>Composição final pendente de verificação no TSE após a diplomação.</em> Sem coligação, qualquer PEC dependeria de alianças pós-eleitorais com o centrão hoje neutro.</li>
+      </ul>
+    </article>
+  </div>
+
+  <h3>Resultado oficial do 1º turno para Presidente (totalização final, 100% das seções)</h3>
+  <div class="chartbox smallh"><canvas id="chart_votes_canvas" aria-label="Gráfico de barras com os votos do primeiro turno"></canvas></div>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Candidato (urna)</th><th>Partido / situação</th><th>Votos nominais exatos</th><th>% dos válidos</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Flávio Bolsonaro</strong></td><td>PL · vai ao 2º turno</td><td><strong>56.104.503</strong></td><td>47,03%</td></tr>
+        <tr><td><strong>Lula</strong></td><td>PT · vai ao 2º turno</td><td><strong>53.879.538</strong></td><td>45,16%</td></tr>
+        <tr><td>Escritor Augusto Cury</td><td>AVANTE</td><td>3.448.569</td><td>2,89%</td></tr>
+        <tr><td>Renan Santos</td><td>MISSÃO</td><td>2.675.887</td><td>2,24%</td></tr>
+        <tr><td>Demais candidaturas somadas</td><td>PSD, NOVO, UP, PSTU, DC, PCB, DEMOCRATA, PCO</td><td>≈ 3,19 milhões</td><td>≈ 2,68%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Diferença entre os finalistas: <strong>2.224.965 votos (1,87 ponto percentual)</strong>. Brancos: 2.300.798 (1,84%); nulos: 3.674.249 (2,93%); abstenções: 33.469.244 (21,08% dos aptos). Fonte: totalização final do TSE; a nota do TSE com 99,99% (56.104.268 × 53.876.617) foi superada pelos números finais acima, conferidos em múltiplas reproduções da totalização.<sup class="fn"><a href="#ref-tse-resultado">[TSE-2]</a></sup><sup class="fn"><a href="#ref-votos-final">[4]</a></sup> O “eleitorado em disputa” no 2º turno (votos de terceiros + brancos/nulos/abstenções ≈ 48 milhões) é mais de vinte vezes a diferença entre os finalistas — daí a forte convergência programática observada na Seção 6.</p>
+
+  <h3>Espectro ideológico das alianças formais</h3>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Chapa</th><th>Partido / federação</th><th>Posição convencional no espectro*</th><th>Traço programático dominante</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="7"><strong>A — Lula</strong><br>“Brasil Pronto pra Mais”</td><td>PT (Fed. Brasil da Esperança)</td><td>Esquerda</td><td>Social-desenvolvimentismo, direitos trabalhistas e sociais</td></tr>
+        <tr><td>PCdoB (Fed. Brasil da Esperança)</td><td>Esquerda</td><td>Socialismo democrático, soberania nacional</td></tr>
+        <tr><td>PV (Fed. Brasil da Esperança)</td><td>Centro-esquerda</td><td>Ambientalismo, economia verde</td></tr>
+        <tr><td>PSB (partido do vice)</td><td>Centro-esquerda / esquerda</td><td>Socialismo democrático, gestão e inovação no setor público</td></tr>
+        <tr><td>PDT</td><td>Centro-esquerda</td><td>Trabalhismo, desenvolvimentismo nacional</td></tr>
+        <tr><td>PSOL (Fed. PSOL–REDE)</td><td>Esquerda</td><td>Socialismo, direitos humanos e de minorias</td></tr>
+        <tr><td>REDE (Fed. PSOL–REDE)</td><td>Centro-esquerda</td><td>Sustentabilidade, ética pública</td></tr>
+        <tr><td><strong>B — Flávio</strong><br>Partido isolado</td><td>PL (presidente e vice)</td><td>Direita</td><td>Liberalismo econômico + conservadorismo moral/securitário (bolsonarismo)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">* Classificação convencional da ciência política brasileira para fins comparativos; partidos brasileiros são internamente heterogêneos. Federações partidárias devem atuar de forma unificada por no mínimo quatro anos (Lei nº 14.208/2021), o que dá maior previsibilidade à base formal de Lula; a base potencial de Flávio é eleitoralmente grande (PL), mas formalmente estreita.</p>
+</section>
+
+<!-- ============ MATRIZ ============ -->
+<section id="comparative_matrix">
+  <h2>2. Matriz comparativa de políticas — o que cada programa propõe, lado a lado</h2>
+  <p class="lead">Síntese fiel dos PDFs (páginas entre parênteses). Declarações posteriores aparecem apenas na Seção 6, para não contaminar a comparação dos textos protocolados.</p>
+
+  <div class="grid2">
+    <article class="card a" id="candidate_A_proposals">
+      <h3 style="margin-top:2px">Estrutura do programa de Lula (84 págs.)</h3>
+      <p>Longa introdução de balanço do governo Lula III (p. 6–14) seguida de <strong>13 diretrizes programáticas</strong> (p. 15–83): 1 Democracia e Estado; 2 Combate às desigualdades; 3 Segurança integrada; 4 Educação; 5 Saúde; 6 Cultura e esporte; 7 Direito à cidade; 8 Economia sustentável, produtiva e digital; 9 Segurança alimentar e agro; 10 Energia e baixo carbono; 11 Meio ambiente e clima; 12 Trabalho; 13 Soberania e protagonismo internacional. É um programa de <strong>continuidade com aprofundamento</strong>: quase toda proposta é formulada como “manter / ampliar / consolidar” política já existente.</p>
+    </article>
+    <article class="card b" id="candidate_B_proposals">
+      <h3 style="margin-top:2px">Estrutura do programa de Flávio (76 págs.)</h3>
+      <p>Organizado como <strong>“jornada do cidadão”</strong> em 9 eixos com slogans: <em>Brasil sem Medo</em> (segurança, p. 13); <em>Brasil por Elas</em> (mulheres, p. 17); <em>Brasil sem Fila</em> (Estado digital, p. 23); <em>Brasil Mais Barato</em> (preços/impostos, p. 29); <em>Brasil que Prepara</em> (educação/saúde, p. 34); <em>Brasil que Prospera</em> (trabalho/crédito/casa, p. 42); <em>Brasil que Cresce</em> (infra/energia/agro/mundo, p. 49); <em>Brasil que Cumpre a Constituição</em> (Judiciário/liberdade, p. 65); <em>Brasil que Não Volta Atrás</em> (“Tesouraço” fiscal, p. 68). É um programa de <strong>ruptura</strong> com o governo atual, ancorado no legado de Jair Bolsonaro.</p>
+    </article>
+  </div>
+
+  <div class="tablebox">
+    <table id="matrix_table">
+      <thead>
+        <tr>
+          <th style="min-width:150px">Área de política</th>
+          <th><span class="badge a">A · Lula (PT)</span> — proposta central no PDF</th>
+          <th><span class="badge b">B · Flávio (PL)</span> — proposta central no PDF</th>
+          <th style="min-width:150px">Relação entre as propostas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Economia, contas públicas e impostos</strong></td>
+          <td><ul>
+            <li><strong>Manter o arcabouço fiscal</strong> (LC 200/2023), conter o crescimento da despesa sem prejudicar políticas sociais e reduzir o déficit primário (p. 49).</li>
+            <li><strong>Consolidar a reforma tributária do consumo</strong> (EC 132/2023) com cashback aos mais pobres; isenção de IR até R$ 5 mil já aprovada (p. 11, 19).</li>
+            <li><strong>Neoindustrialização</strong> (Nova Indústria Brasil): R$ 860 bi em financiamentos 2023–2026 citados (p. 50); Estado indutor via crédito público, compras governamentais e conteúdo local (p. 48–51).</li>
+            <li>Juros menores como consequência de inflação controlada + fiscal responsável (p. 49); Novo PAC como motor de investimento.</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Reformular as regras fiscais</strong> para estabilizar e reduzir a dívida/PIB, com superávits primários e limite a crédito subsidiado do Tesouro (p. 71).</li>
+            <li><strong>Revisar e redimensionar a reforma tributária</strong>, reduzir o IVA (projetado “em torno de 30%”, p. 30) e cortar exceções; critica “R$ 1 trilhão sem fonte” nos fundos da reforma (p. 30, 71).</li>
+            <li><strong>“Tesouraço”</strong>: enxugar a máquina, cortar ministérios/cargos, retomar desestatização caso a caso e fortalecer a Lei das Estatais (p. 68–70).</li>
+            <li>Meta de <strong>crescimento de 4% ao ano</strong> na década, via investimento privado e segurança jurídica (p. 49); juros “em linha com a média internacional” após estabilizar a dívida (p. 33, 71).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar divergente → oposta no instrumento</span><br>Ambos prometem inflação e juros menores. A: <em>desenvolvimentista</em> (investimento público induz o privado). B: <em>liberal-ortodoxo</em> (corte de gasto/imposto destrava o privado).</td>
+        </tr>
+        <tr>
+          <td><strong>2. Segurança pública e justiça penal</strong></td>
+          <td><ul>
+            <li><strong>PEC da Segurança Pública</strong> para ampliar o papel federal e, após aprovada, criar o <strong>Ministério da Segurança Pública</strong> coordenando o SUSP (p. 27, 30).</li>
+            <li>Estratégia de <strong>asfixia financeira</strong> do crime organizado (R$ 35,8 bi em prejuízos desde 2023, p. 27); Programa Brasil Contra o Crime Organizado com R$ 10 bi do FIIS a estados/municípios (p. 27–28).</li>
+            <li><strong>Controle de armas</strong> mantido, rastreabilidade e fiscalização de CACs (p. 28); câmeras corporais e policiamento de proximidade (p. 30).</li>
+            <li>Sistema prisional: Plano Pena Justa, governança e isolamento de lideranças com critérios objetivos (p. 28).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Classificar PCC, CV e milícias como “narcoterroristas”</strong> e “declarar guerra ao crime organizado” (p. 13); tropas de elite nas fronteiras e ocupação permanente de portos/aeroportos (p. 13–15).</li>
+            <li><strong>Reduzir a maioridade penal para 16 anos</strong> e punir maiores de 14 por crimes graves (p. 13); castração química de estupradores/abusadores (p. 14); fim da progressão para hediondos (p. 15–16).</li>
+            <li><strong>5 novos presídios federais “TREVA”</strong> (modelo El Salvador) + <strong>500 mil novas vagas em 4 anos</strong> com os estados (p. 14); dobrar o investimento federal em segurança (p. 15).</li>
+            <li><strong>“Muralha Brasileira”</strong>: reconhecimento facial nacional com <strong>mais de 1 milhão de câmeras</strong> (p. 15); quadruplicar pena inicial por furto/receptação de celular (p. 16).</li>
+          </ul></td>
+          <td><span class="badge bad">Oposta na filosofia</span><br>Mesmo inimigo (facções). A: <em>integração federativa + inteligência financeira + prevenção (garantista)</em>. B: <em>punitivismo penal + encarceramento em massa + vigilância tecnológica</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Saúde (SUS)</strong></td>
+          <td><ul>
+            <li>Fortalecer o SUS universal: atenção básica, <strong>Agora Tem Especialistas</strong> contra filas, parceria com hospitais privados por créditos/dívidas (p. 37).</li>
+            <li><strong>Prontuário único do cidadão</strong> via Rede Nacional de Dados em Saúde (RNDS), IA para triagem e fila única por risco clínico (p. 35, 38).</li>
+            <li><strong>Farmácia Popular 100% gratuito</strong> (41 medicamentos, 27,3 milhões atendidos em 2025, p. 36) + exames de monitoramento crônico; Mais Médicos ampliado (p. 35).</li>
+            <li>Vacinação e soberania sanitária: novas vacinas (dengue, VSR, HPV), rede nacional de câncer (p. 36–38).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Prontuário eletrônico único vinculado ao CPF/Gov.br</strong>, interoperável público–privado, “observados consentimento, LGPD e sigilo médico” (p. 26).</li>
+            <li><strong>Correção efetiva da tabela SUS</strong> para cobrir o custo real de hospitais/santas casas (p. 37); contratar rede privada em horários ociosos (p. 37–38).</li>
+            <li>Telessaúde nacional, <strong>entrega de remédio em domicílio</strong> a idosos/crônicos, IA preventiva de risco (p. 38); ampliação Saúde da Família.</li>
+            <li>Saúde da mulher com unidades móveis (inclusive fluviais) (p. 21); saúde mental, TDAH, Alzheimer e centros TEA (p. 39).</li>
+          </ul></td>
+          <td><span class="badge ok">Quase idêntica no digital; similar divergente no financiamento</span><br>Convergência rara e explícita: prontuário único + telessaúde + uso da rede privada ociosa. Divergência: A expande gasto e rede pública; B aposta em eficiência/remuneração por custo real.</td>
+        </tr>
+        <tr>
+          <td><strong>4. Educação</strong></td>
+          <td><ul>
+            <li>Meta de <strong>80% de crianças alfabetizadas na idade certa</strong> (66% em 2025, p. 31); cumprimento do PNE 2026–2036.</li>
+            <li><strong>Tempo integral</strong> com financiamento via Fundeb; 3.562 creches apoiadas pelo Novo PAC (p. 31–32).</li>
+            <li><strong>Pé-de-Meia</strong> mantido/fortalecido (7,3 milhões de jovens, p. 32); expansão de <strong>+111 Institutos Federais</strong> e interiorização universitária (p. 33).</li>
+            <li>Valorização docente: piso, Pé-de-Meia Licenciatura, cotas aperfeiçoadas (p. 20, 33).</li>
+          </ul></td>
+          <td><ul>
+            <li>Alfabetização pelo <strong>método fônico</strong>; “ninguém avança sem ter aprendido”; gestão e <strong>orçamento por resultados</strong> (p. 35).</li>
+            <li><strong>Voucher educacional</strong> onde faltar vaga pública; ampliação de <strong>escolas cívico-militares</strong>; escola “livre de doutrinação” (p. 35–36).</li>
+            <li>Ensino técnico com o setor produtivo custeando bolsas; ensino superior transferido ao Ministério de Ciência e Tecnologia; CAPES/CNPq orientados a impacto produtivo (p. 36).</li>
+            <li><strong>Empréstimo contingente à renda</strong> substitui o modelo atual de financiamento estudantil (p. 37); apoio ao tempo integral (p. 35).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar divergente</span><br>Objetivos comuns (alfabetizar, tempo integral, técnico). A: <em>universalismo estatal e equidade</em>. B: <em>meritocracia por resultados, escolha familiar (voucher) e disciplina (conservadorismo)</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>5. Proteção social, trabalho e renda</strong></td>
+          <td><ul>
+            <li><strong>Manter, aperfeiçoar e ampliar</strong> Bolsa Família e proteção social (p. 18–19); <strong>valorização real do salário mínimo</strong> permanente (p. 19, 74).</li>
+            <li><strong>Fim da escala 6×1 e jornada de 40h sem redução salarial</strong> (p. 75); combate à pejotização, proteção a plataformizados e fortalecimento sindical/negociação coletiva (p. 74–76).</li>
+            <li>Plataforma Pública Nacional de Empregabilidade com IA na rede SINE (p. 74).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Manter os programas sociais existentes</strong> com combate a fraudes — mas como “ponto de partida” para autonomia, não “destino” (p. 42–43, sem citar “Bolsa Família” nominalmente).</li>
+            <li>Trilha de qualificação com prioridade ao beneficiário e <strong>retorno imediato ao benefício</strong> se o emprego falhar (p. 43).</li>
+            <li><strong>Negociado sobre o legislado e jornada flexível</strong>; trabalho por aplicativos protegido “sem dirigentes sindicais à frente” (p. 44–45); banco nacional de vagas com RHs (p. 44).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar divergente (convergindo no 2º turno)</span><br>No papel: A <em>protecionista/trabalhista</em> × B <em>flexibilização liberal</em>. No 2º turno, B votou pelo fim do 6×1 e prometeu reajustar o Bolsa Família (Seção 6).</td>
+        </tr>
+        <tr>
+          <td><strong>6. Mulheres, igualdade e cuidados</strong></td>
+          <td><ul>
+            <li><strong>Política Nacional de Cuidados</strong> como direito universal (receber cuidado, cuidar e autocuidado) (p. 25–26).</li>
+            <li><strong>Cuidotecas</strong> (3–12 anos), lavanderias públicas, cozinhas solidárias; formação de cuidadores (p. 26).</li>
+            <li>Enfrentamento ao racismo estrutural, cotas, titulação quilombola e demarcação indígena como eixo de desenvolvimento (p. 19–20); rede de proteção à mulher ampliada (p. 21).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Brasil por Elas</strong> (12 compromissos): <strong>Central da Mulher</strong> física + aplicativo + assistente de IA “ClarIA” + <strong>bônus de internet</strong> (p. 17–19).</li>
+            <li>Denúncia integrada (180 + delegacia on-line) e <strong>tornozeleira em agressor sob medida protetiva</strong> (p. 14, 19); pena integral para feminicidas (p. 14).</li>
+            <li><strong>Voucher-creche</strong> onde faltar vaga pública e Rede Nacional de Cuidado em PPP (p. 21); pontuação “Ganha-Ganha” na Caixa por bom comportamento financeiro/formativo (p. 19–20).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar divergente</span><br>Ambos tratam cuidado como economia (≈8,5% do PIB, citado por B, p. 21). A: <em>direito universal provido pelo Estado (progressista)</em>. B: <em>plataforma digital + autonomia financeira familiar</em>.</td>
+        </tr>
+        <tr>
+          <td><strong>7. Habitação, cidades e saneamento</strong></td>
+          <td><ul>
+            <li><strong>Minha Casa, Minha Vida mantido e ampliado</strong> (meta elevada a 3 milhões até o fim de 2026, p. 45); Compra Assistida e uso de imóveis da União.</li>
+            <li>Periferia Viva (urbanização de favelas), saneamento (R$ 23,3 bi desde 2023, p. 46), mobilidade: +233 km sobre trilhos e +296 km de BRT (p. 46).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Retomar o Casa Verde e Amarela: 2,5 milhões de residências</strong> com “a menor taxa de juros possível” (p. 47).</li>
+            <li>Regularização fundiária (preferência ao nome da mulher) e PPPs moradia+infraestrutura (p. 47); <strong>plena aplicação do Marco do Saneamento (2020)</strong> com concessões privadas, meta 2033 (p. 47).</li>
+          </ul></td>
+          <td><span class="badge ok">Funcionalmente idêntica (marca distinta)</span><br>Habitação popular massiva subsidiada nos dois casos. Diferença: A enfatiza produção pública/periferias; B, concessões e patrimônio familiar individual.</td>
+        </tr>
+        <tr>
+          <td><strong>8. Infraestrutura, logística e energia</strong></td>
+          <td><ul>
+            <li><strong>Novo PAC</strong> e Política Nacional de Transição Energética; carteira energética de R$ 595 bi (p. 64); renováveis = 89% da matriz elétrica (p. 64).</li>
+            <li><strong>Petrobras estatal forte</strong>: refino, naval com conteúdo local, retorno à distribuição de combustíveis; mitigar volatilidade de preços (p. 66–67).</li>
+            <li><strong>Luz do Povo</strong> (gratuidade até 80 kWh/mês, +60 milhões de pessoas) e <strong>Gás do Povo</strong> (+15 milhões de famílias) (p. 65–66).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>R$ 900 bilhões em 4 anos</strong> em transportes, majoritariamente privados via PPPs/concessões e fundo com securitização de imóveis da União (p. 50–51); Ferrogrão e corredores logísticos (custo logístico de 15,5% do PIB, p. 51).</li>
+            <li>Segurança energética ao <strong>menor preço</strong>: reduzir CDE/encargos mantendo tarifa social (p. 31, 53); permitir <strong>fracking</strong> “com responsabilidade” (p. 52); polo global de <em>data centers</em> (p. 53).</li>
+            <li>Biocombustíveis, RenovaBio e créditos de carbono como vantagem competitiva (p. 53).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar divergente</span><br>Ambos querem energia barata, biocombustíveis e <em>data centers</em>. A: <em>nacional-desenvolvimentista</em> (Petrobras/conteúdo local). B: <em>liberal</em> (preço, concessões, abertura).</td>
+        </tr>
+        <tr>
+          <td><strong>9. Agro, alimentos e terra</strong></td>
+          <td><ul>
+            <li>Plano Safra da Agricultura Familiar com juros favorecidos (p. 59); agroecologia (PLANAPO), bioinsumos e fertilizantes nacionais via Petrobras (p. 60, 63).</li>
+            <li>Segurança alimentar por renda (Bolsa Família + salário mínimo) e compras públicas da agricultura familiar (p. 58–59).</li>
+          </ul></td>
+          <td><ul>
+            <li>Seguro Rural ampliado, securitização de dívidas do agro, armazenagem e irrigação com outorga simplificada (hoje 24 meses, p. 54–55).</li>
+            <li><strong>Titulação rural em massa</strong> (mais de 450 mil títulos no governo Bolsonaro, p. 54) e segurança jurídica “sem relativizações” da propriedade; fertilizantes de potássio/fosfato nacionais (p. 32, 54).</li>
+          </ul></td>
+          <td><span class="badge ok">Similar com ênfases distintas</span><br>Convergência em fertilizantes e produção nacional. A prioriza agricultura familiar/agroecologia; B, agronegócio exportador e direito de propriedade.</td>
+        </tr>
+        <tr>
+          <td><strong>10. Meio ambiente e clima</strong></td>
+          <td><ul>
+            <li>Transição ecológica como eixo de desenvolvimento; nova NDC, Fundo Clima, Eco Invest e Fundo Florestas Tropicais para Sempre (p. 71).</li>
+            <li>Destinar terras públicas a unidades de conservação, terras indígenas/quilombolas e assentamentos (p. 70); fiscalização com satélite/IA e combate ao garimpo ilegal (p. 72).</li>
+            <li>Pagamento por Serviços Ambientais (PSA) e restauração (p. 72).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Zerar o desmatamento ilegal até 2029</strong> e combater queimadas/grilagem com satélite/IA (p. 58); PSA e mercado regulado de carbono (p. 57–58).</li>
+            <li>Meio ambiente como <strong>“ativo verde”</strong>: produtor que preserva como “parceiro, não suspeito” (p. 58); bioeconomia.</li>
+            <li><strong>Licenciamento ágil</strong>: se o órgão não decidir no prazo, “a licença deve ser concedida”; estabilidade de regras por até 20 anos (p. 50).</li>
+          </ul></td>
+          <td><span class="badge warn">Similar na meta, divergente no licenciamento</span><br>Metas anti-desmatamento coexistem em B com afrouxamento procedimental — tensão central analisada na Seção 4.4.</td>
+        </tr>
+        <tr>
+          <td><strong>11. Democracia, Estado e mundo digital</strong></td>
+          <td><ul>
+            <li>Aprofundar participação: conselhos recriados, 28 conferências desde 2023, PPA participativo com 1,4 milhão de participantes (p. 15).</li>
+            <li><strong>Debater reformas o sistema de emendas</strong> (“grave distorção”, (p. 15–16); <strong>regulação democrática de plataformas</strong> contra desinformação/ódio (p. 16).</li>
+            <li>Gov.br com +5 mil serviços, infraestrutura nacional de dados e Conselho Nacional pela Soberania Digital (p. 17).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Reforma do Judiciário</strong>: fim da competência criminal originária do STF, limites a decisões monocráticas, quarentena de 1 ano para ministro virar ministro do STF (p. 65–66).</li>
+            <li><strong>Fim da reeleição presidencial</strong> (PEC de autoria do próprio Flávio) (p. 66); “Tesouraço na Censura”: extinguir estruturas de monitoramento de desinformação (p. 66–67).</li>
+            <li>Estado Digital e “Tesouraço da Burocracia” a partir do Gov.br/PIX do governo Bolsonaro (p. 23–25); INSS sem fila (p. 26).</li>
+          </ul></td>
+          <td><span class="badge bad">Oposta em plataformas e STF; convergente no governo digital</span><br>Ambos querem Estado digital. A regula discurso on-line em nome da democracia; B desmonta essa regulação em nome da liberdade de expressão.</td>
+        </tr>
+        <tr>
+          <td><strong>12. Política externa, defesa e soberania</strong></td>
+          <td><ul>
+            <li>Multilateralismo e <strong>Sul Global/BRICS</strong>; reforma da ONU (Conselho de Segurança), OMC e FMI/Banco Mundial (p. 81); Mercosul aprofundado e acordos com UE/EFTA/Singapura citados (p. 79).</li>
+            <li>Defesa com base industrial nacional: Gripen, KC-390, fragatas (R$ 20,4 bi executados desde 2023, p. 78); OTCA e Amazônia como eixo (p. 80).</li>
+          </ul></td>
+          <td><ul>
+            <li><strong>Retomar a adesão à OCDE</strong>, com fim gradual do IOF-câmbio (p. 63); abertura comercial e integração a cadeias globais (agroindústria, minerais críticos, saúde, digital) (p. 63).</li>
+            <li>Diplomacia “sem afinidade ideológica”: recompor relações com EUA, Argentina e Israel, negociando também com China e UE (p. 62); multinacionais brasileiras (p. 63).</li>
+          </ul></td>
+          <td><span class="badge bad">Oposta na âncora externa</span><br>A: <em>autonomia pelo Sul Global (desenvolvimentista-soberanista)</em>. B: <em>convergência OCDE/Ocidente (liberal)</em>. Ambos defendem minerais críticos com valor agregado nacional.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small"><strong>Leitura de conjunto:</strong> não há proposta literalmente idêntica palavra por palavra; há um núcleo relevante de convergência funcional (saúde digital, habitação, fertilizantes, PSA/rastreabilidade, minerais críticos) envolto por filosofias opostas de Estado. A Seção 4 detalha essa fronteira.</p>
+</section>
+
+<!-- ============ MODELAGEM ============ -->
+<section id="feasibility_modeling">
+  <h2>3. Modelagem de viabilidade e impacto — quanto custa, quanto demora, de quem depende e qual é o risco</h2>
+  <p class="lead">Quatro gráficos interativos (Chart.js) a partir de uma única base auditável de 24 observações (12 áreas × 2 candidatos). Passe o mouse ou toque nos pontos para ver os valores. Use o filtro para isolar uma área.</p>
+
+  <h3>Régua de codificação (idêntica para os dois candidatos)</h3>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Dimensão</th><th>O que mede</th><th>Âncoras da escala</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tempo (meses)</strong></td><td>Prazo até a entrega material plena (não o anúncio)</td><td>6 = ato administrativo · 12 = lei simples · 24 = lei + rede federativa · 36 = PEC/obra média · 48 = estrutural (um mandato ou mais)</td></tr>
+        <tr><td><strong>Custo fiscal (0–10)</strong></td><td>Pressão sobre o Orçamento da União (despesa + renúncia + subsídio implícito)</td><td>1–2: &lt; R$ 2 bi/ano · 3–4: R$ 2–10 bi · 5–6: R$ 10–30 bi · 7–8: R$ 30–80 bi · 9–10: &gt; R$ 80 bi/ano. Investimento privado conta menos aqui e mais em “dependência da sociedade”</td></tr>
+        <tr><td><strong>Impacto positivo (0–10)</strong></td><td>Abrangência × profundidade × evidência prévia</td><td>Programas universais com rede instalada pontuam mais que pilotos sem avaliação</td></tr>
+        <tr><td><strong>Dependência do Estado/União (0–10)</strong></td><td>Necessidade de orçamento, burocracia e regulação federais</td><td>10 = só a União entrega; 0 = União apenas autoriza</td></tr>
+        <tr><td><strong>Dependência da sociedade (0–10)</strong></td><td>Necessidade de empresas, famílias, sociedade civil <em>e</em> estados/municípios executores</td><td>10 = sem adesão/investimento privado ou sem ente local, nada acontece</td></tr>
+        <tr><td><strong>Risco negativo (0–10)</strong></td><td>Probabilidade × gravidade de dano fiscal, jurídico, distributivo, ambiental ou institucional</td><td>Considera colisão constitucional, judicialização e efeitos colaterais documentados</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="controls">
+    <label for="areaFilter">Filtrar os gráficos de bolhas por área:</label>
+    <select id="areaFilter">
+      <option value="all">Todas as 12 áreas</option>
+    </select>
+    <span class="small">Dica: clique nas legendas para mostrar/ocultar um candidato.</span>
+  </div>
+
+  <h3>Gráfico 1 — Tempo de implantação × Custo fiscal <span class="small">(bolhas; tamanho = impacto positivo)</span></h3>
+  <p>O quadrante superior direito (caro e lento) concentra o risco de frustração de mandato. Observe que a segurança de Flávio e a infraestrutura/habitação de Lula ocupam esse quadrante por motivos opostos: capex prisional permanente, em um caso; investimento público direto, no outro.</p>
+  <div class="chartbox"><canvas id="chart_time_cost_canvas"></canvas></div>
+
+  <h3>Gráfico 2 — Perfil médio de governo <span class="small">(radar; médias das 12 áreas)</span></h3>
+  <p>O radar sintetiza a filosofia de cada programa: <strong>Lula é, em média, mais dependente da União e mais caro ao Tesouro; Flávio é mais dependente de atores não federais e carrega risco médio maior</strong>, puxado por segurança, licenciamento e reforma do Judiciário. O impacto médio estimado é próximo — a diferença está no caminho, não na ambição declarada.</p>
+  <div class="chartbox"><canvas id="chart_radar_canvas"></canvas></div>
+
+  <h3>Gráfico 3 — Impacto positivo × Dependência do Estado × Dependência da sociedade <span class="small">(barras agrupadas por área)</span></h3>
+  <div class="controls">
+    <span class="kicker">Mostrar:</span>
+    <button type="button" class="btn dep-toggle active" data-cand="A">Candidato A · Lula</button>
+    <button type="button" class="btn dep-toggle" data-cand="B">Candidato B · Flávio</button>
+  </div>
+  <p>Quando as três barras são altas, a política promete muito, mas exige coordenação máxima (ex.: habitação). Quando a dependência da sociedade supera a do Estado (padrão de Flávio em infraestrutura e agro), o sucesso depende de o investimento privado de fato aparecer — sensível a juros de 13,75% ao ano.<sup class="fn"><a href="#ref-bcb-selic">[BCB-1]</a></sup></p>
+  <div class="chartbox"><canvas id="chart_dependency_canvas"></canvas></div>
+
+  <h3>Gráfico 4 — Risco negativo × Tempo <span class="small">(bolhas; tamanho = custo fiscal)</span></h3>
+  <p>Riscos altos e rápidos (superior esquerdo) tendem a gerar judicialização ainda no primeiro ano; riscos altos e lentos (superior direito) geram passivo silencioso. Os pontos mais arriscados do conjunto são o pacote securitário-penal de Flávio e, em grau menor, o licenciamento automático e a reforma do STF; do lado de Lula, o risco é mais fiscal-distributivo (expansão permanente sob dívida elevada) do que constitucional.</p>
+  <div class="chartbox"><canvas id="chart_risk_time_canvas"></canvas></div>
+
+  <h3>Base de dados completa dos gráficos (audite as notas)</h3>
+  <div class="tablebox">
+    <table id="policy_data_table">
+      <thead><tr><th>Área</th><th>Candidato</th><th>Tempo (meses)</th><th>Custo fiscal</th><th>Impacto +</th><th>Dep. Estado</th><th>Dep. Sociedade</th><th>Risco −</th><th>Justificativa sintética da codificação</th></tr></thead>
+      <tbody id="policy_data_body"></tbody>
+    </table>
+  </div>
+  <noscript><p class="small">Ative o JavaScript para ver a tabela de dados e os gráficos interativos. As conclusões textuais deste relatório não dependem dos gráficos.</p></noscript>
+  <div class="callout info"><strong>Observação importante sobre Flávio em “Social/Trabalho”:</strong> a nota de custo 6 reflete o <em>PDF</em> (manter programas + trilha de autonomia). Com os acréscimos do 2º turno (reajuste do Bolsa Família, permanência de 2 anos e compra de dívidas), o custo estimado sobe para ≈ 8 — convergindo ao patamar de Lula e tensionando o “Tesouraço”. Ver Seções 4.4 e 6.</div>
+</section>
+
+<!-- ============ INVESTIGATIVO ============ -->
+<section id="investigative_summary">
+  <h2>4. Sumário investigativo — convergências, vieses, vetos institucionais e promessas sob alerta</h2>
+
+  <h3 id="identical_proposals">4.1 Propostas idênticas ou funcionalmente equivalentes</h3>
+  <p>Nenhum trecho é literalmente idêntico nos dois PDFs (redações e marcas diferem). Há, porém, <strong>seis equivalências funcionais fortes</strong> — mesmo objetivo e instrumento muito próximo — que o eleitor não deve tratar como diferencial:</p>
+  <ol>
+    <li><strong>Prontuário único e saúde digital com IA e telessaúde.</strong> Lula: prontuário único via RNDS + fila por risco (p. 35, 38). Flávio: prontuário CPF/Gov.br interoperável + IA de agendamento (p. 26). Até a contratação da rede privada ociosa coincide (Lula, p. 37; Flávio, p. 37–38).</li>
+    <li><strong>Habitação popular subsidiada em milhões de unidades + regularização fundiária.</strong> MCMV ampliado (Lula, p. 45) × Casa Verde e Amarela com 2,5 milhões (Flávio, p. 47).</li>
+    <li><strong>Manutenção da transferência de renda aos mais pobres.</strong> Lula nomeia e amplia o Bolsa Família (p. 19); Flávio compromete-se a não retirar a ajuda de quem dela depende (“Ponto.”, p. 42) — e no 2º turno passou a prometer reajuste.</li>
+    <li><strong>Autonomia em fertilizantes</strong> (gás/potássio/fosfato nacionais) para baratear alimentos e reduzir dependência externa (Lula, p. 63; Flávio, p. 32 e 54).</li>
+    <li><strong>Pagamento por Serviços Ambientais + rastreabilidade de cadeias produtivas</strong> com satélite (Lula, p. 72; Flávio, p. 28 e 57–58).</li>
+    <li><strong>Minerais críticos com agregação de valor no Brasil + <em>data centers</em> alimentados por energia limpa</strong> (Lula, p. 50; Flávio, p. 53 e 55–56).</li>
+  </ol>
+  <p class="small">Implicação prática: nessas seis frentes, o voto decide menos <em>o quê</em> e mais <em>quem executa melhor</em> — capacidade federativa, qualidade regulatória e financiamento.</p>
+
+  <h3 id="similar_divergent">4.2 Propostas similares com vieses ideológicos divergentes (nomeados)</h3>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Problema comum</th><th>Lula — instrumento e viés</th><th>Flávio — instrumento e viés</th></tr></thead>
+      <tbody>
+        <tr><td>Comida cara</td><td>Renda (mínimo real + Bolsa Família) e oferta da agricultura familiar. <em>Viés: desenvolvimentismo distributivo.</em></td><td>Menos imposto no consumo, logística e armazenagem. <em>Viés: liberalismo de oferta.</em></td></tr>
+        <tr><td>Creche e cuidado</td><td>Construir rede pública e tratar cuidado como direito universal. <em>Viés: progressismo universalista (Estado de bem-estar).</em></td><td>Voucher-creche privado até surgir vaga pública + PPP. <em>Viés: focalização pró-mercado.</em></td></tr>
+        <tr><td>Qualidade do ensino</td><td>Cooperação federativa, cotas e renda estudantil. <em>Viés: equidade progressista.</em></td><td>Resultados, fônico, voucher e cívico-militar. <em>Viés: meritocracia + conservadorismo moral.</em></td></tr>
+        <tr><td>Crime organizado</td><td>Asfixia financeira, SUSP e prevenção territorial. <em>Viés: garantismo integrado.</em></td><td>Narcoterrorismo, presídios e vigilância facial. <em>Viés: punitivismo conservador-securitário.</em></td></tr>
+        <tr><td>Juros altos</td><td>Crescimento + arcabouço + produtividade industrial. <em>Viés: neodesenvolvimentismo.</em></td><td>Superávit + corte de gasto/imposto para derrubar a dívida. <em>Viés: ortodoxia liberal.</em></td></tr>
+        <tr><td>Trabalho por aplicativo</td><td>Regular com direitos e transparência algorítmica (p. 75). <em>Viés: protecionismo laboral.</em></td><td>Garantir a oportunidade “sem sindicato à frente” (p. 45). <em>Viés: flexibilização liberal.</em></td></tr>
+        <tr><td>Desinformação</td><td>Regular plataformas (p. 16). <em>Viés: democratismo regulatório.</em></td><td>Extinguir estruturas de monitoramento (p. 66). <em>Viés: liberalismo expressivo / anti-regulatório.</em></td></tr>
+        <tr><td>Inserção externa</td><td>BRICS, Mercosul e reforma da governança global. <em>Viés: nacional-desenvolvimentismo soberanista.</em></td><td>OCDE e cadeias globais de valor. <em>Viés: liberal-internacionalismo ocidental.</em></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="institutional_friction">4.3 O que nenhum presidente faz sozinho — mapa de fricção institucional</h3>
+  <p>Boa parte das promessas mais sonoras depende de <strong>PEC (3/5 em dois turnos em cada Casa, art. 60 da CF)</strong>, lei complementar, orçamento ou governos estaduais/municipais. Ignorar isso transforma programa em torcida.</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Proposta</th><th>De quem depende (veto)</th><th>Instrumento exigido</th><th>Fricção esperada</th></tr></thead>
+      <tbody>
+        <tr><td>Redução da maioridade penal (Flávio); PEC da Segurança e novo Ministério (Lula); fim da reeleição (Flávio); revisão da reforma tributária (Flávio) vs. sua consolidação (Lula); tarifa zero via emendas (Lula, 2º turno)</td><td>Congresso (308 deputados + 49 senadores, duas vezes)</td><td>PEC — art. 60 CF</td><td><span class="badge bad">Altíssima</span> Nenhuma chapa tem 3/5 sozinha; centrão neutro vira fiel da balança</td></tr>
+        <tr><td>Nova regra fiscal (Flávio) ou exceções ao arcabouço (ambos); novo desenho de emendas (Lula)</td><td>Congresso + LDO/LOA anuais</td><td>Lei complementar (alterar LC 200/2023) e leis orçamentárias</td><td><span class="badge bad">Alta</span> Emendas são poder parlamentar consolidado (R$ 50 bi em 2026)</td></tr>
+        <tr><td>Policiamento ostensivo, presídios estaduais (500 mil vagas), escolas e creches, transporte urbano</td><td>Governadores e prefeitos</td><td>CF arts. 30, 144, 205–211; convênios e cofinanciamento</td><td><span class="badge warn">Alta e contínua</span> A União induz; quem executa é o ente local</td></tr>
+        <tr><td>Castração química, fim de progressão, narcoterrorismo, limites ao STF, regulação de plataformas</td><td>STF (controle de constitucionalidade) + Congresso</td><td>Lei/PEC + provável ADI/ADPF</td><td><span class="badge bad">Altíssima</span> Ver alertas 4·4</td></tr>
+        <tr><td>“Juros na média internacional” / “juros menores” (ambos)</td><td>Banco Central autônomo (Copom)</td><td>LC 179/2021; meta de inflação de 3% ± 1,5 p.p.</td><td><span class="badge warn">Indireta</span> Presidente influencia via fiscal e indicações — não decreta a Selic</td></tr>
+        <tr><td>Reconhecimento facial e prontuários (ambos); licenciamento (Flávio); energia/combustíveis (ambos)</td><td>ANPD, Ibama/órgãos estaduais (LC 140/2011), ANEEL/ANP, Judiciário local</td><td>LGPD, CF art. 225, leis setoriais</td><td><span class="badge warn">Média-alta</span> Judicialização descentralizada</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="misleading_flags">4.4 Promessas sob alerta: populismo fiscal, incompatibilidade ou inviabilidade jurídica</h3>
+  <p class="lead">Critério: só entra neste quadro a promessa que colide com texto constitucional/legal vigente ou com restrição fiscal documentada em fonte oficial. “Sob alerta” não significa “mentira” — significa que, <em>como formulada</em>, ela não se sustenta sem mudança de regra, fonte de custeio ou redesenho que a campanha ainda não apresentou. Os dois lados são tratados com a mesma régua.</p>
+
+  <h4><span class="badge b">Candidato B · Flávio Bolsonaro</span></h4>
+
+  <div class="callout danger">
+    <strong>B1 — “Facções serão declaradas narcoterroristas” (p. 13).</strong> A Lei nº 13.260/2016, art. 2º, define terrorismo como ato praticado “por razões de xenofobia, discriminação ou preconceito de raça, cor, etnia e religião” com fim de provocar terror social.<sup class="fn"><a href="#ref-lei-terrorismo">[Lei-1]</a></sup> Facções movidas a lucro do tráfico não preenchem esse elemento subjetivo. Enquadrá-las exige <strong>nova lei</strong> (idealmente sem banalizar o tipo penal de terrorismo, tratado como hediondo pelo art. 5º, XLIII, da CF) — não basta “declaração” presidencial. Sem esse cuidado, prisões e bloqueios tendem a ser anulados judicialmente.
+  </div>
+  <div class="callout danger">
+    <strong>B2 — Maioridade penal aos 16 e punição penal a partir dos 14 (p. 13).</strong> O art. 228 da CF estabelece: “São penalmente inimputáveis os menores de dezoito anos”.<sup class="fn"><a href="#ref-cf228">[CF-1]</a></sup> Há controvérsia doutrinária séria sobre ser cláusula pétrea (art. 60, § 4º, IV) e o STF nunca encerrou o tema em mérito definitivo sobre qualquer redução. No mínimo, exige PEC com 3/5 e enfrentará arguição de inconstitucionalidade. Apresentar a medida como aplicável “desde o primeiro dia” é juridicamente inexato.
+  </div>
+  <div class="callout danger">
+    <strong>B3 — “Redirecionar às vítimas os recursos hoje destinados às famílias de detentos” (p. 15).</strong> O auxílio-reclusão (Lei nº 8.213/1991, art. 80) é benefício <strong>previdenciário contributivo pago aos dependentes</strong> de segurado de baixa renda preso em regime fechado — não é verba discricionária “do bandido”, nem dotação transferível por decreto.<sup class="fn"><a href="#ref-lei-8213">[Lei-2]</a></sup> Suprimi-lo para financiar vítimas exigiria emenda constitucional (art. 201, IV) e, ainda assim, fonte própria para a nova política de vítimas. A formulação induz o eleitor a erro sobre a natureza do benefício.
+  </div>
+  <div class="callout warn">
+    <strong>B4 — Trilema fiscal: dobrar segurança + 500 mil vagas prisionais + cortar impostos + gerar superávit.</strong> Cada item é defensável isoladamente; juntos, colidem com a LC 200/2023 (despesa primária real entre 0,6% e 2,5% ao ano) e com uma dívida bruta de 82,9% do PIB (R$ 11,1 trilhões em agosto/2026, BCB).<sup class="fn"><a href="#ref-arcabouco">[Fisc-1]</a></sup><sup class="fn"><a href="#ref-divida-bcb">[BCB-2]</a></sup> Presídio não é só obra: é custeio permanente estadual. O programa não fecha essa conta — <em>custo quadrienal pendente de verificação em fonte oficial da campanha</em>.
+  </div>
+  <div class="callout warn">
+    <strong>B5 — Licença ambiental automática pelo silêncio do órgão (p. 50).</strong> O art. 225, § 1º, IV, da CF exige estudo prévio de impacto para atividade potencialmente degradadora, e a LC 140/2011 reparte competências com estados e municípios. Licença tácita genérica para grandes obras tem alto risco de invalidação judicial e de conflito federativo — e tensiona a meta do próprio programa de zerar o desmatamento ilegal até 2029 (p. 58).
+  </div>
+  <div class="callout warn">
+    <strong>B6 — “Muralha Brasileira” com 1 milhão de câmeras e reconhecimento facial (p. 15).</strong> Biometria facial é dado pessoal <em>sensível</em> (LGPD, art. 5º, II), tratável apenas com consentimento específico ou nas hipóteses restritas do art. 11; a ANPD classifica a biometria em espaço público como alto risco.<sup class="fn"><a href="#ref-lgpd">[Lei-3]</a></sup> Para segurança pública, a LGPD (art. 4º, § 1º) remete a lei específica ainda pendente de disciplina completa. Sem essa lei, com finalidade, retenção e auditoria delimitadas, o sistema nasce sob risco de nulidade e de falsos positivos discriminatórios. Idem, com menor gravidade, para qualquer prontuário sem governança LGPD — ponto que o próprio texto reconhece (p. 26).
+  </div>
+  <div class="callout warn">
+    <strong>B7 — Castração química, pena integral sem progressão e tornozeleira universal em medidas protetivas (p. 14–16).</strong> A CF veda penas cruéis (art. 5º, XLVII, “e”), manda respeitar a integridade do preso (XLIX) e individualizar a pena (XLVI). A vedação absoluta de progressão para hediondos já foi declarada inconstitucional pelo STF (HC 82.959). São propostas legislativamente possíveis em versões moderadas (ex.: percentuais maiores de cumprimento), mas <strong>não</strong> na forma absoluta sugerida pelo slogan.
+  </div>
+
+  <h4><span class="badge a">Candidato A · Lula</span></h4>
+
+  <div class="callout danger">
+    <strong>A1 <span class="badge neut">2º turno</span> — Tarifa zero aos fins de semana paga com 25–26,8% das emendas impositivas.</strong> Emendas individuais e de bancada são de execução obrigatória e destinação parlamentar (ECs 86/2015, 100/2019 e 105/2019); vinculá-las por PEC a transporte municipal (competência local, art. 30, V) exige convencer os próprios parlamentares a abrir mão de ≈ R$ 11–12 bilhões/ano de discricionariedade — enquanto a associação do setor estima custo de até R$ 20,8 bilhões/ano.<sup class="fn"><a href="#ref-tarifa-zero">[5]</a></sup> Como “fonte”, é politicamente circular: depende de quem perderia o recurso.
+  </div>
+  <div class="callout warn">
+    <strong>A2 — Expandir tudo mantendo o arcabouço.</strong> O programa promete simultaneamente MCMV ampliado, novo PAC, cuidados universais, Farmácia Popular 100% gratuito, salário mínimo real (com efeito cascata sobre Previdência/BPC) e, no 2º turno, perdão de dívidas de MEIs (≈ R$ 15–18 bilhões reportados) e reajuste de 15% do Bolsa Família (custo reportado de R$ 22,7 bi em 2027).<sup class="fn"><a href="#ref-risco-fiscal">[6]</a></sup> Com déficit primário projetado em ≈ 0,5% do PIB em 2026 e dívida em alta (BCB/IFI), a compatibilidade com a banda de despesa da LC 200/2023 exige receita nova ou repriorização que o texto não detalha.<sup class="fn"><a href="#ref-bcb-rpm">[BCB-3]</a></sup>
+  </div>
+  <div class="callout warn">
+    <strong>A3 — Fim do 6×1 como promessa futura.</strong> A PEC foi aprovada pelo Senado em 14/10/2026 por 75 a 1 (42h já em dezembro/2026; 40h em outubro/2027) e seguiu à promulgação.<sup class="fn"><a href="#ref-6x1-senado">[7]</a></sup> Trata-se, portanto, de conquista congressual já consumada — não de entrega discricionária do próximo mandato. O custo recai sobre empregadores (sobretudo serviços/comércio); sem ganho de produtividade, há risco documentado de informalidade/repasses a preços, que o programa não quantifica.
+  </div>
+  <div class="callout warn">
+    <strong>A4 <span class="badge neut">2º turno</span> — Superlativos sanitários sem linha de base</strong> (“maior rede pública de câncer do mundo”, diagnóstico em 30 dias, canetas emagrecedoras no SUS). São metas sem denominador público (filas por procedimento, oncologistas por região, custo por paciente) nas fontes consultadas; como compromisso auditável, estão incompletas. <em>Custo e cronograma pendentes de verificação em fonte oficial do Ministério da Saúde.</em>
+  </div>
+  <div class="callout warn">
+    <strong>A5 — Petrobras simultaneamente barateadora, investidora e verde.</strong> Voltar à distribuição, amortecer volatilidade internacional de preços, exigir conteúdo local naval e liderar baixo carbono (p. 66–67) combina objetivos que disputam o mesmo caixa e tensionam a governança da Lei das Estatais (Lei nº 13.303/2016). É viável como estratégia, mas não é neutra fiscalmente: subsídio implícito a combustíveis, se houver, precisa ser explicitado.
+  </div>
+  <div class="callout warn">
+    <strong>A6 — “Regulação democrática das plataformas” sem desenho sancionatório (p. 16).</strong> A CF garante livre manifestação e veda censura (art. 5º, IV e IX; art. 220). Regular desinformação e ódio é constitucionalmente possível com lei precisa, devido processo e controle judicial — nada disso está desenhado no programa. Na forma slogânica, a promessa é juridicamente indeterminada (espelho inverso do “Tesouraço na Censura” de Flávio).
+  </div>
+
+  <div class="callout info">
+    <strong>Alerta comum aos dois — “o governo comprará/congelará suas dívidas” <span class="badge neut">2º turno</span>.</strong> Flávio prometeu no debate da Band (18/10) comprar dívidas com desconto e dar carência de 6 meses (pessoas físicas) e 12 meses (empresas), <strong>sem apresentar custo</strong>.<sup class="fn"><a href="#ref-compra-dividas">[8]</a></sup> Lula detalhou melhor o perímetro MEI (carteira de ≈ R$ 6 bi com deságio de 90% ≈ R$ 0,6 bi, dentro de R$ 15 bi autorizados, segundo a Fazenda via imprensa), mas a versão ampla (“Desenrola 3.0” + R$ 5 mil de recomeço) também carece de estudo publicado. Com Selic a 13,75% e famílias altamente endividadas, desenho mal calibrado gera risco moral (premiar inadimplência) e passivo contingente. Trate ambas como <strong>intenção sem orçamento fechado</strong>.
+  </div>
+</section>
+
+<!-- ============ TEMAS SENSIVEIS ============ -->
+<section id="sensitive_themes">
+  <h2>5. Temas sensíveis contemporâneos — onde divergem e por quê</h2>
+  <p class="lead">Posições públicas (programa + declarações até 23/10/2026). A coluna “motivação provável” é interpretação analítica de incentivos eleitorais/econômicos — não é atribuição de intenção oculta.</p>
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>Tema</th><th>Lula (A)</th><th>Flávio (B)</th><th>Motivação político-econômica provável</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Anistia do 8 de janeiro</strong></td><td>Contra; defende punição dos responsáveis e já afirmou que vetaria anistia a Bolsonaro.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>A favor de anistia “ampla, geral e irrestrita”, incluindo o pai, Jair Bolsonaro (condenado a 27 anos); admite indulto se o Congresso não aprovar.<sup class="fn"><a href="#ref-anistia">[9]</a></sup></td><td>B: coesão da base bolsonarista e libertação do líder. A: defesa institucional e eleitorado anti-golpe. Tema de maior carga simbólica do 2º turno.</td></tr>
+        <tr><td><strong>STF e aborto/drogas</strong></td><td>Não propõe mudar competências do STF; programa não propõe descriminalizar o aborto (fala em direitos sexuais/reprodutivos e contraceptivos).<sup class="fn"><a href="#ref-aborto">[10]</a></sup></td><td>Restringir STF (programa) e indicar ministros “contra aborto e drogas” e “patriotas” (declarações).<sup class="fn"><a href="#ref-aborto">[10]</a></sup> Plano defende “vida desde a concepção” (p. 9).</td><td>Disputa pelo eleitorado evangélico/conservador e pelo controle futuro da Corte, onde tramita a descriminalização até 12 semanas.</td></tr>
+        <tr><td><strong>Armas e munições</strong></td><td>Manter controle e rastreabilidade; acusa a liberalização passada de abastecer o crime (debate Band).</td><td>Defende acesso legal a armas; nega ter proposto fim da identificação de munições (debate Band).<sup class="fn"><a href="#ref-armas">[11]</a></sup></td><td>B: base armamentista/agro. A: eleitorado urbano preocupado com letalidade e feminicídio.</td></tr>
+        <tr><td><strong>Jornada 6×1</strong></td><td>Bandeira histórica da campanha; PEC aprovada.</td><td>Chamou a PEC de “oportunista”, defendia jornada flexível/pagamento por hora; <strong>votou a favor em 14/10</strong> (“a maioria dos trabalhadores quer”).<sup class="fn"><a href="#ref-6x1-virada">[12]</a></sup></td><td>Clássico movimento ao eleitor mediano: tema com apoio majoritário e custo fiscal zero ao governo.</td></tr>
+        <tr><td><strong>Bolsa Família</strong></td><td>Manter/ampliar; governo anunciou +15% (mínimo a R$ 691) no 2º turno.<sup class="fn"><a href="#ref-bolsa">[13]</a></sup></td><td>De crítico histórico (“bolsa-farelo”) a “direito adquirido”: manter, reajustar e permitir permanência de até 2 anos após emprego.<sup class="fn"><a href="#ref-bolsa">[13]</a></sup></td><td>Eleitorado de baixa renda/Nordeste decide 2º turno apertado; nenhum finalista pode parecer ameaça ao benefício.</td></tr>
+        <tr><td><strong>Reforma tributária</strong></td><td>Implementar a EC 132/2023 e o <em>split payment</em>.</td><td>Revisar, reduzir IVA, <strong>suspender por 1 ano</strong> e eliminar o <em>split payment</em> (declarações de 2º turno).<sup class="fn"><a href="#ref-reforma-trib">[14]</a></sup></td><td>B: setores que temem alíquota/liquidez. A: legado reformista e previsibilidade a estados.</td></tr>
+        <tr><td><strong>Petróleo/Margem Equatorial</strong></td><td>Explorar com “cuidados socioambientais” e soberania energética (p. 67 + declarações).</td><td>Explorar como fonte explícita de receita para financiar promessas (declarações).</td><td>Ambos buscam receita não tributária; divergem no enquadramento ambiental.</td></tr>
+        <tr><td><strong>Âncora externa</strong></td><td>BRICS/Sul Global, multilateralismo reformado; resposta a “tarifaços” de Trump com Plano Brasil Soberano (p. 12).</td><td>OCDE, abertura e recomposição com EUA/Israel/Argentina; menção de 2º turno ao “Escudo das Américas” de Trump.<sup class="fn"><a href="#ref-bbc-propostas">[BBC-1]</a></sup></td><td>A: autonomia e China como mercado. B: confiança de investidores ocidentais e agronegócio exportador.</td></tr>
+        <tr><td><strong>Apostas on-line (bets)</strong></td><td>Restringir e tratar como problema de renda/saúde; programa prevê controle de gastos com apostas (p. 49) e atenção a jogadores.</td><td>Proibir uso de benefício social em apostas + educação financeira (p. 33).</td><td><span class="badge ok">Convergência</span> Tema de consenso familiar; diferença apenas de ênfase regulatória.</td></tr>
+        <tr><td><strong>Sigilos e corrupção (debate)</strong></td><td colspan="2">Após desafio no debate da Band (18/10), as campanhas assinaram acordo no TSE (22/10) autorizando abertura simultânea de sigilos bancário, fiscal e telefônico. O ministro André Mendonça decidiu que <strong>não cabe ao TSE divulgar</strong>; cada candidato pode fazê-lo voluntariamente.<sup class="fn"><a href="#ref-sigilos">[15]</a></sup></td><td>Disputa de credibilidade pessoal a três dias do voto; sem divulgação validada até o corte deste relatório, o episódio é fato político, não prova sobre nenhum dos lados.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ EVOLUCAO ============ -->
+<section id="proposal_evolution">
+  <h2>6. Evolução das propostas: do 1º turno (PDF) ao 2º turno (TV e debates)</h2>
+  <p class="lead"><strong>Esclarecimento jurídico essencial:</strong> não existe “novo plano de 2º turno” protocolado. Os PDFs de agosto continuam sendo as propostas oficiais registradas (Lei nº 9.504/1997, art. 11, § 1º, IX); a página do TSE foi apenas atualizada para exibir os dois finalistas.<sup class="fn"><a href="#ref-tse-planos">[TSE-1]</a></sup> A evolução abaixo ocorreu por horário eleitoral, sabatinas, debate da Band (18/10) e atos de governo/campanha entre 5 e 22 de outubro.</p>
+
+  <div class="grid2">
+    <div class="card a">
+      <h3 style="margin-top:2px">Lula: o que foi acrescentado no 2º turno</h3>
+      <ul>
+        <li><strong>Tarifa zero aos fins de semana</strong> via PEC com 26,8% das emendas (≈ R$ 11,2 bi em 2027) — enviada em 21/10.<sup class="fn"><a href="#ref-tarifa-zero">[5]</a></sup></li>
+        <li><strong>Perdão de dívidas de MEIs sancionado (21/10)</strong>: teto de R$ 81 mil → R$ 110 mil (2027) → R$ 140 mil (2028); ≈ 4 milhões beneficiados.<sup class="fn"><a href="#ref-mei">[16]</a></sup></li>
+        <li><strong>“Desenrola” ampliado</strong>: compra de carteiras em leilão + R$ 5 mil de “recomeço” (síntese BBC de declarações).<sup class="fn"><a href="#ref-bbc-propostas">[BBC-1]</a></sup></li>
+        <li>Saúde com metas novas: câncer em 30 dias, 150 carretas de exames, aceleradores em todos os estados, canetas emagrecedoras.<sup class="fn"><a href="#ref-bbc-propostas">[BBC-1]</a></sup></li>
+        <li><strong>Continuidade (sem recuo):</strong> fim do 6×1, salário mínimo real, arcabouço e reforma tributária — todos já estavam no PDF.</li>
+      </ul>
+      <p class="small"><strong>Leitura:</strong> adição de benefícios urbanos visíveis (ônibus grátis, MEI) mirando periferias e autônomos — segmentos onde o governo reconhece dificuldade eleitoral.</p>
+    </div>
+    <div class="card b">
+      <h3 style="margin-top:2px">Flávio: acréscimos, virada e ambiguidades</h3>
+      <ul>
+        <li><strong>Ministério da Prosperidade</strong> (assistência + qualificação + empreendedorismo), anunciado na TV em 9/10 — não consta do PDF.<sup class="fn"><a href="#ref-tv2turno">[17]</a></sup></li>
+        <li><strong>Virada no 6×1:</strong> de crítico (“oportunista”) a voto favorável em 14/10, sem renunciar à defesa de pagamento por hora (PEC 12/2026).<sup class="fn"><a href="#ref-6x1-virada">[12]</a></sup></li>
+        <li><strong>Bolsa Família nomeado e reajustável</strong> + permanência de 2 anos; <strong>compra/congelamento de dívidas</strong> (debate 18/10); <strong>volta do Perse</strong> a eventos/turismo (20/10; programa custou ≈ R$ 60 bi em 4 anos segundo a Receita).<sup class="fn"><a href="#ref-risco-fiscal">[6]</a></sup></li>
+        <li>Saúde “padrão Einstein” com Cláudio Lottenberg e “Plano Real da Saúde” (declarações).<sup class="fn"><a href="#ref-bbc-propostas">[BBC-1]</a></sup></li>
+        <li><strong>Ambiguidade a esclarecer:</strong> sínteses registram ao mesmo tempo “não desvincular aposentadorias do mínimo” e “corrigir BPC/Previdência só pela inflação”. As duas frases só são compatíveis com desenho preciso (quem fica em cada regra) que a campanha deve ao eleitor.<sup class="fn"><a href="#ref-bbc-minimo">[18]</a></sup></li>
+      </ul>
+      <p class="small"><strong>Leitura:</strong> movimento clássico de 2º turno ao centro — neutralizar o medo de perda de direitos (“os programas continuarão”, TV em 10/10) sem abandonar o núcleo securitário/fiscal do PDF. O preço é a tensão aritmética com o “Tesouraço”.</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Conclusão da evolução:</strong> entre 5 e 22 de outubro os finalistas <strong>convergiram</strong> em quatro pontos caros ou populares — manter/reajustar o Bolsa Família, fim do 6×1, socorro a endividados/MEIs e salário mínimo acima da inflação — e <strong>continuaram opostos</strong> onde não há meio-termo eleitoral barato: anistia, STF, armas, reforma tributária e âncora externa. Analistas de mercado e a imprensa econômica passaram a tratar essa convergência como <strong>risco fiscal bipartidário para 2027</strong>, independentemente de quem vença.<sup class="fn"><a href="#ref-risco-fiscal">[6]</a></sup>
+  </div>
+</section>
+
+<!-- ============ CONTEXTO ============ -->
+<section id="official_context">
+  <h2>7. O Brasil que o vencedor herdará — retrato oficial de outubro de 2026</h2>
+  <p class="lead">Nenhuma promessa flutua no vazio. Estes são os constrangimentos mensurados pelas fontes oficiais exigidas, que valem para qualquer um dos dois em 1º de janeiro de 2027.</p>
+  <div class="grid3">
+    <div class="card">
+      <h3 style="margin-top:2px">Juros e inflação (BCB)</h3>
+      <p>Selic em <strong>13,75% ao ano</strong> (Copom de 16/9/2026); inflação em 12 meses de <strong>4,58%</strong> para meta de 3% ± 1,5 p.p.<sup class="fn"><a href="#ref-bcb-selic">[BCB-1]</a></sup> O Focus de 13/10 projetava IPCA de <strong>5,22% em 2026</strong>, Selic de 13,25% no fim do ano e PIB de 1,85%.<sup class="fn"><a href="#ref-focus">[BCB-4]</a></sup> Juro real nessa ordem encarece habitação (ambos), investimento privado (sobretudo Flávio) e o serviço da dívida (ambos).</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:2px">Contas públicas (Tesouro/IFI/BCB)</h3>
+      <p>Dívida Pública Federal de <strong>R$ 9,293 trilhões</strong> em agosto/2026 (Tesouro).<sup class="fn"><a href="#ref-tesouro-divida">[STN-1]</a></sup> Dívida bruta do governo geral de <strong>82,5% do PIB em julho</strong> (IFI sobre BCB) e <strong>82,9% (R$ 11,1 tri) em agosto</strong> (BCB).<sup class="fn"><a href="#ref-ifi">[IFI-1]</a></sup><sup class="fn"><a href="#ref-divida-bcb">[BCB-2]</a></sup> Projeção Prisma de outubro: déficit primário de ≈ R$ 53 bi em 2026 e DBGG de 83,4% do PIB no fim do ano. Quase metade da dívida federal já é pós-fixada à Selic, transmitindo cada ponto de juro direto ao custo fiscal.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:2px">Emprego (IBGE) e ambiente (INPE)</h3>
+      <p>Desocupação de <strong>5,3%</strong> no trimestre junho–agosto/2026 (PNAD Contínua), patamar historicamente baixo — o problema de 2027 é menos <em>quantidade</em> de emprego e mais produtividade, informalidade e custo do trabalho.<sup class="fn"><a href="#ref-ibge">[IBGE-1]</a></sup> Desmatamento PRODES 2025/26: Amazônia com <strong>3.335 km² (−41,8%)</strong>, menor da série desde 1988; Cerrado com 5.516,69 km² (−23,8%).<sup class="fn"><a href="#ref-inpe">[INPE-1]</a></sup> Manter essa trajetória é compatível com fiscalização intensa; relaxar licenciamento sem contrapartida a colocaria em risco.</p>
+    </div>
+  </div>
+  <p><strong>Tradução para o eleitor:</strong> com dívida acima de 80% do PIB, juro real elevado e despesa engessada por pisos, Previdência e emendas, o próximo presidente terá de escolher <em>ordem</em> de prioridades já em 2027. Programas que prometem tudo ao mesmo tempo — nos dois lados — devem ser lidos como cardápio, não como cronograma simultâneo.</p>
+
+  <h3>Veredito comparativo final (sem recomendação de voto)</h3>
+  <div class="grid2">
+    <div class="card a">
+      <h4 style="margin-top:2px">Se vencer Lula (A), espere…</h4>
+      <p>Continuidade institucional e de redes (SUS, MCMV, PAC, Bolsa Família) com aprofundamento distributivo e industrial. <strong>Maior força:</strong> entregas que dependem de máquina federal já montada. <strong>Maior vulnerabilidade:</strong> aritmética fiscal de expansão permanente sob dívida >80% do PIB e negociação cara com um Congresso que o programa quer, ao mesmo tempo, reformar (emendas).</p>
+    </div>
+    <div class="card b">
+      <h4 style="margin-top:2px">Se vencer Flávio (B), espere…</h4>
+      <p>Choque securitário-penal e agenda liberal de impostos, concessões e abertura OCDE, com tentativa de preservar a rede social por “autonomia”. <strong>Maior força:</strong> sinalização pró-investimento privado e resposta dura à demanda por segurança. <strong>Maior vulnerabilidade:</strong> colisões constitucionais precoces (maioridade, terrorismo, STF, licenciamento) e dependência de capital privado caro e de estados para presídios/escolas.</p>
+    </div>
+  </div>
+  <p class="small">Nos dois cenários, três variáveis decidirão mais 2027 do que qualquer slogan: (1) a composição real do Congresso e o preço das emendas; (2) a trajetória Selic × crescimento; (3) a capacidade de estados e municípios executarem o que Brasília anuncia.</p>
+</section>
+
+<!-- ============ FONTES ============ -->
+<section id="references">
+  <h2>Fontes e notas (verifique você mesmo)</h2>
+  <p class="lead">Prioridade a fontes oficiais. Itens jornalísticos são usados apenas para declarações públicas de campanha, sempre identificados como tal.</p>
+  <ol class="refs">
+    <li id="ref-tse-planos"><strong>[TSE-1] Tribunal Superior Eleitoral — Planos de governo dos candidatos a Presidente, Eleições 2026</strong> (PDFs do DivulgaCandContas, art. 11, § 1º, IX, da Lei nº 9.504/1997; página atualizada para o 2º turno). <a href="https://www.tse.jus.br/eleicoes/eleicoes-2026-content/propostas-de-governo-dos-candidatos-ao-cargo-de-presidente-da-republica-eleicoes-2026" target="_blank" rel="noopener">tse.jus.br/eleicoes/eleicoes-2026-content/propostas…</a> Ver também: TSE, “Faltam 12 dias: consulte propostas do 2º turno” (14/10/2026). <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/faltam-12-dias-consulte-propostas-das-candidaturas-que-disputam-o-2o-turno" target="_blank" rel="noopener">tse.jus.br/…/faltam-12-dias…</a></li>
+    <li id="ref-tse-resultado"><strong>[TSE-2] Tribunal Superior Eleitoral — “Flávio Bolsonaro (PL) e Lula (PT) vão disputar o 2º turno”</strong> (5/10/2026, com 99,99%: 56.104.268 × 53.876.617; superada pela totalização final). <a href="https://www.tse.jus.br/comunicacao/noticias/2026/Outubro/flavio-bolsonaro-e-lula-vao-disputar-o-2o-turno-para-a-presidencia-da-republica" target="_blank" rel="noopener">tse.jus.br/…/flavio-bolsonaro-e-lula…</a></li>
+    <li id="ref-votos-final"><strong>[4] Totalização final (100%) reproduzida a partir do TSE:</strong> Flávio 56.104.503 (47,03%); Lula 53.879.538 (45,16%); diferença de 2.224.965; brancos/nulos/abstenções — confira em <a href="https://g1.globo.com/politica/eleicoes/2026/noticia/2026/10/08/quantos-votos-teve-flavio-bolsonaro-no-primeiro-turno.ghtml" target="_blank" rel="noopener">G1 (fonte TSE)</a> e <a href="https://valor.globo.com/politica/eleicoes-2026/noticia/2026/10/16/qual-foi-a-diferenca-de-votos-entre-lula-e-flavio-bolsonaro-no-primeiro-turno.ghtml" target="_blank" rel="noopener">Valor Econômico (fonte TSE)</a>.</li>
+    <li id="ref-registro-lula"><strong>[1] Registro Lula–Alckmin e coligação (7 partidos).</strong> G1, “PT registra chapa Lula-Alckmin no TSE” (8/8/2026). <a href="https://g1.globo.com/politica/eleicoes/2026/noticia/2026/08/08/pt-registra-candidatura-lula-alckmin-tse-eleicoes-2026.ghtml" target="_blank" rel="noopener">g1.globo.com/…/pt-registra-candidatura…</a></li>
+    <li id="ref-tse-lista"><strong>[TSE-3] Diário da Justiça Eletrônico do TSE — lista oficial de partidos/federações/coligações (1º turno)</strong>, com a composição “BRASIL PRONTO PRA MAIS (PSB / PDT / FE BRASIL-PT/PCdoB/PV / FED. PSOL REDE-PSOL/REDE)”. <a href="https://sintse.tse.jus.br/documentos/2026/Set/23/diario-da-justica-eletronico-tres-destaques-edicoes-anteriores/lista-de-partidos-federacoes-coligacoes-candidatas-e-candidatos-eleicao-geral-federal-2026-1o-turno" target="_blank" rel="noopener">sintse.tse.jus.br/…/lista-de-partidos…</a></li>
+    <li id="ref-vice-flavio"><strong>[2] Vice Alfredo Gaspar e chapa pura/isolamento do PL.</strong> BBC News Brasil (5/8/2026) e UOL (5/8/2026). <a href="https://www.bbc.com/portuguese/articles/cvg71ddlrrro" target="_blank" rel="noopener">bbc.com/portuguese/…/cvg71ddlrrro</a></li>
+    <li id="ref-pl-bancada"><strong>[3] Bancada eleita do PL (121 deputados, 28 senadores — conforme imprensa).</strong> O Globo (11/10/2026). <a href="https://oglobo.globo.com/politica/eleicoes-2026/noticia/2026/10/11/vitoria-de-flavio-no-1o-turno-faz-pl-articular-anistia-para-tirar-jair-bolsonaro-da-prisao-em-2026.ghtml" target="_blank" rel="noopener">oglobo.globo.com/…/vitoria-de-flavio…</a> <em>Confirmar na diplomação do TSE.</em></li>
+    <li id="ref-lei-terrorismo"><strong>[Lei-1] Lei nº 13.260/2016, art. 2º</strong> (definição de terrorismo). Texto oficial: <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/lei/l13260.htm" target="_blank" rel="noopener">planalto.gov.br/…/l13260.htm</a></li>
+    <li id="ref-lei-8213"><strong>[Lei-2] Lei nº 8.213/1991, art. 80</strong> (auxílio-reclusão a dependentes de segurado de baixa renda em regime fechado). <a href="https://www.planalto.gov.br/ccivil_03/leis/l8213cons.htm" target="_blank" rel="noopener">planalto.gov.br/…/l8213cons.htm</a></li>
+    <li id="ref-cf228"><strong>[CF-1] Constituição Federal, art. 228</strong> (inimputabilidade penal de menores de 18 anos) e art. 60 (processo de emenda). <a href="https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm" target="_blank" rel="noopener">planalto.gov.br/…/constituicao.htm</a></li>
+    <li id="ref-lgpd"><strong>[Lei-3] LGPD — Lei nº 13.709/2018, arts. 4º, 5º (II) e 11</strong> (dados sensíveis, biometria e saúde). <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank" rel="noopener">planalto.gov.br/…/l13709.htm</a></li>
+    <li id="ref-arcabouco"><strong>[Fisc-1] Lei Complementar nº 200/2023</strong> (arcabouço fiscal: despesa real entre 0,6% e 2,5%, meta primária ±0,25% do PIB). <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp200.htm" target="_blank" rel="noopener">planalto.gov.br/…/lcp200.htm</a></li>
+    <li id="ref-bcb-selic"><strong>[BCB-1] Banco Central do Brasil</strong> — Selic de 13,75% (Copom 16/9/2026), inflação 12 meses de 4,58%, meta de 3% ± 1,5 p.p. <a href="https://www.bcb.gov.br/en" target="_blank" rel="noopener">bcb.gov.br</a></li>
+    <li id="ref-bcb-rpm"><strong>[BCB-3] Banco Central — Relatório de Política Monetária, set./2026</strong> (déficit primário ≈ 0,5% do PIB em 2026; divergência governo × mercado para 2027). <a href="https://www.bcb.gov.br/content/ri/relatorioinflacao/202609/rpm202609p.pdf" target="_blank" rel="noopener">bcb.gov.br/…/rpm202609p.pdf</a></li>
+    <li id="ref-focus"><strong>[BCB-4] Boletim Focus BCB de 13/10/2026</strong> (IPCA 2026 em 5,22%; Selic fim de 2026 em 13,25%; PIB 1,85%) — via reprodução jornalística do boletim. <a href="https://tmc.com.br/economia/mercado-reduz-previsao-de-selic-ao-final-do-ano-para-1325-e-eleva-projecao-de-inflacao-no-focus/" target="_blank" rel="noopener">tmc.com.br/…/focus…</a></li>
+    <li id="ref-tesouro-divida"><strong>[STN-1] Tesouro Nacional — Relatório Mensal da Dívida, ago./2026</strong> (DPF de R$ 9,293 trilhões). <a href="https://www.tesourotransparente.gov.br/publicacoes/boletim-resultado-do-tesouro-nacional-rtn/2026/3" target="_blank" rel="noopener">tesourotransparente.gov.br</a> (portal; ver também Agência Brasil, 29/9/2026). <a href="https://agenciabrasil.ebc.com.br/economia/noticia/2026-09/divida-publica-federal-fica-estavel-em-agosto-e-chega-r-929-tri" target="_blank" rel="noopener">agenciabrasil.ebc.com.br/…</a></li>
+    <li id="ref-ifi"><strong>[IFI-1] Senado/IFI — Relatório de Acompanhamento Fiscal nº 116 (17/9/2026)</strong> (DBGG de 82,5% do PIB em julho; títulos Selic de 35,7% para 46,4% do estoque). <a href="https://www12.senado.leg.br/ifi/pdf/raf116_set2026.pdf" target="_blank" rel="noopener">senado.leg.br/ifi/pdf/raf116_set2026.pdf</a></li>
+    <li id="ref-divida-bcb"><strong>[BCB-2] Dívida bruta de 82,9% do PIB (R$ 11,1 tri, ago./2026, BCB)</strong> — citada em BBC News Brasil, “Os 3 maiores desafios do próximo presidente na economia” (23/10/2026). <a href="https://bbc.com/portuguese/articles/cm20v1y71kweo" target="_blank" rel="noopener">bbc.com/portuguese/…/cm20v1y71kweo</a></li>
+    <li id="ref-ibge"><strong>[IBGE-1] IBGE/PNAD Contínua</strong> — desocupação de 5,3% no trimestre jun.–ago./2026. <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/48148-pnad-continua-taxa-de-desocupacao-e-de-5-3-e-taxa-de-subutilizacao-e-de-13-1-no-trimestre-encerrado-em-agosto" target="_blank" rel="noopener">agenciadenoticias.ibge.gov.br/…/48148…</a></li>
+    <li id="ref-inpe"><strong>[INPE-1] INPE/PRODES (BiomasBR/TerraBrasilis)</strong> — Amazônia 3.335 km² em 2025/26 (−41,8%), menor da série desde 1988. <a href="https://www.gov.br/inpe/pt-br/assuntos/ultimas-noticias/brasil-alcanca-menores-taxas-de-desmatamento-da-serie-historica-na-amazonia-e-no-cerrado" target="_blank" rel="noopener">gov.br/inpe/…/menores-taxas…</a></li>
+    <li id="ref-bbc-propostas"><strong>[BBC-1] BBC News Brasil — “As propostas dos candidatos que disputam o 2º turno”</strong> (atualizado em 22/10/2026; programas + declarações públicas). <a href="https://www.bbc.com/portuguese/articles/ckq5ne65q14go" target="_blank" rel="noopener">bbc.com/portuguese/…/ckq5ne65q14go</a> e Folha de S.Paulo (22/10/2026). <a href="https://www1.folha.uol.com.br/poder/2026/10/seguranca-economia-saude-veja-propostas-de-flavio-bolsonaro-e-de-lula-para-governo.shtml" target="_blank" rel="noopener">folha.uol.com.br/…/veja-propostas…</a></li>
+    <li id="ref-6x1-senado"><strong>[7] Aprovação do fim do 6×1 no Senado (75×1, 14/10/2026).</strong> Agência Brasil e BBC. <a href="https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/senado-aprova-fim-da-escala-6x1-e-reducao-da-jornada-de-trabalho" target="_blank" rel="noopener">agenciabrasil.ebc.com.br/…/senado-aprova…</a></li>
+    <li id="ref-6x1-virada"><strong>[12] Virada de Flávio no 6×1.</strong> BBC, “Por que Flávio Bolsonaro voltou atrás sobre o fim da escala 6×1?” (15/10/2026) e G1 (14/10/2026). <a href="https://www.bbc.com/portuguese/articles/cjqln6grn1nyo" target="_blank" rel="noopener">bbc.com/portuguese/…/cjqln6grn1nyo</a></li>
+    <li id="ref-risco-fiscal"><strong>[6] Escalada de promessas e risco fiscal de 2027; Perse (≈ R$ 60 bi/4 anos, Receita).</strong> O Globo (21/10/2026) e Bloomberg Línea (21/10/2026). <a href="https://oglobo.globo.com/economia/noticia/2026/10/21/escalada-de-promessas-de-lula-e-flavio-agrava-risco-fiscal-para-2027.ghtml" target="_blank" rel="noopener">oglobo.globo.com/…/escalada-de-promessas…</a></li>
+    <li id="ref-tarifa-zero"><strong>[5] PEC da tarifa zero (26,8% das emendas; R$ 10–12 bi × R$ 20,8 bi NTU).</strong> CNN Brasil e Folha (21–22/10/2026). <a href="https://www.cnnbrasil.com.br/politica/lula-envia-ao-congresso-pec-da-tarifa-zero-no-transporte-em-fins-de-semana/" target="_blank" rel="noopener">cnnbrasil.com.br/…/tarifa-zero…</a></li>
+    <li id="ref-mei"><strong>[16] Perdão de MEIs sancionado e novo teto.</strong> Folha/CBN (21/10/2026). <a href="https://www1.folha.uol.com.br/mercado/2026/10/lula-sanciona-perdao-de-dividas-de-meis-e-propoe-tarifa-zero-via-emendas-na-reta-final-da-campanha.shtml" target="_blank" rel="noopener">folha.uol.com.br/…/perdao-de-dividas-de-meis…</a></li>
+    <li id="ref-compra-dividas"><strong>[8] “Compra de dívidas” dos dois lados.</strong> Estadão/O Globo (21/10/2026). <a href="https://extra.globo.com/economia/noticia/2026/10/flavio-e-lula-prometem-comprar-dividas-o-que-se-sabe-e-o-que-nao-esta-explicado-nas-propostas-1.ghtml" target="_blank" rel="noopener">extra.globo.com/…/comprar-dividas…</a></li>
+    <li id="ref-anistia"><strong>[9] Anistia do 8 de janeiro.</strong> BBC (contrastes de 2º turno, 5/10/2026) e Valor (19/4/2026). <a href="https://www.bbc.com/portuguese/articles/cmpwg82gwd2zo" target="_blank" rel="noopener">bbc.com/portuguese/…/cmpwg82gwd2zo</a></li>
+    <li id="ref-aborto"><strong>[10] Aborto/STF nos planos e nas declarações.</strong> Folha, “O que propõem para as mulheres” (16/10/2026) e Gazeta do Povo (31/8/2026). <a href="https://www1.folha.uol.com.br/poder/2026/10/o-que-lula-e-flavio-bolsonaro-propoem-para-as-mulheres.shtml" target="_blank" rel="noopener">folha.uol.com.br/…/para-as-mulheres…</a></li>
+    <li id="ref-armas"><strong>[11] Armas/munições no debate e nos planos.</strong> UOL (22/10/2026). <a href="https://www.bol.uol.com.br/noticias/2026/10/22/seguranca-publica-lula-bolsonaro-plano-de-governo.htm" target="_blank" rel="noopener">bol.uol.com.br/…/seguranca-publica…</a></li>
+    <li id="ref-bolsa"><strong>[13] Bolsa Família nos dois campos.</strong> BBC (20/10/2026) e G1 (21/10/2026, histórico “bolsa-farelo” → direito). <a href="https://www.bbc.com/portuguese/articles/c84g120zwq1zo" target="_blank" rel="noopener">bbc.com/portuguese/…/c84g120zwq1zo</a></li>
+    <li id="ref-reforma-trib"><strong>[14] Reforma tributária: suspender/revisar × implementar; <em>split payment</em>.</strong> InfoMoney (21/10/2026). <a href="https://www.infomoney.com.br/politica/propostas-lula-flavio-reforma-tributaria/" target="_blank" rel="noopener">infomoney.com.br/…/reforma-tributaria…</a></li>
+    <li id="ref-sigilos"><strong>[15] Acordo de sigilos no TSE e decisão de André Mendonça (22/10/2026).</strong> G1. <a href="https://g1.globo.com/politica/eleicoes/2026/noticia/2026/10/22/desafio-dos-sigilos-mendonca-diz-que-nao-cabe-ao-tse-definir-o-que-cada-candidato-quer-ou-nao-divulgar.ghtml" target="_blank" rel="noopener">g1.globo.com/…/desafio-dos-sigilos…</a></li>
+    <li id="ref-tv2turno"><strong>[17] Estreia da TV no 2º turno (Ministério da Prosperidade; “os programas continuarão”).</strong> Valor (10/10/2026) e UOL (9/10/2026). <a href="https://valor.globo.com/politica/eleicoes-2026/noticia/2026/10/10/lula-aposta-em-conquistas-sociais-e-flavio-promete-mudancas-no-inicio-da-campanha-do-2o-turno.ghtml" target="_blank" rel="noopener">valor.globo.com/…/inicio-da-campanha-do-2o-turno…</a></li>
+    <li id="ref-bbc-minimo"><strong>[18] Salário mínimo e desvinculação previdenciária em debate.</strong> BBC (19/10/2026). <a href="https://www.bbc.com/portuguese/articles/c6x2qwd9jx8zo" target="_blank" rel="noopener">bbc.com/portuguese/…/c6x2qwd9jx8zo</a></li>
+  </ol>
+  <div class="callout info">
+    <strong>Como verificar as chapas no DivulgaCandContas:</strong> acesse o portal do TSE, filtre por cargo “Presidente”, abra o perfil do candidato e consulte as abas de candidatura, bens, contas e “Propostas”. Este relatório espelha os PDFs ali depositados; em caso de divergência de paginação entre visualizador e arquivo baixado, prevalece o arquivo PDF.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Relatório:</strong> Análise Comparativa dos Programas de Governo — Eleição Presidencial Brasileira de 2026 (Lula × Flávio Bolsonaro). Documento HTML5 único e autocontido (gráficos via Chart.js por CDN), redigido em português brasileiro (idioma principal) com versão secundária em inglês, com data de corte em 23 de outubro de 2026. Curadoria: by rogerelizar (apenas o prompt e os PDFs); montagem por IA: Arena.ai — Agent Mode. Publicado em <time class="pub-datetime" data-pub="pt" datetime="2026-10-23T14:33:57.033064-03:00">23 de outubro de 2026 às 14h33 (horário de São Paulo)</time>.</p>
+    <p><strong>Neutralidade:</strong> este trabalho não recomenda voto, não recebe financiamento de campanha e aplica a mesma régua jurídico-fiscal aos dois programas. Notas de viabilidade são juízos analíticos transparentes, não previsões oficiais. Erros factuais devem ser apontados com a página do PDF ou o link oficial correspondente para correção.</p>
+    <p class="printnote">Versão impressa: gráficos interativos devem ser consultados na versão digital.</p>
+    <p>Fontes primárias arquivadas em <code>fontes-primarias/PropostasLula.pdf</code> e <code>fontes-primarias/PropostasFlavio.pdf</code> neste repositório. Vote com informação: confira seu local de votação em <a href="https://www.tse.jus.br" target="_blank" rel="noopener">tse.jus.br</a>. O 2º turno é em <strong>25 de outubro de 2026, das 8h às 17h (horário de Brasília)</strong>.</p>
+  </div>
+</footer>
+
+<script>
+// ================= BASE DE DADOS DOS GRÁFICOS (Seção 3) =================
+// tempo = meses até entrega plena; custo/impacto/dependências/risco = 0 a 10 (régua da Seção 3)
+const POLICY_DATA = [
+ {area:"Economia e impostos", cand:"A", tempo:36, custo:8, impacto:7, depE:9, depS:5, risco:6, nota:"Arcabouço + NIB/PAC: crédito e investimento públicos indutores; custo via subsídio implícito."},
+ {area:"Economia e impostos", cand:"B", tempo:30, custo:7, impacto:7, depE:6, depS:8, risco:7, nota:"Tesouraço + revisão tributária: renúncia e transição; depende de resposta privada e dos estados."},
+ {area:"Segurança pública", cand:"A", tempo:24, custo:6, impacto:6, depE:8, depS:6, risco:5, nota:"PEC/SUSP + R$ 10 bi FIIS; polícias são estaduais (art. 144), logo coexecução federativa."},
+ {area:"Segurança pública", cand:"B", tempo:36, custo:9, impacto:6, depE:9, depS:4, risco:9, nota:"500 mil vagas + TREVA + 1 mi de câmeras: capex e custeio permanentes; maior risco constitucional/LGPD."},
+ {area:"Saúde (SUS)", cand:"A", tempo:24, custo:8, impacto:8, depE:9, depS:5, risco:4, nota:"Rede SUS instalada reduz risco; custo recorrente alto (especialistas, Farmácia Popular)."},
+ {area:"Saúde (SUS)", cand:"B", tempo:24, custo:7, impacto:7, depE:7, depS:7, risco:5, nota:"Prontuário + tabela por custo real + privado ocioso: depende de filantrópicas/municípios."},
+ {area:"Educação", cand:"A", tempo:36, custo:8, impacto:8, depE:9, depS:6, risco:4, nota:"Fundeb/tempo integral e IFs: União financia, redes locais executam; maturação longa."},
+ {area:"Educação", cand:"B", tempo:30, custo:6, impacto:6, depE:6, depS:7, risco:6, nota:"Resultados/voucher/cívico-militar: menor custo federal, maior variância federativa e de equidade."},
+ {area:"Social e trabalho", cand:"A", tempo:18, custo:9, impacto:8, depE:10, depS:4, risco:6, nota:"Mínimo real arrasta Previdência/BPC; 40h sem corte transfere custo a empregadores."},
+ {area:"Social e trabalho", cand:"B", tempo:18, custo:6, impacto:6, depE:6, depS:8, risco:5, nota:"PDF: manter + autonomia. Com acréscimos do 2º turno, custo estimado sobe a ≈ 8."},
+ {area:"Mulheres e cuidados", cand:"A", tempo:30, custo:7, impacto:7, depE:9, depS:6, risco:4, nota:"Cuidotecas e rede municipal de cuidados: obra social difusa, risco jurídico baixo."},
+ {area:"Mulheres e cuidados", cand:"B", tempo:24, custo:6, impacto:7, depE:7, depS:7, risco:5, nota:"Plataforma digital + voucher: rápido de lançar, depende de conectividade/adesão e LGPD do scoring."},
+ {area:"Habitação e cidades", cand:"A", tempo:36, custo:9, impacto:8, depE:9, depS:6, risco:5, nota:"MCMV/PAC: subsídio e crédito direcionado intensos; sensível a FGTS/poupança e juros."},
+ {area:"Habitação e cidades", cand:"B", tempo:36, custo:8, impacto:7, depE:6, depS:8, risco:5, nota:"2,5 mi Casa Verde e Amarela + concessões: depende de juro imobiliário e mercado."},
+ {area:"Infraestrutura e energia", cand:"A", tempo:48, custo:9, impacto:8, depE:9, depS:6, risco:6, nota:"PAC/Petrobras/conteúdo local: capex público e estatal elevados; risco de preço administrado."},
+ {area:"Infraestrutura e energia", cand:"B", tempo:48, custo:6, impacto:8, depE:5, depS:10, risco:7, nota:"R$ 900 bi majoritariamente privados: custo fiscal menor SE o capital vier a 13,75% de Selic."},
+ {area:"Agro e alimentos", cand:"A", tempo:24, custo:7, impacto:7, depE:8, depS:7, risco:5, nota:"Safra familiar/subsídio de juro + compras públicas; exposto a clima e câmbio."},
+ {area:"Agro e alimentos", cand:"B", tempo:24, custo:6, impacto:7, depE:6, depS:9, risco:6, nota:"Seguro/securitização/titulação: alavanca mercado e produtor; risco fundiário-ambiental."},
+ {area:"Meio ambiente e clima", cand:"A", tempo:48, custo:6, impacto:8, depE:9, depS:6, risco:4, nota:"Fiscalização + destinação de terras: trajetória PRODES 2026 sustenta viabilidade."},
+ {area:"Meio ambiente e clima", cand:"B", tempo:36, custo:5, impacto:6, depE:6, depS:8, risco:8, nota:"Meta 2029 forte, mas licença tácita/estabilidade de 20 anos eleva risco judicial e ambiental."},
+ {area:"Democracia e Estado", cand:"A", tempo:30, custo:5, impacto:6, depE:9, depS:5, risco:6, nota:"Participação + regulação de plataformas/emendas: custo baixo, conflito político-jurídico alto."},
+ {area:"Democracia e Estado", cand:"B", tempo:30, custo:4, impacto:6, depE:7, depS:5, risco:8, nota:"Reforma do STF/fim da reeleição: barato no orçamento, caro em fricção entre Poderes."},
+ {area:"Exterior e defesa", cand:"A", tempo:36, custo:6, impacto:7, depE:9, depS:4, risco:5, nota:"Diplomacia e base de defesa estatais; risco geopolítico (tarifas, cadeias) moderado."},
+ {area:"Exterior e defesa", cand:"B", tempo:36, custo:5, impacto:6, depE:7, depS:7, risco:7, nota:"OCDE/abertura: ganho de eficiência com risco setorial de importação e alinhamento."}
+];
+const AREAS = [...new Set(POLICY_DATA.map(d => d.area))];
+const COR = {A:"#b91c1c", B:"#1d4ed8", Aclara:"rgba(185,28,28,.55)", Bclara:"rgba(29,78,216,.55)"};
+const NOME = {A:"Candidato A · Lula (PT)", B:"Candidato B · Flávio Bolsonaro (PL)"};
+
+// Preenche filtro de áreas e tabela de dados
+const sel = document.getElementById("areaFilter");
+AREAS.forEach(a => { const o = document.createElement("option"); o.value = a; o.textContent = a; sel.appendChild(o); });
+const tbody = document.getElementById("policy_data_body");
+POLICY_DATA.forEach(d => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td><strong>${d.area}</strong></td><td>${NOME[d.cand]}</td><td>${d.tempo}</td><td>${d.custo}</td><td>${d.impacto}</td><td>${d.depE}</td><td>${d.depS}</td><td>${d.risco}</td><td>${d.nota}</td>`;
+  tbody.appendChild(tr);
+});
+
+// Gráfico de votos do 1º turno
+new Chart(document.getElementById("chart_votes_canvas"), {
+  type: "bar",
+  data: {
+    labels: ["Flávio Bolsonaro (PL)", "Lula (PT)", "Augusto Cury (AVANTE)", "Renan Santos (MISSÃO)", "Demais somados"],
+    datasets: [{ label: "Votos nominais — 1º turno (TSE, totalização final)",
+      data: [56104503, 53879538, 3448569, 2675887, 3190000],
+      backgroundColor: ["#1d4ed8", "#b91c1c", "#94a3b8", "#cbd5e1", "#e2e8f0"] }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, indexAxis: "y",
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: c => " " + c.parsed.x.toLocaleString("pt-BR") + " votos" } },
+      title: { display: true, text: "Votos para Presidente — 1º turno, 4/10/2026 (passe o mouse para valores exatos)" } },
+    scales: { x: { ticks: { callback: v => (v/1000000).toLocaleString("pt-BR") + " mi" }, title: { display: true, text: "Votos" } } } }
+});
+
+function pontosBolha(cand, filtro, eixoY, raioKey) {
+  return POLICY_DATA.filter(d => d.cand === cand && (filtro === "all" || d.area === filtro))
+    .map(d => ({ x: d.tempo, y: d[eixoY], r: 5 + d[raioKey] * 1.15, area: d.area, bruto: d }));
+}
+const tooltipBolha = {
+  callbacks: {
+    label: c => {
+      const d = c.raw.bruto;
+      return [`${d.area} — ${NOME[d.cand]}`, `Tempo: ${d.tempo} meses · Custo: ${d.custo}/10 · Impacto: ${d.impacto}/10`, `Dep. Estado: ${d.depE}/10 · Dep. Sociedade: ${d.depS}/10 · Risco: ${d.risco}/10`];
+    }
+  }
+};
+
+// Gráfico 1 — Tempo × Custo (tamanho = impacto)
+const chartTempoCusto = new Chart(document.getElementById("chart_time_cost_canvas"), {
+  type: "bubble",
+  data: { datasets: [
+    { label: NOME.A, data: pontosBolha("A", "all", "custo", "impacto"), backgroundColor: COR.Aclara, borderColor: COR.A },
+    { label: NOME.B, data: pontosBolha("B", "all", "custo", "impacto"), backgroundColor: COR.Bclara, borderColor: COR.B }
+  ]},
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { tooltip: tooltipBolha, title: { display: true, text: "Tempo (meses) × Custo fiscal (0–10) · tamanho da bolha = impacto positivo" } },
+    scales: { x: { min: 0, max: 54, title: { display: true, text: "Tempo até a entrega plena (meses) →" } },
+              y: { min: 0, max: 10.5, title: { display: true, text: "Custo fiscal à União (0–10) →" } } } }
+});
+
+// Gráfico 4 — Risco × Tempo (tamanho = custo) [criado aqui para compartilhar o filtro]
+const chartRiscoTempo = new Chart(document.getElementById("chart_risk_time_canvas"), {
+  type: "bubble",
+  data: { datasets: [
+    { label: NOME.A, data: pontosBolha("A", "all", "risco", "custo"), backgroundColor: COR.Aclara, borderColor: COR.A },
+    { label: NOME.B, data: pontosBolha("B", "all", "risco", "custo"), backgroundColor: COR.Bclara, borderColor: COR.B }
+  ]},
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { tooltip: tooltipBolha, title: { display: true, text: "Tempo (meses) × Risco negativo (0–10) · tamanho da bolha = custo fiscal" } },
+    scales: { x: { min: 0, max: 54, title: { display: true, text: "Tempo até a entrega plena (meses) →" } },
+              y: { min: 0, max: 10.5, title: { display: true, text: "Potencial negativo / risco (0–10) →" } } } }
+});
+
+// Filtro por área (afeta os dois gráficos de bolhas)
+sel.addEventListener("change", () => {
+  const f = sel.value;
+  chartTempoCusto.data.datasets[0].data = pontosBolha("A", f, "custo", "impacto");
+  chartTempoCusto.data.datasets[1].data = pontosBolha("B", f, "custo", "impacto");
+  chartTempoCusto.update();
+  chartRiscoTempo.data.datasets[0].data = pontosBolha("A", f, "risco", "custo");
+  chartRiscoTempo.data.datasets[1].data = pontosBolha("B", f, "risco", "custo");
+  chartRiscoTempo.update();
+});
+
+// Gráfico 2 — Radar de médias
+function medias(cand) {
+  const linhas = POLICY_DATA.filter(d => d.cand === cand);
+  const m = k => linhas.reduce((s, d) => s + d[k], 0) / linhas.length;
+  return [m("impacto"), m("depE"), m("depS"), m("custo"), m("tempo") / 48 * 10, m("risco")].map(v => Math.round(v * 10) / 10);
+}
+new Chart(document.getElementById("chart_radar_canvas"), {
+  type: "radar",
+  data: { labels: ["Impacto positivo", "Dependência do Estado", "Dependência da sociedade", "Custo fiscal", "Tempo (normalizado)", "Risco negativo"],
+    datasets: [
+      { label: NOME.A, data: medias("A"), backgroundColor: "rgba(185,28,28,.18)", borderColor: COR.A, pointBackgroundColor: COR.A },
+      { label: NOME.B, data: medias("B"), backgroundColor: "rgba(29,78,216,.18)", borderColor: COR.B, pointBackgroundColor: COR.B }
+    ]},
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: "Perfil médio nas 12 áreas (0–10; tempo de 48 meses = 10)" } },
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2 } } } }
+});
+
+// Gráfico 3 — Impacto × Dependências (alternância por candidato)
+function dadosDependencia(cand) {
+  const linhas = AREAS.map(a => POLICY_DATA.find(d => d.area === a && d.cand === cand));
+  return {
+    labels: AREAS,
+    datasets: [
+      { label: "Impacto positivo", data: linhas.map(d => d.impacto), backgroundColor: "#137547" },
+      { label: "Dependência do Estado (União)", data: linhas.map(d => d.depE), backgroundColor: "#33475c" },
+      { label: "Dependência da sociedade / entes locais", data: linhas.map(d => d.depS), backgroundColor: "#c9a227" }
+    ]
+  };
+}
+const chartDep = new Chart(document.getElementById("chart_dependency_canvas"), {
+  type: "bar", data: dadosDependencia("A"),
+  options: { responsive: true, maintainAspectRatio: false,
+    plugins: { title: { display: true, text: "Candidato A · Lula — Impacto × Dependências por área (0–10)" } },
+    scales: { y: { min: 0, max: 10, title: { display: true, text: "Nota (0–10)" } }, x: { ticks: { maxRotation: 38, minRotation: 20 } } } }
+});
+document.querySelectorAll(".dep-toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".dep-toggle").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const c = btn.dataset.cand;
+    chartDep.data = dadosDependencia(c);
+    chartDep.options.plugins.title.text = NOME[c] + " — Impacto × Dependências por área (0–10)";
+    chartDep.update();
+  });
+});
+</script>
+
+<dialog id="optionsDialog" aria-labelledby="optionsTitle" data-no-i18n>
+  <div class="opt-head">
+    <div>
+      <h2 id="optionsTitle" class="no-i18n"><span class="i18n-pt">⚙ Opções</span><span class="i18n-en" hidden>⚙ Options</span></h2>
+      <div class="small"><span class="i18n-pt">Suas escolhas ficam salvas neste navegador. Português é o idioma principal; inglês, o secundário.</span><span class="i18n-en" hidden>Your choices are saved in this browser. Portuguese is the primary language; English is secondary.</span></div>
+    </div>
+    <button type="button" class="opt-close" id="optionsClose"><span class="i18n-pt">Fechar ✕</span><span class="i18n-en" hidden>Close ✕</span></button>
+  </div>
+  <div class="opt-body">
+    <h3 class="no-i18n"><span class="i18n-pt">🌐 Idioma / Language</span><span class="i18n-en" hidden>🌐 Language / Idioma</span></h3>
+    <div class="seg" role="group" aria-label="Idioma / Language">
+      <button type="button" class="lang-set" data-lang="pt" aria-pressed="true">PT · Português brasileiro (principal)</button>
+      <button type="button" class="lang-set" data-lang="en" aria-pressed="false">EN · English (secondary)</button>
+    </div>
+    <p class="small"><span class="i18n-pt">Na versão em inglês, citações literais, páginas dos PDFs e títulos de fontes permanecem em português (idioma das fontes primárias).</span><span class="i18n-en" hidden>In the English version, verbatim quotations, PDF page references and source titles remain in Portuguese (the language of the primary sources).</span></p>
+
+    <h3 class="no-i18n"><span class="i18n-pt">🎨 Tema</span><span class="i18n-en" hidden>🎨 Theme</span></h3>
+    <div class="seg" role="group" aria-label="Tema / Theme">
+      <button type="button" class="theme-set" data-theme="light" aria-pressed="true"><span class="i18n-pt">☀ Claro</span><span class="i18n-en" hidden>☀ Light</span></button>
+      <button type="button" class="theme-set" data-theme="dark" aria-pressed="false"><span class="i18n-pt">🌙 Escuro</span><span class="i18n-en" hidden>🌙 Dark</span></button>
+      <button type="button" class="theme-set" data-theme="auto" aria-pressed="false"><span class="i18n-pt">Automático (sistema)</span><span class="i18n-en" hidden>Automatic (system)</span></button>
+    </div>
+
+    <h3 class="no-i18n"><span class="i18n-pt">♿ Acessibilidade</span><span class="i18n-en" hidden>♿ Accessibility</span></h3>
+    <div class="small"><span class="i18n-pt"><strong>Tamanho do texto:</strong></span><span class="i18n-en" hidden><strong>Text size:</strong></span></div>
+    <div class="seg" role="group" aria-label="Tamanho do texto / Text size">
+      <button type="button" class="font-set" data-font="normal" aria-pressed="true">A · <span class="i18n-pt">Normal</span><span class="i18n-en" hidden>Normal</span></button>
+      <button type="button" class="font-set" data-font="large" aria-pressed="false">A+ · <span class="i18n-pt">Grande</span><span class="i18n-en" hidden>Large</span></button>
+      <button type="button" class="font-set" data-font="xlarge" aria-pressed="false">A++ · <span class="i18n-pt">Muito grande</span><span class="i18n-en" hidden>Extra large</span></button>
+    </div>
+    <label class="switchrow"><input type="checkbox" id="accContrast"> <span><span class="i18n-pt"><strong>Alto contraste</strong> — reforça bordas e diferença entre texto e fundo.</span><span class="i18n-en" hidden><strong>High contrast</strong> — strengthens borders and text/background separation.</span></span></label>
+    <label class="switchrow"><input type="checkbox" id="accLinks"> <span><span class="i18n-pt"><strong>Sublinhar todos os links</strong> — não depender só da cor para identificar links.</span><span class="i18n-en" hidden><strong>Underline all links</strong> — do not rely on colour alone to identify links.</span></span></label>
+    <label class="switchrow"><input type="checkbox" id="accMotion"> <span><span class="i18n-pt"><strong>Reduzir movimento</strong> — desativa rolagem suave e transições.</span><span class="i18n-en" hidden><strong>Reduce motion</strong> — disables smooth scrolling and transitions.</span></span></label>
+    <button type="button" class="btn" id="prefsReset"><span class="i18n-pt">Restaurar padrões</span><span class="i18n-en" hidden>Reset to defaults</span></button>
+
+    <h3 class="no-i18n"><span class="i18n-pt">⬇ Downloads em PDF</span><span class="i18n-en" hidden>⬇ PDF downloads</span></h3>
+    <p class="small"><span class="i18n-pt">Arquivos oficiais e de transparência. Os programas são os PDFs registrados no TSE; o prompt reproduz o pedido original do curador na íntegra.</span><span class="i18n-en" hidden>Official and transparency files. The programmes are the PDFs filed with the TSE; the prompt reproduces the curator’s original request in full.</span></p>
+    <ul class="dl-list">
+      <li><span><strong><span class="i18n-pt">Programa de Lula (PT) — 84 páginas</span><span class="i18n-en" hidden>Lula’s programme (PT) — 84 pages</span></strong><br><span class="small">PropostasLula.pdf · PDF · ≈ 1,2 MB</span></span><a class="dl-btn" href="fontes-primarias/PropostasLula.pdf" download><span class="i18n-pt">⬇ Baixar PDF</span><span class="i18n-en" hidden>⬇ Download PDF</span></a></li>
+      <li><span><strong><span class="i18n-pt">Programa de Flávio Bolsonaro (PL) — 76 páginas</span><span class="i18n-en" hidden>Flávio Bolsonaro’s programme (PL) — 76 pages</span></strong><br><span class="small">PropostasFlavio.pdf · PDF · ≈ 1,9 MB</span></span><a class="dl-btn" href="fontes-primarias/PropostasFlavio.pdf" download><span class="i18n-pt">⬇ Baixar PDF</span><span class="i18n-en" hidden>⬇ Download PDF</span></a></li>
+      <li><span><strong><span class="i18n-pt">Prompt que gerou esta página — by rogerelizar</span><span class="i18n-en" hidden>Prompt that generated this page — by rogerelizar</span></strong><br><span class="small">Prompt-Gerador-da-Pagina.pdf · PDF · 4 <span class="i18n-pt">páginas</span><span class="i18n-en" hidden>pages</span></span></span><a class="dl-btn" href="downloads/Prompt-Gerador-da-Pagina.pdf" download><span class="i18n-pt">⬇ Baixar PDF</span><span class="i18n-en" hidden>⬇ Download PDF</span></a></li>
+    </ul>
+    <p class="small"><span class="i18n-pt">Dica de teclado: pressione <kbd>Esc</kbd> para fechar este painel. Use <kbd>Tab</kbd> para navegar entre as opções.</span><span class="i18n-en" hidden>Keyboard tip: press <kbd>Esc</kbd> to close this panel. Use <kbd>Tab</kbd> to move between options.</span></p>
+  </div>
+</dialog>
+
+<script>
+/* ===== Bilíngue PT (principal) / EN (secundário) + Tema + Acessibilidade ===== */
+(function(){
+"use strict";
+var PUB_ISO = "2026-10-23T14:33:57.033064-03:00";
+var CHAVE = "analise2026_prefs";
+var prefs = {lang:"pt", theme:"light", font:"normal", contrast:"normal", links:"default", motion:"full"};
+try{ Object.assign(prefs, JSON.parse(localStorage.getItem(CHAVE)||"{}")); }catch(e){}
+var root = document.documentElement;
+
+var EN_H2 = {
+  methodology:"How to read this report — method, limits and safeguards against invented data",
+  electoral_profiles:"1. Who the tickets are, how many votes they won and whom they would govern with",
+  comparative_matrix:"2. Comparative policy matrix — what each programme proposes, side by side",
+  feasibility_modeling:"3. Feasibility and impact modelling — cost, timeline, dependencies and risk",
+  investigative_summary:"4. Investigative summary — convergences, biases, institutional vetoes and flagged promises",
+  sensitive_themes:"5. Sensitive contemporary issues — where they diverge and why",
+  proposal_evolution:"6. How the proposals evolved: from the first round (PDF) to the runoff (TV and debates)",
+  official_context:"7. The Brazil the winner will inherit — an official snapshot, October 2026",
+  references:"Sources and notes (check them yourself)"
+};
+var EN_H3 = [
+"1. Primary sources","2. Official fact-checking sources","3. What the chart “scores” are","Reading conventions",
+'<span class="badge a">Candidate A · No. 13</span><br>Luiz Inácio Lula da Silva — PT (Workers’ Party)',
+'<span class="badge b">Candidate B · No. 22</span><br>Flávio Bolsonaro — PL (Liberal Party)',
+"Official first-round result for President (final count, 100% of sections)","Ideological spectrum of the formal alliances",
+"Structure of Lula’s programme (84 pp.)","Structure of Flávio Bolsonaro’s programme (76 pp.)",
+"Scoring ruler (identical for both candidates)",
+'Chart 1 — Implementation time × Fiscal cost <span class="small">(bubbles; size = positive impact)</span>',
+'Chart 2 — Average governing profile <span class="small">(radar; averages across the 12 areas)</span>',
+'Chart 3 — Positive impact × State dependency × Society dependency <span class="small">(grouped bars by area)</span>',
+'Chart 4 — Negative risk × Time <span class="small">(bubbles; size = fiscal cost)</span>',
+"Full chart dataset (audit the scores)",
+"4.1 Identical or functionally equivalent proposals","4.2 Similar proposals with divergent ideological biases (named)",
+"4.3 What no president can do alone — institutional friction map","4.4 Flagged promises: fiscal populism, incompatibility or legal infeasibility",
+"Lula: what was added in the runoff","Flávio Bolsonaro: additions, U-turn and ambiguities",
+"Interest rates and inflation (Central Bank — BCB)","Public accounts (Treasury / IFI / BCB)","Employment (IBGE) and environment (INPE)",
+"Final comparative verdict (no voting recommendation)"];
+var EN_H4 = ['<span class="badge b">Candidate B · Flávio Bolsonaro</span>','<span class="badge a">Candidate A · Lula</span>',"If Lula (A) wins, expect…","If Flávio Bolsonaro (B) wins, expect…"];
+var EN_TH = [
+"Candidate (ballot name)","Party / status","Exact nominal votes","% of valid votes",
+"Ticket","Party / federation","Conventional position on the spectrum*","Dominant programme trait",
+"Policy area",'<span class="badge a">A · Lula (PT)</span> — core proposal in the PDF','<span class="badge b">B · Flávio (PL)</span> — core proposal in the PDF',"Relationship between the proposals",
+"Dimension","What it measures","Scale anchors",
+"Area","Candidate","Time (months)","Fiscal cost","Impact +","State dep.","Society dep.","Risk −","Brief justification of the coding",
+"Shared problem","Lula — instrument and bias","Flávio Bolsonaro — instrument and bias",
+"Proposal","Whom it depends on (veto)","Required instrument","Expected friction",
+"Issue","Lula (A)","Flávio Bolsonaro (B)","Likely political-economic motivation"];
+var EN_NAV = {"#methodology":"How to read","#candidate_A_profile":"Profiles & votes","#comparative_matrix":"Comparative matrix","#feasibility_modeling":"Feasibility charts","#investigative_summary":"Investigative summary","#sensitive_themes":"Sensitive issues","#proposal_evolution":"Evolution: 1st → 2nd round","#official_context":"Official context","#references":"Sources"};
+var EN_LEAD = [
+"This report strictly separates three layers: <strong>(i) what is written in the PDFs</strong> (page cited), <strong>(ii) what was said publicly afterwards</strong> (runoff TV, debates and interviews, with journalistic sources) and <strong>(iii) the author’s analytical assessment</strong> (feasibility scores). Blurring these layers is the most common error in electoral comparisons.",
+"Verified electoral and institutional data. The first round took place on 4 October 2026; the runoff is on 25 October 2026. [TSE-2]",
+"A faithful synthesis of the PDFs (pages in parentheses). Later statements appear only in Section 6, so as not to contaminate the comparison of the filed texts.",
+"Four interactive Chart.js charts built from a single auditable dataset of 24 observations (12 areas × 2 candidates). Hover or tap the points to see the values. Use the filter to isolate an area.",
+"Criterion: a promise only enters this table if it collides with the constitutional/legal text in force or with a documented fiscal constraint from an official source. “Flagged” does not mean “false” — it means that, <em>as phrased</em>, it cannot stand without a rule change, a funding source or a redesign the campaign has not yet presented. Both sides are judged by the same ruler.",
+"Public positions (programme + statements up to 23 Oct 2026). The “likely motivation” column is an analytical interpretation of electoral/economic incentives — not an attribution of hidden intent.",
+"<strong>Essential legal clarification:</strong> there is no newly filed “runoff programme”. The August PDFs remain the official registered proposals (Law No. 9,504/1997, art. 11, §1, IX); the TSE page was merely updated to show the two finalists. [TSE-1] The evolution below took place through free TV time, interviews, the Band debate (18 Oct) and government/campaign acts between 5 and 22 October.",
+"No promise floats in a vacuum. These are the constraints measured by the required official sources, binding on either winner on 1 January 2027.",
+"Official sources first. Journalistic items are used only for public campaign statements, always identified as such."];
+var EN_NOTAS = [
+"Fiscal framework + NIB/PAC: public credit and investment as drivers; cost via implicit subsidy.",
+"“Big scissors” + tax-reform review: revenue forgone and transition; depends on private response and states.",
+"Security PEC/SUSP + R$10bn FIIS; police are state-level (art. 144), hence federative co-delivery.",
+"500k prison places + TREVA + 1m cameras: permanent capex and running costs; highest constitutional/LGPD risk.",
+"Installed SUS network lowers risk; high recurring cost (specialists, Popular Pharmacy).",
+"Health record + fee schedule at real cost + idle private capacity: depends on philanthropic providers/municipalities.",
+"Fundeb/full-time schooling and federal institutes: federal funding, local delivery; long maturation.",
+"Results/vouchers/civic-military schools: lower federal cost, higher federative and equity variance.",
+"Real minimum-wage rises drag pensions/BPC; 40h with no pay cut shifts cost to employers.",
+"PDF: keep + autonomy pathway. With runoff additions, estimated cost rises to ≈ 8.",
+"“Cuidotecas” and municipal care network: diffuse social infrastructure, low legal risk.",
+"Digital platform + vouchers: quick to launch, depends on connectivity/take-up and LGPD scoring.",
+"MCMV/PAC: intense subsidy and directed credit; sensitive to FGTS/savings and interest rates.",
+"2.5m Casa Verde e Amarela homes + concessions: depends on mortgage rates and the market.",
+"PAC/Petrobras/local content: high public and state-company capex; administered-price risk.",
+"R$900bn mostly private: lower fiscal cost IF capital arrives with the Selic at 13.75%.",
+"Family-farming credit/interest subsidy + public purchases; exposed to weather and the exchange rate.",
+"Insurance/securitisation/titling: leverages markets and producers; land-environmental risk.",
+"Enforcement + land allocation: the 2026 PRODES trajectory supports feasibility.",
+"Strong 2029 target, but tacit licensing/20-year stability raises judicial and environmental risk.",
+"Participation + platform/amendment regulation: low budget cost, high political-legal conflict.",
+"Supreme-Court reform/end of re-election: cheap on the budget, costly in inter-branch friction.",
+"State diplomacy and defence base; moderate geopolitical risk (tariffs, supply chains).",
+"OECD/opening: efficiency gains with sectoral import and alignment risks."];
+var AREA_EN = {"Economia e impostos":"Economy & taxes","Segurança pública":"Public security","Saúde (SUS)":"Health (SUS)","Educação":"Education","Social e trabalho":"Social protection & labour","Mulheres e cuidados":"Women & care","Habitação e cidades":"Housing & cities","Infraestrutura e energia":"Infrastructure & energy","Agro e alimentos":"Farming & food","Meio ambiente e clima":"Environment & climate","Democracia e Estado":"Democracy & the State","Exterior e defesa":"Foreign policy & defence"};
+var EN_MAP = {
+"Candidato A":"Candidate A","Candidato B":"Candidate B","Quem é:":"Who he is:","Vice:":"Running mate:","Posicionamento:":"Positioning:","Votos no 1º turno:":"First-round votes:","Leitura institucional:":"Institutional reading:","Coligação:":"Coalition:",
+"Esquerda":"Left","Centro-esquerda":"Centre-left","Centro-esquerda / esquerda":"Centre-left / Left","Direita":"Right",
+"Social-desenvolvimentismo, direitos trabalhistas e sociais":"Social developmentalism, labour and social rights","Socialismo democrático, soberania nacional":"Democratic socialism, national sovereignty","Ambientalismo, economia verde":"Environmentalism, green economy","Socialismo democrático, gestão e inovação no setor público":"Democratic socialism, public-sector management and innovation","Trabalhismo, desenvolvimentismo nacional":"Labourism (trabalhismo), national developmentalism","Socialismo, direitos humanos e de minorias":"Socialism, human and minority rights","Sustentabilidade, ética pública":"Sustainability, public ethics","Liberalismo econômico + conservadorismo moral/securitário (bolsonarismo)":"Economic liberalism + moral/security conservatism (Bolsonarismo)",
+"PL · vai ao 2º turno":"PL · advances to the runoff","PT · vai ao 2º turno":"PT · advances to the runoff","Demais candidaturas somadas":"All other candidacies combined","Partido isolado":"Standalone party (no coalition)",
+"1. Economia, contas públicas e impostos":"1. Economy, public accounts and taxes","2. Segurança pública e justiça penal":"2. Public security and criminal justice","3. Saúde (SUS)":"3. Health (SUS)","4. Educação":"4. Education","5. Proteção social, trabalho e renda":"5. Social protection, labour and income","6. Mulheres, igualdade e cuidados":"6. Women, equality and care","7. Habitação, cidades e saneamento":"7. Housing, cities and sanitation","8. Infraestrutura, logística e energia":"8. Infrastructure, logistics and energy","9. Agro, alimentos e terra":"9. Farming, food and land","10. Meio ambiente e clima":"10. Environment and climate","11. Democracia, Estado e mundo digital":"11. Democracy, the State and the digital world","12. Política externa, defesa e soberania":"12. Foreign policy, defence and sovereignty",
+"Economia e impostos":"Economy & taxes","Segurança pública":"Public security","Social e trabalho":"Social protection & labour","Mulheres e cuidados":"Women & care","Habitação e cidades":"Housing & cities","Infraestrutura e energia":"Infrastructure & energy","Agro e alimentos":"Farming & food","Meio ambiente e clima":"Environment & climate","Democracia e Estado":"Democracy & the State","Exterior e defesa":"Foreign policy & defence","Educação":"Education",
+"Similar divergente → oposta no instrumento":"Similar but divergent → opposite instruments","Oposta na filosofia":"Opposite philosophy","Quase idêntica no digital; similar divergente no financiamento":"Nearly identical on digital; divergent on financing","Similar divergente":"Similar but divergent","Similar divergente (convergindo no 2º turno)":"Similar but divergent (converging in the runoff)","Funcionalmente idêntica (marca distinta)":"Functionally identical (different branding)","Similar com ênfases distintas":"Similar, different emphases","Similar na meta, divergente no licenciamento":"Similar goal, divergent licensing","Oposta em plataformas e STF; convergente no governo digital":"Opposite on platforms & the Supreme Court; convergent on digital government","Oposta na âncora externa":"Opposite external anchor",
+"Altíssima":"Very high","Alta":"High","Alta e contínua":"High and continuous","Indireta":"Indirect","Média-alta":"Medium-high","Convergência":"Convergence","2º turno / declaração pública":"2nd round / public statement",
+"Tempo (meses)":"Time (months)","Custo fiscal (0–10)":"Fiscal cost (0–10)","Impacto positivo (0–10)":"Positive impact (0–10)","Dependência do Estado/União (0–10)":"State/federal dependency (0–10)","Dependência da sociedade (0–10)":"Society dependency (0–10)","Risco negativo (0–10)":"Negative risk (0–10)",
+"Comida cara":"Expensive food","Creche e cuidado":"Childcare & care","Qualidade do ensino":"Education quality","Crime organizado":"Organised crime","Juros altos":"High interest rates","Trabalho por aplicativo":"App-based work","Desinformação":"Disinformation","Inserção externa":"International insertion",
+"Anistia do 8 de janeiro":"Amnesty for 8 January","STF e aborto/drogas":"Supreme Court (STF), abortion & drugs","Armas e munições":"Guns & ammunition","Jornada 6×1":"6×1 work schedule","Bolsa Família":"Bolsa Família (cash transfer)","Reforma tributária":"Tax reform","Petróleo/Margem Equatorial":"Oil / Equatorial Margin","Âncora externa":"External anchor","Apostas on-line (bets)":"Online betting","Sigilos e corrupção (debate)":"Secrecy & corruption (debate)",
+"Maior força:":"Greatest strength:","Maior vulnerabilidade:":"Greatest vulnerability:","Tradução para o eleitor:":"In plain terms for voters:","Regra anti-invenção adotada:":"Anti-fabrication rule adopted:","Leitura:":"Reading:","Continuidade (sem recuo):":"Continuity (no retreat):","Ambiguidade a esclarecer:":"Ambiguity to clarify:","Virada no 6×1:":"U-turn on 6×1:","Conclusão da evolução:":"Conclusion — evolution:","Alerta comum aos dois — “o governo comprará/congelará suas dívidas”":"A warning common to both — “the government will buy/freeze your debts”",
+"Filtrar os gráficos de bolhas por área:":"Filter the bubble charts by area:","Todas as 12 áreas":"All 12 areas","Dica: clique nas legendas para mostrar/ocultar um candidato.":"Tip: click the legends to show or hide a candidate.","Mostrar:":"Show:","Candidato A · Lula":"Candidate A · Lula","Candidato B · Flávio Bolsonaro":"Candidate B · Flávio Bolsonaro","Candidato A · Lula (PT)":"Candidate A · Lula (PT)","Candidato B · Flávio Bolsonaro (PL)":"Candidate B · Flávio Bolsonaro (PL)",
+"Votos nominais — 1º turno (TSE, totalização final)":"Nominal votes — 1st round (TSE, final count)","Votos para Presidente — 1º turno, 4/10/2026 (passe o mouse para valores exatos)":"Votes for President — 1st round, 4 Oct 2026 (hover for exact values)","Votos":"Votes","Demais somados":"Others combined",
+"Tempo (meses) × Custo fiscal (0–10) · tamanho da bolha = impacto positivo":"Time (months) × Fiscal cost (0–10) · bubble size = positive impact","Tempo (meses) × Risco negativo (0–10) · tamanho da bolha = custo fiscal":"Time (months) × Negative risk (0–10) · bubble size = fiscal cost","Tempo até a entrega plena (meses) →":"Time to full delivery (months) →","Custo fiscal à União (0–10) →":"Fiscal cost to the federal government (0–10) →","Potencial negativo / risco (0–10) →":"Negative potential / risk (0–10) →","Perfil médio nas 12 áreas (0–10; tempo de 48 meses = 10)":"Average profile across the 12 areas (0–10; 48 months = 10)","Impacto positivo":"Positive impact","Dependência do Estado":"State dependency","Dependência da sociedade":"Society dependency","Custo fiscal":"Fiscal cost","Tempo (normalizado)":"Time (normalised)","Risco negativo":"Negative risk","Dependência do Estado (União)":"State (federal) dependency","Dependência da sociedade / entes locais":"Society / local-government dependency","Nota (0–10)":"Score (0–10)",
+"Candidato A · Lula (PT) — Impacto × Dependências por área (0–10)":"Candidate A · Lula (PT) — Impact × Dependencies by area (0–10)","Candidato B · Flávio Bolsonaro (PL) — Impacto × Dependências por área (0–10)":"Candidate B · Flávio Bolsonaro (PL) — Impact × Dependencies by area (0–10)",
+"Diferença entre os finalistas:":"Gap between the finalists:","Como verificar as chapas no DivulgaCandContas:":"How to check the tickets on DivulgaCandContas:","Relatório:":"Report:","Neutralidade:":"Neutrality:","Fontes primárias arquivadas em":"Primary sources archived at","Confirmar na diplomação do TSE.":"To be confirmed upon TSE certification.","(definição de terrorismo). Texto oficial:":"(definition of terrorism). Official text:","(auxílio-reclusão a dependentes de segurado de baixa renda em regime fechado).":"(imprisonment aid to dependants of a low-income insured person in closed regime).","(inimputabilidade penal de menores de 18 anos) e art. 60 (processo de emenda).":"(criminal non-imputability of under-18s) and art. 60 (amendment process).","(dados sensíveis, biometria e saúde).":"(sensitive data, biometrics and health).","(arcabouço fiscal: despesa real entre 0,6% e 2,5%, meta primária ±0,25% do PIB).":"(fiscal framework: real spending between 0.6% and 2.5%, primary target ±0.25% of GDP)."
+};
+var REV_MAP = {}; Object.keys(EN_MAP).forEach(function(k){ REV_MAP[EN_MAP[k]] = k; });
+Object.keys(AREA_EN).forEach(function(k){ if(!EN_MAP[k]) EN_MAP[k]=AREA_EN[k]; REV_MAP[AREA_EN[k]]=k; });
+
+function guardarPT(el){ if(el && el.dataset.ptHtml===undefined) el.dataset.ptHtml = el.innerHTML; }
+function trocarBloco(el, enHtml, lang){ if(!el) return; guardarPT(el); el.innerHTML = (lang==="en" ? enHtml : el.dataset.ptHtml); }
+function norm(s){ return s.replace(/\s+/g," ").trim(); }
+
+function aplicarTextos(lang){
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(node){
+      if(!norm(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+      var el = node.parentElement;
+      if(!el || el.closest("script,style,[data-no-i18n],dialog")) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }});
+  var nos = []; while(walker.nextNode()) nos.push(walker.currentNode);
+  nos.forEach(function(node){
+    if(node.__pt===undefined) node.__pt = node.nodeValue;
+    if(lang==="pt"){ node.nodeValue = node.__pt; return; }
+    var m = node.__pt.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    var en = EN_MAP[norm(node.__pt)];
+    node.nodeValue = en ? (m[1]+en+m[3]) : node.__pt;
+  });
+}
+function aplicarBlocos(lang){
+  Object.keys(EN_H2).forEach(function(id){ var s=document.getElementById(id); if(s) trocarBloco(s.querySelector(":scope > h2"), EN_H2[id], lang); });
+  var h3s = document.querySelectorAll("h3:not(.no-i18n)");
+  EN_H3.forEach(function(en,i){ trocarBloco(h3s[i], en, lang); });
+  var h4s = document.querySelectorAll("h4:not(.no-i18n)");
+  EN_H4.forEach(function(en,i){ trocarBloco(h4s[i], en, lang); });
+  var ths = document.querySelectorAll("th");
+  EN_TH.forEach(function(en,i){ trocarBloco(ths[i], en, lang); });
+  var leads = document.querySelectorAll(".lead");
+  EN_LEAD.forEach(function(en,i){ trocarBloco(leads[i], en, lang); });
+  document.querySelectorAll("nav.toc a").forEach(function(a){ var en=EN_NAV[a.getAttribute("href")]; if(en) trocarBloco(a, en, lang); });
+  trocarBloco(document.querySelector(".eyebrow"), "2026 General Election &middot; Presidential runoff &middot; Independent analytical report", lang);
+  trocarBloco(document.querySelector("h1"), "Two competing projects for Brazil: a complete comparative analysis of the government programmes", lang);
+  trocarBloco(document.querySelector(".subtitle"), "<strong>Candidate A — Luiz Inácio Lula da Silva (PT, No. 13)</strong>, incumbent president seeking a fourth term, and <strong>Candidate B — Flávio Bolsonaro (PL, No. 22)</strong>, senator for Rio de Janeiro. A comparative matrix by policy area, interactive feasibility and cost modelling, legal-fiscal fact-checking against official sources, and how the proposals evolved between the first round and the runoff.", lang);
+  var pills = document.querySelectorAll(".pill");
+  ["Cut-off date: 23 October 2026 (eve of the runoff, 25 Oct 2026)","Primary sources: PDFs filed with the TSE (DivulgaCandContas)","Primary language: Brazilian Portuguese · Secondary: English (Options button)","Stance: strict neutrality — no voting recommendation"].forEach(function(en,i){ trocarBloco(pills[i], en, lang); });
+  var kb = document.querySelectorAll(".kpi b"), ks = document.querySelectorAll(".kpi span");
+  ["47.03% × 45.16%","84 × 76 pages","12 modelled areas","Runoff convergence"].forEach(function(en,i){ trocarBloco(kb[i], en, lang); });
+  ["First-round result (valid votes): Flávio ahead of Lula by 2,224,965 votes — the narrowest first-round gap since redemocratisation. See Section 1.",
+   "Lula’s programme: 13 guidelines. Flávio’s programme (“Para o Brasil Vencer o Atraso”): 9 strands in a “citizen’s journey” format.",
+   "Time × fiscal cost, impact × dependencies and risk × time, with auditable scores (Section 3).",
+   "Both now promise to keep Bolsa Família, back the end of the 6×1 schedule and “buy debts” — deepening the fiscal challenge for either winner."].forEach(function(en,i){ trocarBloco(ks[i], en, lang); });
+  var fps = document.querySelectorAll("footer .wrap > p");
+  if(fps[0]) trocarBloco(fps[0], "<strong>Report:</strong> Comparative Analysis of Government Programmes — Brazil’s 2026 Presidential Election (Lula × Flávio Bolsonaro). A single, self-contained HTML5 document (charts via Chart.js CDN), written in Brazilian Portuguese (primary language) with a secondary English version, cut-off date 23 October 2026. Curated by by rogerelizar (prompt and PDFs only); assembled by AI: Arena.ai — Agent Mode. Published on <time class=\"pub-datetime\" data-pub=\"en\" datetime=\""+PUB_ISO+"\">23 October 2026 (São Paulo time)</time>.", lang);
+  if(fps[1]) trocarBloco(fps[1], "<strong>Neutrality:</strong> this work recommends no vote, receives no campaign funding and applies the same legal-fiscal ruler to both programmes. Feasibility scores are transparent analytical judgements, not official forecasts. Factual errors should be flagged with the PDF page or official link for correction.", lang);
+  // Tabela de dados: última coluna (notas)
+  var rows = document.querySelectorAll("#policy_data_body tr");
+  rows.forEach(function(tr,i){ var td = tr.children[8]; if(td && EN_NOTAS[i]) trocarBloco(td, EN_NOTAS[i], lang); });
+  // Select de áreas
+  var sel = document.getElementById("areaFilter");
+  if(sel){ Array.prototype.forEach.call(sel.options, function(op){ if(op.dataset.ptTxt===undefined) op.dataset.ptTxt = op.textContent; op.textContent = (lang==="en" ? (op.value==="all" ? "All 12 areas" : (AREA_EN[op.value]||op.dataset.ptTxt)) : op.dataset.ptTxt); }); }
+  document.title = (lang==="en") ? "2026 Presidential Election — Comparative Analysis of Government Programmes | Lula (PT) × Flávio Bolsonaro (PL)" : "Eleições Presidenciais 2026 — Análise Comparativa dos Programas de Governo | Lula (PT) × Flávio Bolsonaro (PL)";
+}
+function traduzValor(v, lang){ if(typeof v!=="string") return v; return lang==="en" ? (EN_MAP[v]||AREA_EN[v]||v) : (REV_MAP[v]||v); }
+function aplicarGraficos(lang){
+  if(typeof Chart==="undefined" || !Chart.instances) return;
+  Object.values(Chart.instances).forEach(function(ch){
+    try{
+      if(ch.data && ch.data.labels) ch.data.labels = ch.data.labels.map(function(x){ return traduzValor(x, lang); });
+      if(ch.data && ch.data.datasets) ch.data.datasets.forEach(function(ds){ if(ds.label) ds.label = traduzValor(ds.label, lang); });
+      var o = ch.options||{};
+      if(o.plugins && o.plugins.title && o.plugins.title.text) o.plugins.title.text = traduzValor(o.plugins.title.text, lang);
+      if(o.scales) Object.keys(o.scales).forEach(function(k){ var sc=o.scales[k]; if(sc && sc.title && sc.title.text) sc.title.text = traduzValor(sc.title.text, lang); });
+      ch.update();
+    }catch(e){}
+  });
+  // Tooltips bilíngues (bolhas e votos)
+  try{
+    ["chart_time_cost_canvas","chart_risk_time_canvas"].forEach(function(id){
+      var ch = Chart.getChart(id); if(!ch) return;
+      ch.options.plugins.tooltip.callbacks = { label: function(c){
+        var d = c.raw.bruto, en = (root.dataset.lang==="en");
+        var nome = en ? (d.cand==="A"?"Candidate A · Lula (PT)":"Candidate B · Flávio Bolsonaro (PL)") : (d.cand==="A"?"Candidato A · Lula (PT)":"Candidato B · Flávio Bolsonaro (PL)");
+        var area = en ? (AREA_EN[d.area]||d.area) : d.area;
+        return en ? [area+" — "+nome, "Time: "+d.tempo+" months · Cost: "+d.custo+"/10 · Impact: "+d.impacto+"/10", "State dep.: "+d.depE+"/10 · Society dep.: "+d.depS+"/10 · Risk: "+d.risco+"/10"]
+                  : [area+" — "+nome, "Tempo: "+d.tempo+" meses · Custo: "+d.custo+"/10 · Impacto: "+d.impacto+"/10", "Dep. Estado: "+d.depE+"/10 · Dep. Sociedade: "+d.depS+"/10 · Risco: "+d.risco+"/10"];
+      }};
+      ch.update();
+    });
+    var votos = Chart.getChart("chart_votes_canvas");
+    if(votos){ votos.options.plugins.tooltip.callbacks = { label: function(c){ var en=(root.dataset.lang==="en"); return " " + c.parsed.x.toLocaleString(en?"en-US":"pt-BR") + (en?" votes":" votos"); } };
+      votos.options.scales.x.ticks.callback = function(v){ var en=(root.dataset.lang==="en"); return (v/1000000).toLocaleString(en?"en-US":"pt-BR") + (en?"m":" mi"); };
+      votos.update(); }
+  }catch(e){}
+  // Ao alternar o gráfico de dependências já em inglês, retraduz o título gerado pelo script original.
+  document.querySelectorAll(".dep-toggle").forEach(function(b){ if(!b.__i18nHook){ b.__i18nHook=true; b.addEventListener("click", function(){ setTimeout(function(){ aplicarGraficos(root.dataset.lang||"pt"); }, 30); }); } });
+}
+function renderDatas(){
+  document.querySelectorAll(".pub-datetime").forEach(function(el){
+    try{
+      var loc = el.dataset.pub==="en" ? "en-GB" : "pt-BR";
+      var fmt = new Intl.DateTimeFormat(loc, {timeZone:"America/Sao_Paulo", day:"2-digit", month:"long", year:"numeric", hour:"2-digit", minute:"2-digit"});
+      el.textContent = fmt.format(new Date(PUB_ISO)) + (el.dataset.pub==="en" ? " (São Paulo time)" : " (horário de São Paulo)");
+      el.setAttribute("datetime", PUB_ISO);
+    }catch(e){}
+  });
+}
+function salvar(){ try{ localStorage.setItem(CHAVE, JSON.stringify(prefs)); }catch(e){} }
+function marcarSeg(seletor, attr, valor){ document.querySelectorAll(seletor).forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset[attr]===valor)); }); }
+function aplicarIdioma(lang){
+  prefs.lang = lang; root.dataset.lang = lang; root.lang = (lang==="en" ? "en" : "pt-BR");
+  document.querySelectorAll(".i18n-pt").forEach(function(el){ el.hidden = (lang!=="pt"); });
+  document.querySelectorAll(".i18n-en").forEach(function(el){ el.hidden = (lang!=="en"); });
+  if(lang==="en"){ aplicarTextos("en"); aplicarBlocos("en"); }
+  else { aplicarBlocos("pt"); aplicarTextos("pt"); }
+  aplicarGraficos(lang); renderDatas();
+  document.querySelectorAll(".lang-set").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.lang===lang)); });
+  salvar();
+}
+function aplicarTema(pref){
+  prefs.theme = pref; root.dataset.themePref = pref;
+  var dark = pref==="dark" || (pref==="auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  root.dataset.theme = dark ? "dark" : "light";
+  marcarSeg(".theme-set", "theme", pref);
+  if(typeof Chart!=="undefined"){ Chart.defaults.color = dark ? "#cfe3f7" : "#666"; Chart.defaults.borderColor = dark ? "rgba(160,190,225,.25)" : "rgba(0,0,0,.1)";
+    if(Chart.instances) Object.values(Chart.instances).forEach(function(ch){ try{ ch.update(); }catch(e){} }); }
+  salvar();
+}
+function aplicarAcessibilidade(){
+  root.dataset.font = prefs.font; root.dataset.contrast = prefs.contrast; root.dataset.links = prefs.links; root.dataset.motion = prefs.motion;
+  marcarSeg(".font-set", "font", prefs.font);
+  var c1=document.getElementById("accContrast"), c2=document.getElementById("accLinks"), c3=document.getElementById("accMotion");
+  if(c1) c1.checked = prefs.contrast==="high"; if(c2) c2.checked = prefs.links==="underlined"; if(c3) c3.checked = prefs.motion==="reduce";
+  salvar();
+}
+// Ligações dos controles
+document.querySelectorAll(".lang-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarIdioma(b.dataset.lang); }); });
+document.querySelectorAll(".theme-set").forEach(function(b){ b.addEventListener("click", function(){ aplicarTema(b.dataset.theme); }); });
+document.querySelectorAll(".font-set").forEach(function(b){ b.addEventListener("click", function(){ prefs.font=b.dataset.font; aplicarAcessibilidade(); }); });
+var acC=document.getElementById("accContrast"), acL=document.getElementById("accLinks"), acM=document.getElementById("accMotion");
+if(acC) acC.addEventListener("change", function(){ prefs.contrast = acC.checked?"high":"normal"; aplicarAcessibilidade(); });
+if(acL) acL.addEventListener("change", function(){ prefs.links = acL.checked?"underlined":"default"; aplicarAcessibilidade(); });
+if(acM) acM.addEventListener("change", function(){ prefs.motion = acM.checked?"reduce":"full"; aplicarAcessibilidade(); });
+var rst=document.getElementById("prefsReset");
+if(rst) rst.addEventListener("click", function(){ prefs={lang:"pt",theme:"light",font:"normal",contrast:"normal",links:"default",motion:"full"}; aplicarTema("light"); aplicarAcessibilidade(); aplicarIdioma("pt"); });
+// Diálogo Opções
+var dlg = document.getElementById("optionsDialog"), ultimoFoco = null;
+function abrirOpcoes(){ ultimoFoco = document.activeElement; if(!dlg) return; if(typeof dlg.showModal==="function"){ if(!dlg.open) dlg.showModal(); } else { dlg.setAttribute("open",""); } var f=dlg.querySelector(".opt-close"); if(f) f.focus(); }
+function fecharOpcoes(){ if(!dlg) return; if(typeof dlg.close==="function" && dlg.open) dlg.close(); else dlg.removeAttribute("open"); if(ultimoFoco && ultimoFoco.focus) ultimoFoco.focus(); }
+document.querySelectorAll(".js-open-options").forEach(function(b){ b.addEventListener("click", abrirOpcoes); });
+var fechar=document.getElementById("optionsClose"); if(fechar) fechar.addEventListener("click", fecharOpcoes);
+if(dlg) dlg.addEventListener("click", function(ev){ var r=dlg.getBoundingClientRect(); if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom) fecharOpcoes(); });
+// Inicialização (português é o padrão principal)
+aplicarTema(prefs.theme||"light");
+aplicarAcessibilidade();
+aplicarIdioma(prefs.lang==="en" ? "en" : "pt");
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener && window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(){ if(prefs.theme==="auto") aplicarTema("auto"); });
+})();
+</script>
+
+</body>
+</html>
