@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Gera o e-book PDF A5 e o flipbook HTML5 a partir do index.html (fonte única).
+"""Gera o e-book PDF A5 e o flipbook HTML5 a partir do analise.html (fonte única).
 
 Saídas:
-  downloads/Analise-2026-Ebook-A5.pdf   (A5, capa especificada pelo curador)
-  downloads/Analise-2026-Flipbook.html  (arquivo único; páginas do PDF viradas em 3D)
+  downloads/Analise-2026-Ebook-A5.pdf   (A5 padrão para impressão, capa especificada)
+  downloads/Analise-2026-Flipbook.html  (arquivo único; edição digital em FONTE AMPLIADA
+                                         — corpo de 16 pt — paginada só para leitura na tela)
 Executar da raiz do repositório:  python3 ferramentas/gerar_ebook_flipbook.py
 """
 import base64, io, json, math, os, pathlib, re, subprocess, sys
@@ -31,7 +32,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 
 RAIZ = pathlib.Path.cwd()
 TMP = pathlib.Path("/tmp/ebook_assets"); TMP.mkdir(exist_ok=True)
-SRC = (RAIZ / "index.html").read_text(encoding="utf-8")
+SRC = (RAIZ / "analise.html").read_text(encoding="utf-8")
 LULA, FLAV = "#b91c1c", "#1d4ed8"
 NOMES = {"A": "Lula (PT)", "B": "Flávio Bolsonaro (PL)"}
 CORES = {"A": LULA, "B": FLAV}
@@ -53,7 +54,7 @@ SERIF, SANS = "DVSerif", "DVSans"
 def pilfont(nome, tam): return ImageFont.truetype(str(_FD / nome), tam)
 
 # ---------------- dados (mesma fonte do site) ----------------
-_node = ('const fs=require("fs"),vm=require("vm");const s=fs.readFileSync("index.html","utf8");'
+_node = ('const fs=require("fs"),vm=require("vm");const s=fs.readFileSync("analise.html","utf8");'
          'const a=s.indexOf("const POLICY_DATA");const b=s.indexOf("];",a);const c={};vm.createContext(c);'
          'vm.runInContext(s.slice(a,b+2)+";this.x=POLICY_DATA",c);console.log(JSON.stringify(c.x));')
 POLICY = json.loads(subprocess.check_output(["node", "-e", _node], text=True))
@@ -68,36 +69,54 @@ print(f"POLICY_DATA: {len(POLICY)} linhas · votos: {list(zip(VOT_ROT, VOT_VAL))
 # ---------------- gráficos estáticos ----------------
 plt.rcParams.update({"font.family": "DejaVu Sans", "text.color": "#20242b", "axes.edgecolor": "#8a8f98",
                      "axes.labelcolor": "#20242b", "xtick.color": "#3c414b", "ytick.color": "#3c414b", "font.size": 8})
+PERFIL_ATUAL = "padrao"
+GF = 1.0   # escala das fontes dos gráficos (perfil ampliado: 1,55)
+GH = 1.0   # escala da altura das figuras (perfil ampliado: 1,38)
 def salvar(fig, nome):
     pth = TMP / nome; fig.savefig(pth, dpi=210, bbox_inches="tight", pad_inches=0.08); plt.close(fig); return pth
 
 def g_votos():
-    fig, ax = plt.subplots(figsize=(5.2, 2.9))
+    fig, ax = plt.subplots(figsize=(5.2, 2.9*GH))
     pos = range(len(VOT_ROT))[::-1]
     ax.barh(list(pos), VOT_VAL, color=VOT_COR, height=0.62)
-    ax.set_yticks(list(pos)); ax.set_yticklabels(VOT_ROT, fontsize=7.6)
+    ax.set_yticks(list(pos)); ax.set_yticklabels(VOT_ROT, fontsize=7.6*GF)
     for y, v in zip(pos, VOT_VAL):
-        ax.text(v + 6e5, y, f"{v:,}".replace(",", "."), va="center", fontsize=7.4)
+        ax.text(v + 6e5, y, f"{v:,}".replace(",", "."), va="center", fontsize=7.4*GF)
     ax.set_xlim(0, max(VOT_VAL) * 1.22); ax.set_xlabel("Votos"); ax.grid(axis="x", alpha=0.25); ax.set_axisbelow(True)
     for s in ("top", "right"): ax.spines[s].set_visible(False)
     ax.xaxis.set_major_formatter(lambda v, _: f"{v/1e6:.0f} mi")
-    ax.set_title("Votos para Presidente — 1º turno, 4/10/2026", fontsize=9.5, loc="left", weight="bold")
+    ax.set_title("Votos para Presidente — 1º turno, 4/10/2026", fontsize=9.5*GF, loc="left", weight="bold")
     return salvar(fig, "votos.png")
 
-def g_bolha(ykey, skey, titulo, ylabel, nome):
-    fig, ax = plt.subplots(figsize=(5.2, 3.7))
-    for cand in ("A", "B"):
+def g_bolha(ykey, skey, titulo, ylabel, nome, cands=("A", "B")):
+    fig, ax = plt.subplots(figsize=(5.2, 3.7*GH))
+    desloc = [(4, 4), (-4, 7), (4, -11), (-4, -14)]
+    for ci, cand in enumerate(cands):
         ds = [d for d in POLICY if d["cand"] == cand]
-        ax.scatter([d["tempo"] for d in ds], [d[ykey] for d in ds], s=[d[skey] * 42 for d in ds],
+        fator = 34 if len(cands) == 1 else 42
+        ax.scatter([d["tempo"] for d in ds], [d[ykey] for d in ds], s=[d[skey] * fator for d in ds],
                    c=CORES[cand], alpha=0.55, edgecolors=CORES[cand], linewidths=0.9, label=NOMES[cand])
-        for d in ds:
-            ax.annotate(CURTO[d["area"]], (d["tempo"], d[ykey]), fontsize=5.3, alpha=0.9,
-                        xytext=(3, 3), textcoords="offset points")
+        for j, d in enumerate(ds):
+            if PERFIL_ATUAL == "ampliada" and len(cands) == 1:
+                # Muitos pontos dividem a mesma coordenada: número dentro da bolha
+                # (o mapa número→área vai na legenda, em fonte grande) evita colisões;
+                # coordenadas idênticas viram um rótulo só ("1·4").
+                grupo = [str(AREAS.index(x["area"]) + 1) for x in ds if x["tempo"] == d["tempo"] and x[ykey] == d[ykey]]
+                if grupo[0] == str(AREAS.index(d["area"]) + 1):
+                    ax.annotate("·".join(grupo), (d["tempo"], d[ykey]), fontsize=(6.8 if len(grupo) == 1 else 5.4)*GF,
+                                color="white", weight="bold", ha="center", va="center")
+            else:
+                dx, dy = desloc[(j + ci) % len(desloc)]
+                ax.annotate(CURTO[d["area"]], (d["tempo"], d[ykey]), fontsize=(6.4 if len(cands) == 1 else 5.3)*GF, alpha=0.95,
+                            xytext=(dx, dy), textcoords="offset points",
+                            ha="left" if dx >= 0 else "right", va="bottom" if dy >= 0 else "top",
+                            bbox=dict(boxstyle="round,pad=0.18", fc="white", ec="none", alpha=0.68))
     ax.set_xlim(0, 54); ax.set_ylim(0, 10.6); ax.set_xlabel("Tempo até a entrega plena (meses) →")
     ax.set_ylabel(ylabel); ax.grid(alpha=0.25); ax.set_axisbelow(True)
     for s in ("top", "right"): ax.spines[s].set_visible(False)
-    ax.legend(fontsize=7.5, frameon=False, loc="upper left")
-    ax.set_title(titulo, fontsize=9.3, loc="left", weight="bold")
+    if len(cands) > 1:
+        ax.legend(fontsize=7.5*GF, frameon=False, loc="upper left")
+    ax.set_title(titulo, fontsize=9.3*GF, loc="left", weight="bold")
     return salvar(fig, nome)
 
 def g_radar():
@@ -107,40 +126,63 @@ def g_radar():
         m = lambda k: sum(d[k] for d in ls) / len(ls)
         return [round(v, 1) for v in (m("impacto"), m("depE"), m("depS"), m("custo"), m("tempo") / 48 * 10, m("risco"))]
     ang = [i / 6 * 2 * math.pi for i in range(6)] + [0]
-    fig, ax = plt.subplots(figsize=(4.7, 3.9), subplot_kw=dict(polar=True))
+    fig, ax = plt.subplots(figsize=(4.7, 3.9*GH), subplot_kw=dict(polar=True))
     for cand in ("A", "B"):
         vals = medias(cand) + [medias(cand)[0]]
         ax.plot(ang, vals, color=CORES[cand], linewidth=1.6, label=NOMES[cand])
         ax.fill(ang, vals, color=CORES[cand], alpha=0.16)
-    ax.set_xticks(ang[:-1]); ax.set_xticklabels(cats, fontsize=6.8)
-    ax.set_ylim(0, 10); ax.set_yticks([2, 4, 6, 8, 10]); ax.set_yticklabels(["2", "4", "6", "8", "10"], fontsize=6)
-    ax.legend(fontsize=7.5, frameon=False, loc="upper right", bbox_to_anchor=(1.18, 1.12))
-    ax.set_title("Perfil médio nas 12 áreas (0–10)", fontsize=9.3, weight="bold", pad=18)
+    ax.set_xticks(ang[:-1]); ax.set_xticklabels(cats, fontsize=6.8*GF)
+    ax.set_ylim(0, 10); ax.set_yticks([2, 4, 6, 8, 10]); ax.set_yticklabels(["2", "4", "6", "8", "10"], fontsize=6*GF)
+    if PERFIL_ATUAL == "ampliada":
+        ax.legend(fontsize=7.5*GF, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.24), ncol=2)
+        ax.set_title("Perfil médio nas 12 áreas (0–10)", fontsize=9.3*GF, weight="bold", pad=52)
+    else:
+        ax.legend(fontsize=7.5*GF, frameon=False, loc="upper right", bbox_to_anchor=(1.18, 1.12))
+        ax.set_title("Perfil médio nas 12 áreas (0–10)", fontsize=9.3*GF, weight="bold", pad=18)
     return salvar(fig, "radar.png")
 
 def g_deps(cand):
     ls = [next(d for d in POLICY if d["area"] == a and d["cand"] == cand) for a in AREAS]
     x = range(len(AREAS)); w = 0.27
-    fig, ax = plt.subplots(figsize=(5.2, 3.5))
-    ax.bar([i - w for i in x], [d["impacto"] for d in ls], w, label="Impacto positivo", color="#137547")
-    ax.bar(list(x), [d["depE"] for d in ls], w, label="Dependência do Estado", color="#14273d")
-    ax.bar([i + w for i in x], [d["depS"] for d in ls], w, label="Dependência da sociedade", color="#c9a227")
-    ax.set_xticks(list(x)); ax.set_xticklabels([CURTO[a] for a in AREAS], rotation=38, ha="right", fontsize=6.4)
+    fig, ax = plt.subplots(figsize=(5.2, 3.5*GH))
+    rot = ("Impacto +", "Dep. Estado", "Dep. sociedade") if PERFIL_ATUAL == "ampliada" else ("Impacto positivo", "Dependência do Estado", "Dependência da sociedade")
+    ax.bar([i - w for i in x], [d["impacto"] for d in ls], w, label=rot[0], color="#137547")
+    ax.bar(list(x), [d["depE"] for d in ls], w, label=rot[1], color="#14273d")
+    ax.bar([i + w for i in x], [d["depS"] for d in ls], w, label=rot[2], color="#c9a227")
+    ax.set_xticks(list(x)); ax.set_xticklabels([CURTO[a] for a in AREAS], rotation=38, ha="right", fontsize=6.4*GF)
     ax.set_ylim(0, 10.6); ax.set_ylabel("Nota (0–10)"); ax.grid(axis="y", alpha=0.25); ax.set_axisbelow(True)
     for s in ("top", "right"): ax.spines[s].set_visible(False)
-    ax.legend(fontsize=7.2, frameon=False, ncol=3, loc="upper center", bbox_to_anchor=(0.5, 1.14))
-    ax.set_title(f"Impacto × Dependências — {NOMES[cand]}", fontsize=9.3, loc="left", weight="bold")
+    if PERFIL_ATUAL == "ampliada":
+        ax.legend(fontsize=6.7*GF, frameon=False, ncol=3, loc="upper center", bbox_to_anchor=(0.5, 1.09))
+        ax.set_title(f"Impacto × Dependências — {NOMES[cand]}", fontsize=9.3*GF, loc="left", weight="bold", pad=30)
+    else:
+        ax.legend(fontsize=7.2*GF, frameon=False, ncol=3, loc="upper center", bbox_to_anchor=(0.5, 1.14))
+        ax.set_title(f"Impacto × Dependências — {NOMES[cand]}", fontsize=9.3*GF, loc="left", weight="bold")
     return salvar(fig, f"deps_{cand}.png")
 
-GRAF = {
+def gerar_graficos():
+    global GF, GH
+    GF = 1.55 if PERFIL_ATUAL == "ampliada" else 1.0
+    GH = 1.38 if PERFIL_ATUAL == "ampliada" else 1.0
+    plt.rcParams.update({"font.size": 8 * GF})
+    if PERFIL_ATUAL == "ampliada":
+        mapa_areas = " Áreas: " + " · ".join(f"{i+1} {CURTO[a]}" for i, a in enumerate(AREAS)) + "."
+        bolha_tc = [(g_bolha("custo", "impacto", "Tempo × Custo fiscal — Lula (PT)", "Custo fiscal à União (0–10) →", "bolha_tc_A.png", cands=("A",)), "Tempo de implementação × custo fiscal — Lula (PT); tamanho da bolha = impacto positivo." + mapa_areas),
+                    (g_bolha("custo", "impacto", "Tempo × Custo fiscal — Flávio Bolsonaro (PL)", "Custo fiscal à União (0–10) →", "bolha_tc_B.png", cands=("B",)), "Tempo de implementação × custo fiscal — Flávio Bolsonaro (PL); tamanho da bolha = impacto positivo." + mapa_areas)]
+        bolha_rt = [(g_bolha("risco", "custo", "Risco × Tempo — Lula (PT)", "Potencial negativo / risco (0–10) →", "bolha_rt_A.png", cands=("A",)), "Risco negativo × tempo — Lula (PT); tamanho da bolha = custo fiscal." + mapa_areas),
+                    (g_bolha("risco", "custo", "Risco × Tempo — Flávio Bolsonaro (PL)", "Potencial negativo / risco (0–10) →", "bolha_rt_B.png", cands=("B",)), "Risco negativo × tempo — Flávio Bolsonaro (PL); tamanho da bolha = custo fiscal." + mapa_areas)]
+    else:
+        bolha_tc = [(g_bolha("custo", "impacto", "Tempo × Custo fiscal (bolha = impacto)", "Custo fiscal à União (0–10) →", "bolha_tc.png"), "Tempo de implementação × custo fiscal; tamanho da bolha = impacto positivo.")]
+        bolha_rt = [(g_bolha("risco", "custo", "Risco × Tempo (bolha = custo fiscal)", "Potencial negativo / risco (0–10) →", "bolha_rt.png"), "Risco negativo × tempo; tamanho da bolha = custo fiscal.")]
+    return {
     "chart_votes_canvas": [(g_votos(), "Votos nominais — 1º turno (TSE, totalização final).")],
-    "chart_time_cost_canvas": [(g_bolha("custo", "impacto", "Tempo × Custo fiscal (bolha = impacto)", "Custo fiscal à União (0–10) →", "bolha_tc.png"), "Tempo de implementação × custo fiscal; tamanho da bolha = impacto positivo.")],
+    "chart_time_cost_canvas": bolha_tc,
     "chart_radar_canvas": [(g_radar(), "Perfil médio nas 12 áreas (0–10; tempo de 48 meses = 10).")],
-    "chart_dependencies_canvas": [(g_deps("A"), "Impacto × dependências por área (0–10) — Lula (PT)."),
+    "chart_dependency_canvas": [(g_deps("A"), "Impacto × dependências por área (0–10) — Lula (PT)."),
                                   (g_deps("B"), "Impacto × dependências por área (0–10) — Flávio Bolsonaro (PL).")],
-    "chart_risk_time_canvas": [(g_bolha("risco", "custo", "Risco × Tempo (bolha = custo fiscal)", "Potencial negativo / risco (0–10) →", "bolha_rt.png"), "Risco negativo × tempo; tamanho da bolha = custo fiscal.")],
-}
-print("gráficos gerados:", [p.name for v in GRAF.values() for p, _ in v])
+    "chart_risk_time_canvas": bolha_rt,
+    }
+GRAF = {}
 
 # ---------------- capa e contracapa (PIL) ----------------
 W, H = 1240, 1754
@@ -225,20 +267,68 @@ print("capas geradas")
 
 # ---------------- estilos do livro ----------------
 NAVY, OURO, CINZA = HexColor("#14273d"), HexColor("#b8860b"), HexColor("#5b6470")
-FW = A5[0] - 26 * mm
-Capitulo = ParagraphStyle("Capitulo", fontName=SERIF, fontSize=16.5, leading=20.5, textColor=NAVY, spaceAfter=4, keepWithNext=1)
-H3e = ParagraphStyle("H3e", fontName=SERIF, fontSize=11.8, leading=14.8, textColor=NAVY, spaceBefore=11, spaceAfter=4, keepWithNext=1)
-H4e = ParagraphStyle("H4e", fontName=SANS, fontSize=9.8, leading=12.6, textColor=NAVY, spaceBefore=9, spaceAfter=3, keepWithNext=1)
-Corpo = ParagraphStyle("Corpo", fontName=SERIF, fontSize=9.3, leading=13.6, alignment=TA_JUSTIFY, spaceAfter=5, splitLongWords=1)
-Lead = ParagraphStyle("Lead", parent=Corpo, fontName="DVSerif-I", fontSize=9.7, leading=14.2, textColor=HexColor("#3f4652"))
-Pequeno = ParagraphStyle("Pequeno", fontName=SANS, fontSize=7.8, leading=10.6, textColor=CINZA, spaceAfter=4, splitLongWords=1)
-Lista = ParagraphStyle("Lista", parent=Corpo, alignment=TA_LEFT, leftIndent=11, bulletIndent=2, spaceAfter=3.2)
-Cel = ParagraphStyle("Cel", fontName=SANS, fontSize=7.3, leading=9.6, spaceAfter=0, splitLongWords=1)
-CelH = ParagraphStyle("CelH", fontName=SANS, fontSize=7.3, leading=9.4, textColor=white, spaceAfter=0)
-Legenda = ParagraphStyle("Legenda", fontName=SANS, fontSize=7.7, leading=10.2, textColor=CINZA, alignment=TA_CENTER, spaceBefore=2, spaceAfter=7)
-DadosBloco = ParagraphStyle("DadosBloco", fontName=SANS, fontSize=7.9, leading=11, spaceAfter=4.5, backColor=HexColor("#f7f2e4"),
-                            borderColor=HexColor("#d8c9a3"), borderWidth=0.5, borderPadding=5, splitLongWords=1)
-Refe = ParagraphStyle("Refe", parent=Pequeno, fontSize=7.7, leading=10.6, leftIndent=9, firstLineIndent=-9, spaceAfter=3.5, alignment=TA_LEFT)
+MARGEM_X, MARGEM_TOPO, MARGEM_BASE = 13 * mm, 15 * mm, 16 * mm
+FW = A5[0] - 2 * MARGEM_X
+TAM = {}
+REF_INLINE, CODE_INLINE = 6.2, 7.6
+COND_DADOS, COND_LINHA = 52, 110
+TABELA_BLOCOS_COLS, TABELA_BLOCOS_MEDIA = 4, 105
+CEL_PAD_X, CEL_PAD_Y = 3.2, 2.6
+RODAPE_FONTE = 6.6
+EDICAO_TXT = COMO_USAR_TXT = ""
+
+def aplicar_perfil(perfil):
+    """'padrao' = e-book A5 p/ impressão · 'ampliada' = flipbook em fonte grande (tela)."""
+    global PERFIL_ATUAL, MARGEM_X, MARGEM_TOPO, MARGEM_BASE, FW, TAM
+    global Capitulo, H3e, H4e, Corpo, Lead, Pequeno, Lista, Cel, CelH, Legenda, DadosBloco, Refe
+    global REF_INLINE, CODE_INLINE, COND_DADOS, COND_LINHA, TABELA_BLOCOS_COLS, TABELA_BLOCOS_MEDIA
+    global CEL_PAD_X, CEL_PAD_Y, RODAPE_FONTE, EDICAO_TXT, COMO_USAR_TXT
+    PERFIL_ATUAL = perfil
+    amp = perfil == "ampliada"
+    MARGEM_X = 10.5 * mm if amp else 13 * mm
+    MARGEM_TOPO = 13.5 * mm if amp else 15 * mm
+    MARGEM_BASE = 14.5 * mm if amp else 16 * mm
+    FW = A5[0] - 2 * MARGEM_X
+    Capitulo = ParagraphStyle("Capitulo", fontName=SERIF, fontSize=25 if amp else 16.5, leading=30 if amp else 20.5, textColor=NAVY, spaceAfter=6 if amp else 4, keepWithNext=1)
+    H3e = ParagraphStyle("H3e", fontName=SERIF, fontSize=19 if amp else 11.8, leading=24 if amp else 14.8, textColor=NAVY, spaceBefore=16 if amp else 11, spaceAfter=6 if amp else 4, keepWithNext=1)
+    H4e = ParagraphStyle("H4e", fontName=SANS, fontSize=16 if amp else 9.8, leading=21 if amp else 12.6, textColor=NAVY, spaceBefore=13 if amp else 9, spaceAfter=4 if amp else 3, keepWithNext=1)
+    Corpo = ParagraphStyle("Corpo", fontName=SERIF, fontSize=16 if amp else 9.3, leading=23.5 if amp else 13.6, alignment=TA_LEFT if amp else TA_JUSTIFY, spaceAfter=8 if amp else 5, splitLongWords=1)
+    Lead = ParagraphStyle("Lead", parent=Corpo, fontName="DVSerif-I", fontSize=16.5 if amp else 9.7, leading=24 if amp else 14.2, textColor=HexColor("#3f4652"))
+    Pequeno = ParagraphStyle("Pequeno", fontName=SANS, fontSize=13 if amp else 7.8, leading=18.5 if amp else 10.6, textColor=CINZA, spaceAfter=6 if amp else 4, splitLongWords=1)
+    Lista = ParagraphStyle("Lista", parent=Corpo, alignment=TA_LEFT, leftIndent=20 if amp else 11, bulletIndent=5 if amp else 2, spaceAfter=5 if amp else 3.2)
+    Cel = ParagraphStyle("Cel", fontName=SANS, fontSize=12 if amp else 7.3, leading=16.5 if amp else 9.6, spaceAfter=0, splitLongWords=1)
+    CelH = ParagraphStyle("CelH", fontName=SANS, fontSize=12 if amp else 7.3, leading=16 if amp else 9.4, textColor=white, spaceAfter=0)
+    Legenda = ParagraphStyle("Legenda", fontName=SANS, fontSize=12.5 if amp else 7.7, leading=17 if amp else 10.2, textColor=CINZA, alignment=TA_CENTER, spaceBefore=4 if amp else 2, spaceAfter=10 if amp else 7)
+    DadosBloco = ParagraphStyle("DadosBloco", fontName=SANS, fontSize=13.5 if amp else 7.9, leading=19.5 if amp else 11, spaceAfter=7 if amp else 4.5, backColor=HexColor("#f7f2e4"),
+                                borderColor=HexColor("#d8c9a3"), borderWidth=0.5, borderPadding=8 if amp else 5, splitLongWords=1)
+    Refe = ParagraphStyle("Refe", parent=Pequeno, fontSize=12.5 if amp else 7.7, leading=17.5 if amp else 10.6, leftIndent=14 if amp else 9, firstLineIndent=-14 if amp else -9, spaceAfter=6 if amp else 3.5, alignment=TA_LEFT)
+    TAM = {"kicker": (11, 15) if amp else (8.2, 11), "titulo": (26, 31) if amp else (19, 23),
+           "subtitulo": (15, 20) if amp else (10.3, 14), "creditos": (12.5, 18) if amp else (8.4, 12.4),
+           "toc_titulo": (15, 19) if amp else (10.2, 13), "toc_num": (14, 19) if amp else (9.6, 13)}
+    REF_INLINE = 11.5 if amp else 6.2
+    CODE_INLINE = 12 if amp else 7.6
+    COND_DADOS = 190 if amp else 52
+    COND_LINHA = 230 if amp else 110
+    TABELA_BLOCOS_COLS = 3 if amp else 4
+    TABELA_BLOCOS_MEDIA = 55 if amp else 105
+    CEL_PAD_X = 5 if amp else 3.2
+    CEL_PAD_Y = 4 if amp else 2.6
+    RODAPE_FONTE = 8.4 if amp else 6.6
+    EDICAO_TXT = ("edição digital em <b>fonte ampliada</b>, rediagramada para leitura confortável na tela "
+                  "(corpo de 16 pt e tabelas convertidas em blocos; mesmo conteúdo e mesma data de corte: 23 de outubro de 2026). "
+                  "Para imprimir, baixe o e-book A5 padrão no botão “PDF A5” do flipbook." if amp else
+                  "e-book A5 para leitura e impressão, gerado a partir da página interativa do projeto "
+                  "(mesmo conteúdo, mesma data de corte: 23 de outubro de 2026).")
+    COMO_USAR_TXT = ("<b>Como usar esta edição ampliada.</b> Ela existe para ser lida na tela sem esforço: o texto foi "
+                     "rediagramado em corpo grande e as tabelas largas viraram blocos sequenciais — por isso o número de páginas é "
+                     "bem maior que o do e-book impresso. Vire as páginas pelas laterais, pelo controle deslizante ou pelas setas do "
+                     "teclado, e use a tela cheia no computador. Cada capítulo começa em página nova e os gráficos viajam com suas "
+                     "legendas. Antes de votar, confira os números nas fontes oficiais indicadas." if amp else
+                     "<b>Como usar este e-book.</b> Cada capítulo começa em página nova e os gráficos viajam com suas legendas e textos de leitura. "
+                     "No site, a mesma análise é interativa (filtros, dois idiomas, temas e acessibilidade) e há um flipbook HTML5 em fonte ampliada "
+                     "para leitura na tela. Imprima em A5 ou leia na tela — e, antes de votar, confira os números nas fontes oficiais indicadas.")
+
+aplicar_perfil("padrao")
 
 EMOJI = re.compile("[\U0001F000-\U0001FAFF\u2600-\u26FF\u2700-\u27BF\u2B00-\u2BFF]")
 BADGE_COR = {"a": "#b91c1c", "b": "#1d4ed8", "ok": "#0c5b36", "warn": "#6b4e00", "bad": "#7a0f2e", "neut": "#33475c"}
@@ -260,13 +350,13 @@ def inline(no, refs=False):
     if no.name == "a":
         href = no.get("href") or ""
         if refs and href.startswith("http"):
-            return inner + f' <font size="6.2" color="#555f6b">({escape(href)})</font>'
+            return inner + f' <font size="{REF_INLINE}" color="#555f6b">({escape(href)})</font>'
         return inner
     if no.name == "span" and "badge" in classes:
         cor = next((BADGE_COR[c] for c in classes if c in BADGE_COR), "#33475c")
         return f'<b><font color="{cor}">[{inner}]</font></b>'
     if no.name == "span" and "kicker" in classes: return f"<b>{inner}</b>"
-    if no.name == "code": return f'<font name="{SANS}" size="7.6">{inner}</font>'
+    if no.name == "code": return f'<font name="{SANS}" size="{CODE_INLINE}">{inner}</font>'
     return inner
 
 def figura(canvas_id, story):
@@ -304,7 +394,7 @@ def tabela(tbl, story, secao):
         for cand in ("A", "B"):
             story.append(Paragraph(f"{NOMES[cand]} — notas por área", H4e))
             for d in [x for x in POLICY if x["cand"] == cand]:
-                story.append(CondPageBreak(52))
+                story.append(CondPageBreak(COND_DADOS))
                 story.append(Paragraph(
                     f"<b>{escape(d['area'])}</b> — Tempo {d['tempo']} meses · Custo fiscal {d['custo']} · Impacto + {d['impacto']} · "
                     f"Dep. Estado {d['depE']} · Dep. sociedade {d['depS']} · Risco − {d['risco']}<br/><i>{escape(d['nota'])}</i>", DadosBloco))
@@ -314,9 +404,20 @@ def tabela(tbl, story, secao):
     textos = [[(c.get_text(" ", strip=True) if isinstance(c, Tag) else "") for c in linha] for linha in grade]
     n = len(grade[0])
     media = sum(len(t) for linha in textos[1:] for t in linha) / max(1, (len(textos) - 1) * n)
-    if n >= 4 and media > 105:  # tabela larga de texto longo → blocos legíveis por linha
+    # Na edição ampliada, células mescladas (rowspan) impedem a quebra da tabela entre
+    # páginas: repetimos o valor mesclado nas linhas seguintes e emitimos blocos.
+    forcar_blocos = PERFIL_ATUAL == "ampliada" and bool(spans)
+    if forcar_blocos:
+        for c in range(n):
+            ult, ult_txt = None, ""
+            for r in range(len(grade)):
+                if isinstance(grade[r][c], Tag):
+                    ult, ult_txt = grade[r][c], textos[r][c]
+                elif ult is not None:
+                    grade[r][c], textos[r][c] = ult, ult_txt
+    if forcar_blocos or (n >= TABELA_BLOCOS_COLS and media > TABELA_BLOCOS_MEDIA):  # tabela larga/mesclada → blocos legíveis por linha
         for linha, tlinha in zip(grade[1:], textos[1:]):
-            story.append(CondPageBreak(110))
+            story.append(CondPageBreak(COND_LINHA))
             story.append(Paragraph(inline(linha[0]) if isinstance(linha[0], Tag) else escape(tlinha[0]), H4e))
             for j in range(1, n):
                 if isinstance(linha[j], Tag) and tlinha[j]:
@@ -329,8 +430,8 @@ def tabela(tbl, story, secao):
     pesos = [max(6.0, math.sqrt(max(len(textos[r][c]) for r in range(len(textos))))) for c in range(n)]
     soma = sum(pesos); larguras = [FW * p / soma for p in pesos]
     estilo = [("BACKGROUND", (0, 0), (-1, 0), NAVY), ("GRID", (0, 0), (-1, -1), 0.4, HexColor("#b8ab8c")),
-              ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 3.2), ("RIGHTPADDING", (0, 0), (-1, -1), 3.2),
-              ("TOPPADDING", (0, 0), (-1, -1), 2.6), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.6),
+              ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), CEL_PAD_X), ("RIGHTPADDING", (0, 0), (-1, -1), CEL_PAD_X),
+              ("TOPPADDING", (0, 0), (-1, -1), CEL_PAD_Y), ("BOTTOMPADDING", (0, 0), (-1, -1), CEL_PAD_Y),
               ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#faf6ea")])] + spans
     story.append(Table(dados, colWidths=larguras, repeatRows=1, style=TableStyle(estilo)))
     story.append(Spacer(1, 5))
@@ -433,33 +534,33 @@ def on_contra(canv, doc):
     canv.saveState(); canv.drawImage(str(CONTRA), 0, 0, width=A5[0], height=A5[1]); canv.restoreState()
 def on_miolo(canv, doc):
     canv.saveState()
-    canv.setStrokeColor(OURO); canv.setLineWidth(0.8); canv.line(13*mm, 12.5*mm, A5[0]-13*mm, 12.5*mm)
-    canv.setFont(SANS, 6.6); canv.setFillColor(CINZA)
-    canv.drawString(13*mm, 8.5*mm, "Eleições Presidenciais 2026 — Análise Comparativa · by rogerelizar")
-    canv.drawRightString(A5[0]-13*mm, 8.5*mm, str(doc.page))
-    canv.drawRightString(A5[0]-13*mm, A5[1]-10*mm, "2º Turno 2026 - Criado por IA")
+    canv.setStrokeColor(OURO); canv.setLineWidth(0.8); canv.line(MARGEM_X, MARGEM_BASE-3.5*mm, A5[0]-MARGEM_X, MARGEM_BASE-3.5*mm)
+    canv.setFont(SANS, RODAPE_FONTE); canv.setFillColor(CINZA)
+    canv.drawString(MARGEM_X, MARGEM_BASE-7.5*mm, "Eleições Presidenciais 2026 — Análise Comparativa · by rogerelizar")
+    canv.drawRightString(A5[0]-MARGEM_X, MARGEM_BASE-7.5*mm, str(doc.page))
+    canv.drawRightString(A5[0]-MARGEM_X, A5[1]-(MARGEM_TOPO-5*mm), "2º Turno 2026 - Criado por IA")
     canv.restoreState()
 
-def criar_doc(caminho):
-    doc = LivroDoc(str(caminho), pagesize=A5, leftMargin=13*mm, rightMargin=13*mm, topMargin=15*mm, bottomMargin=16*mm,
-                   title="Eleições Presidenciais 2026 — Análise Comparativa dos Programas de Governo (e-book A5)",
+def criar_doc(caminho, titulo):
+    doc = LivroDoc(str(caminho), pagesize=A5, leftMargin=MARGEM_X, rightMargin=MARGEM_X, topMargin=MARGEM_TOPO, bottomMargin=MARGEM_BASE,
+                   title=titulo,
                    author="by rogerelizar (curadoria) / Arena.ai — Agent Mode (montagem por IA)")
     doc.addPageTemplates([
         PageTemplate(id="capa", frames=[Frame(0, 0, A5[0], A5[1])], onPage=on_capa),
-        PageTemplate(id="miolo", frames=[Frame(13*mm, 16*mm, FW, A5[1]-31*mm)], onPage=on_miolo),
+        PageTemplate(id="miolo", frames=[Frame(MARGEM_X, MARGEM_BASE, FW, A5[1]-MARGEM_TOPO-MARGEM_BASE)], onPage=on_miolo),
         PageTemplate(id="contracapa", frames=[Frame(0, 0, A5[0], A5[1])], onPage=on_contra),
     ])
     return doc
 
 def montar(paginas_caps):
     story = [Spacer(1, 1), NextPageTemplate("miolo"), PageBreak()]
-    story.append(Paragraph("ELEIÇÕES PRESIDENCIAIS 2026 · 2º TURNO", ParagraphStyle("k", fontName=SANS, fontSize=8.2, leading=11, textColor=OURO, alignment=TA_CENTER)))
-    story.append(Paragraph("Dois projetos de Brasil em disputa", ParagraphStyle("tt", fontName=SERIF, fontSize=19, leading=23, textColor=NAVY, alignment=TA_CENTER, spaceBefore=6, spaceAfter=3)))
-    story.append(Paragraph("Análise comparativa completa dos programas de governo — Lula (PT) × Flávio Bolsonaro (PL)", ParagraphStyle("ts", fontName="DVSerif-I", fontSize=10.3, leading=14, textColor=CINZA, alignment=TA_CENTER, spaceAfter=6)))
+    story.append(Paragraph("ELEIÇÕES PRESIDENCIAIS 2026 · 2º TURNO", ParagraphStyle("k", fontName=SANS, fontSize=TAM["kicker"][0], leading=TAM["kicker"][1], textColor=OURO, alignment=TA_CENTER)))
+    story.append(Paragraph("Dois projetos de Brasil em disputa", ParagraphStyle("tt", fontName=SERIF, fontSize=TAM["titulo"][0], leading=TAM["titulo"][1], textColor=NAVY, alignment=TA_CENTER, spaceBefore=6, spaceAfter=3)))
+    story.append(Paragraph("Análise comparativa completa dos programas de governo — Lula (PT) × Flávio Bolsonaro (PL)", ParagraphStyle("ts", fontName="DVSerif-I", fontSize=TAM["subtitulo"][0], leading=TAM["subtitulo"][1], textColor=CINZA, alignment=TA_CENTER, spaceAfter=6)))
     story.append(HRFlowable(width="42%", thickness=1.4, color=OURO, hAlign="CENTER", spaceBefore=3, spaceAfter=8))
-    story.append(Paragraph("<b>Curadoria:</b> by rogerelizar (forneceu apenas os prompts e os dois PDFs oficiais registrados no TSE).<br/><b>Pesquisa, redação, gráficos e montagem:</b> inteligência artificial — Arena.ai (Agent Mode).<br/><b>Publicação:</b> " + escape(PUB) + ".<br/><b>Edição:</b> e-book A5 para leitura e impressão, gerado a partir da página interativa do projeto (mesmo conteúdo, mesma data de corte: 23 de outubro de 2026).", ParagraphStyle("cr", fontName=SANS, fontSize=8.4, leading=12.4, alignment=TA_CENTER, textColor=HexColor("#2c333d"), spaceAfter=7)))
+    story.append(Paragraph("<b>Curadoria:</b> by rogerelizar (forneceu apenas os prompts e os dois PDFs oficiais registrados no TSE).<br/><b>Pesquisa, redação, gráficos e montagem:</b> inteligência artificial — Arena.ai (Agent Mode).<br/><b>Publicação:</b> " + escape(PUB) + ".<br/><b>Edição:</b> " + EDICAO_TXT + "", ParagraphStyle("cr", fontName=SANS, fontSize=TAM["creditos"][0], leading=TAM["creditos"][1], alignment=TA_CENTER, textColor=HexColor("#2c333d"), spaceAfter=7)))
     story.append(Paragraph("<b>Isenção do curador.</b> O curador limitou-se a formular os prompts e a anexar os programas oficiais. Não redigiu, não revisou previamente linha a linha e não endossa necessariamente interpretações, notas de viabilidade ou alertas deste relatório — responsabilidade editorial da montagem por IA, sujeita a conferência nas fontes citadas. Um prompt em PDF (a versão que gera esta análise em formato A5) está disponível para download no menu da página; o prompt completo do site fica arquivado no repositório do projeto.", Corpo))
-    story.append(Paragraph("<b>Como usar este e-book.</b> Cada capítulo começa em página nova e os gráficos viajam com suas legendas e textos de leitura. No site, a mesma análise é interativa (filtros, dois idiomas, temas e acessibilidade) e há um flipbook HTML5 com esta diagramação. Imprima em A5 ou leia na tela — e, antes de votar, confira os números nas fontes oficiais indicadas.", Corpo))
+    story.append(Paragraph(COMO_USAR_TXT, Corpo))
     if KPIS:
         story.append(Paragraph("A eleição em números", H3e))
         for b, s in KPIS:
@@ -467,8 +568,8 @@ def montar(paginas_caps):
     story.append(PageBreak())
     story.append(Paragraph("Sumário", ParagraphStyle("Sumario", parent=Capitulo)))
     story.append(HRFlowable(width="100%", thickness=0.8, color=OURO, spaceBefore=2, spaceAfter=7))
-    tocT = ParagraphStyle("tocT", fontName=SERIF, fontSize=10.2, leading=13, textColor=NAVY)
-    tocN = ParagraphStyle("tocN", fontName=SANS, fontSize=9.6, leading=13, textColor=NAVY, alignment=2)
+    tocT = ParagraphStyle("tocT", fontName=SERIF, fontSize=TAM["toc_titulo"][0], leading=TAM["toc_titulo"][1], textColor=NAVY)
+    tocN = ParagraphStyle("tocN", fontName=SANS, fontSize=TAM["toc_num"][0], leading=TAM["toc_num"][1], textColor=NAVY, alignment=2)
     linhas = []
     for i, titulo in enumerate(TOC_CURTOS):
         num = str(paginas_caps[i]) if paginas_caps and i < len(paginas_caps) else "00"
@@ -487,19 +588,34 @@ def montar(paginas_caps):
     story += [NextPageTemplate("contracapa"), PageBreak(), Spacer(1, 1)]
     return story
 
+def gerar_pdf(perfil, caminho, titulo):
+    global GRAF
+    aplicar_perfil(perfil)
+    GRAF = gerar_graficos()
+    print(f"[{perfil}] gráficos:", [p.name for v in GRAF.values() for p, _ in v])
+    doc1 = criar_doc(f"/tmp/ebook_{perfil}_pass1.pdf", titulo); doc1.build(montar(None))
+    caps = list(doc1.capitulos)
+    print(f"[{perfil}] capítulos (páginas):", caps)
+    doc2 = criar_doc(caminho, titulo); doc2.build(montar(caps))
+    assert list(doc2.capitulos) == caps, "paginação do sumário divergiu entre passes"
+    with fitz.open(caminho) as dd:
+        total = len(dd)
+    print(f"[{perfil}] PDF pages={total} bytes={pathlib.Path(caminho).stat().st_size} -> {caminho}")
+    return caps, total
+
 sai_pdf = RAIZ / "downloads" / "Analise-2026-Ebook-A5.pdf"
-_doc1 = criar_doc("/tmp/ebook_pass1.pdf"); _doc1.build(montar(None))
-_caps = list(_doc1.capitulos)
-print("capítulos (páginas):", _caps)
-_doc2 = criar_doc(sai_pdf); _doc2.build(montar(_caps))
-assert list(_doc2.capitulos) == _caps, "paginação do sumário divergiu entre passes"
-d = fitz.open(sai_pdf); npag = len(d)
-print(f"EBOOK pages={npag} bytes={sai_pdf.stat().st_size}")
+_caps_std, npag_ebook = gerar_pdf("padrao", sai_pdf,
+    "Eleições Presidenciais 2026 — Análise Comparativa dos Programas de Governo (e-book A5)")
+pdf_ampliado = TMP / "Analise-2026-Flipbook-Fonte-Ampliada.pdf"
+_caps_amp, npag = gerar_pdf("ampliada", pdf_ampliado,
+    "Eleições Presidenciais 2026 — Análise Comparativa dos Programas de Governo (flipbook em fonte ampliada)")
+d = fitz.open(pdf_ampliado)
 
 # ---------------- flipbook HTML5 (arquivo único) ----------------
 # Motor v2: desktop = spread de 2 páginas centrado (capa centraliza sozinha);
 # mobile = página única centrada, virada sobre a lombada; pool de 4 <img>
 # reutilizadas (decode preguiçoso), imagens WebP 190 dpi (fallback JPEG).
+# Fonte das páginas: PDF "ampliado" (corpo 16 pt) — NÃO o e-book de impressão.
 from PIL import features as _pil_features
 _USA_WEBP = bool(_pil_features.check("webp"))
 _FMT, _MIME = ("WEBP", "image/webp") if _USA_WEBP else ("JPEG", "image/jpeg")
@@ -521,8 +637,8 @@ FLIP = r"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#17130c">
-<title>Eleições Presidenciais 2026 — Flipbook A5 | Lula (PT) × Flávio Bolsonaro (PL)</title>
-<meta name="description" content="Flipbook HTML5 da análise comparativa dos programas de governo — 2º turno 2026. Curadoria: by rogerelizar. Criado por IA (Arena.ai — Agent Mode).">
+<title>Eleições Presidenciais 2026 — Flipbook em fonte ampliada | Lula (PT) × Flávio Bolsonaro (PL)</title>
+<meta name="description" content="Flipbook HTML5 em fonte ampliada da análise comparativa dos programas de governo — 2º turno 2026. Curadoria: by rogerelizar. Criado por IA (Arena.ai — Agent Mode).">
 <style>
 :root{--dur:860ms;--ease:cubic-bezier(.22,.68,.26,1);--ouro:#d8a24a;--papel:#fbf7ec}
 *{box-sizing:border-box}
@@ -606,7 +722,7 @@ button:disabled{opacity:.36;cursor:default}
 </head>
 <body>
 <header>
-<div class="k">Eleições Presidenciais 2026 · 2º turno · Flipbook A5</div>
+<div class="k">Eleições Presidenciais 2026 · 2º turno · Flipbook em fonte ampliada</div>
 <h1>Dois projetos de Brasil em disputa</h1>
 <p class="sub">Análise comparativa completa dos programas de governo — Lula (PT) × Flávio Bolsonaro (PL)</p>
 <div class="credits">Curadoria: <strong>by rogerelizar</strong> · Montagem por IA: <strong>Arena.ai — Agent Mode</strong> · 2º Turno 2026 - Criado por IA</div>
@@ -631,10 +747,11 @@ button:disabled{opacity:.36;cursor:default}
   <button type="button" id="prox">Próxima ▶</button>
   <button type="button" id="fim" class="ghost" aria-label="Ir para o fim">Fim ⏭</button>
   <button type="button" id="tela" class="ghost">Tela cheia</button>
+  <a class="btn" href="../analise.html">⌂ Página principal</a>
   <a class="btn ghost" href="Analise-2026-Ebook-A5.pdf" download>⬇ PDF A5</a>
 </div>
 <div class="progresso"><span>1</span><input id="slider" type="range" min="1" step="1" value="1" aria-label="Ir para a página"><span id="totalPag"></span></div>
-<p class="dica">No computador, o livro abre em duas páginas centradas; no celular, em página única. Toque nas laterais, deslize o dedo ou use ← →. Funciona sem internet.</p>
+<p class="dica">Edição digital em <strong>fonte ampliada</strong>, feita para ler na tela sem esforço. No computador, o livro abre em duas páginas centradas; no celular, em página única. Toque nas laterais, deslize o dedo ou use ← →. Funciona sem internet.</p>
 <noscript><p class="dica">Ative o JavaScript para folhear — ou baixe o PDF A5 acima.</p></noscript>
 <script>const PAGES=__PAGES_JSON__;</script>
 <script>

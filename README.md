@@ -4,7 +4,7 @@ Relatório analítico em **português brasileiro** sobre os programas de governo
 
 ## Como abrir
 
-Abra o arquivo **`index.html`** em qualquer navegador moderno (documento HTML5 único e autocontido; os gráficos interativos usam Chart.js via CDN e requerem conexão na primeira carga).
+Abra o arquivo **`index.html`** em qualquer navegador moderno: ele é a **tela inicial de escolha** (leve e rápida), com dois caminhos — **📖 Ler no flipbook** (edição digital em fonte ampliada) ou **📊 Ir para a página principal** (`analise.html`, o relatório interativo completo; os gráficos usam Chart.js via CDN e requerem conexão na primeira carga). A tela de abertura também oferece o download direto do e-book PDF A5 para impressão.
 
 ## Conteúdo
 
@@ -28,7 +28,7 @@ As citações "p. X" no relatório referem-se à paginação impressa de cada PD
 
 - **Português brasileiro é o idioma principal** (autoritativo); o **inglês é o secundário**. Alternância no **botão flutuante ☰ Menu**.
 - O **botão flutuante único ☰ Menu** (hambúrguer, canto inferior direito) concentra **todas** as opções — índice de seções, idioma, tema, estilo, acessibilidade e downloads: idioma, **tema claro/escuro/automático**, **acessibilidade** (tamanho do texto, alto contraste, links sublinhados, redução de movimento) e **downloads em PDF**.
-- **Downloads (☰ Menu):** análise completa em **e-book PDF A5** (`downloads/Analise-2026-Ebook-A5.pdf`, 51 pp., capa com bandeira desfocada + urna “2026” + “by rogerelizar” + subtítulo “2º Turno 2026 - Criado por IA”), **flipbook HTML5** (`downloads/Analise-2026-Flipbook.html`, arquivo único e offline; no desktop abre em 2 páginas centradas e no celular em página única, imagens WebP 190 dpi), os programas oficiais (`fontes-primarias/PropostasLula.pdf`, `fontes-primarias/PropostasFlavio.pdf`) e o **prompt da análise A5** (`downloads/Prompt-Analise-A5.pdf`). Geradores: `ferramentas/gerar_ebook_flipbook.py` e `ferramentas/gerar_prompt_pdf.py` (rodar da raiz).
+- **Downloads (☰ Menu):** análise completa em **e-book PDF A5** (`downloads/Analise-2026-Ebook-A5.pdf`, 52 pp., capa com bandeira desfocada + urna “2026” + “by rogerelizar” + subtítulo “2º Turno 2026 - Criado por IA”), **flipbook HTML5 em fonte ampliada** (`downloads/Analise-2026-Flipbook.html`, 138 pp., ≈16 MB, arquivo único e offline; edição digital rediagramada com **corpo de 16 pt** e tabelas em blocos para leitura confortável na tela; no desktop abre em 2 páginas centradas e no celular em página única, imagens WebP 190 dpi; botão “⌂ Página principal” de volta ao relatório), os programas oficiais (`fontes-primarias/PropostasLula.pdf`, `fontes-primarias/PropostasFlavio.pdf`) e o **prompt da análise A5** (`downloads/Prompt-Analise-A5.pdf`). Geradores: `ferramentas/gerar_ebook_flipbook.py` e `ferramentas/gerar_prompt_pdf.py` (rodar da raiz).
 - **Prompts divididos em dois:** o **para download** é o que gera a análise em PDF A5 (fonte: `prompt/prompt-analise-a5.md`); o **prompt completo** do site e de todos os complementos fica **só no repositório** (`prompt/PROMPT-COMPLETO-SITE.md`, com o prompt original e o histórico de refinamentos em anexo), **sem download** na página.
 - Os candidatos são citados **sempre pelo nome** (sem codinomes por letra); os alertas do sumário investigativo são numerados por candidato (“Lula, alerta n” / “Flávio Bolsonaro, alerta n”).
 - As preferências ficam salvas no navegador (`localStorage`). Na versão em inglês, citações literais, páginas dos PDFs e títulos de fontes permanecem em português para preservar a auditabilidade.
