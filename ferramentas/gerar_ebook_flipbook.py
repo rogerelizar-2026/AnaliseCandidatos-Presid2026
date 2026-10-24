@@ -359,6 +359,47 @@ def inline(no, refs=False):
     if no.name == "code": return f'<font name="{SANS}" size="{CODE_INLINE}">{inner}</font>'
     return inner
 
+# Transição de candidato dentro do mesmo parágrafo: "…(p. 19); Flávio compromete-se…",
+# "…risco (p. 35, 38). Flávio: …", "…custo.[8] Lula detalhou…", "; do lado de Lula, …".
+_SPLIT_CAND = re.compile(
+    r"(?<=[.;])\s+(?=(?:<b>)?(?:Lula|Flávio(?: Bolsonaro)?)(?::|,| é\b| nomeia\b| compromete-se\b| prometeu\b| detalhou\b| regula\b| prioriza\b| expande\b| aposta\b| enfatiza\b| desmonta\b))"
+    r"|(?<=</super>)\s+(?=(?:Lula|Flávio)(?: detalhou\b| prometeu\b))"
+    r"|(?<=;)\s+(?=do lado de (?:Lula|Flávio)\b)")
+
+def _rebalanceia(partes):
+    """Fecha no fim de cada trecho as tags inline abertas e as reabre no trecho seguinte."""
+    pilha, out = [], []
+    for parte in partes:
+        ini = "".join(tag for _, tag in pilha)
+        atual = list(pilha)
+        for m in re.finditer(r"</?([a-zA-Z]+)(?:\s[^>]*)?>", parte):
+            nome, s = m.group(1).lower(), m.group(0)
+            if s.startswith("</"):
+                for k in range(len(atual) - 1, -1, -1):
+                    if atual[k][0] == nome:
+                        del atual[k]; break
+            elif nome not in ("br", "hr"):
+                atual.append((nome, s))
+        out.append(ini + parte + "".join(f"</{n}>" for n, _ in reversed(atual)))
+        pilha = atual
+    return out
+
+def divide_candidatos(html_txt):
+    """Separa em parágrafos os trechos de cada candidato quando os dois são sujeitos
+    emendados no mesmo parágrafo. Sínteses comparativas sem transição de sujeito ficam intactas."""
+    limpo = re.sub(r"<[^>]+>", " ", html_txt)
+    if not (re.search(r"\bLula\b", limpo) and re.search(r"\bFlávio\b", limpo)):
+        return [html_txt]
+    partes = [x.strip() for x in _SPLIT_CAND.split(html_txt) if x.strip()]
+    return _rebalanceia(partes) if len(partes) > 1 else [html_txt]
+
+def anexa_paragrafos(story, html_txt, estilo, bulletText=None):
+    for i, parte in enumerate(divide_candidatos(html_txt)):
+        if bulletText is not None:
+            story.append(Paragraph(parte, estilo, bulletText=bulletText if i == 0 else None))
+        else:
+            story.append(Paragraph(parte, estilo))
+
 def figura(canvas_id, story):
     for arq, leg in GRAF.get(canvas_id, []):
         with Image.open(arq) as im: iw, ih = im.size
@@ -396,7 +437,7 @@ def tabela(tbl, story, secao):
             for d in [x for x in POLICY if x["cand"] == cand]:
                 story.append(CondPageBreak(COND_DADOS))
                 story.append(Paragraph(
-                    f"<b>{escape(d['area'])}</b> — Tempo {d['tempo']} meses · Custo fiscal {d['custo']} · Impacto + {d['impacto']} · "
+                    f"<b>{NOMES[cand]} · {escape(d['area'])}</b> — Tempo {d['tempo']} meses · Custo fiscal {d['custo']} · Impacto + {d['impacto']} · "
                     f"Dep. Estado {d['depE']} · Dep. sociedade {d['depS']} · Risco − {d['risco']}<br/><i>{escape(d['nota'])}</i>", DadosBloco))
         return
     grade, spans, cabec = grade_tabela(tbl)
@@ -421,8 +462,12 @@ def tabela(tbl, story, secao):
             story.append(Paragraph(inline(linha[0]) if isinstance(linha[0], Tag) else escape(tlinha[0]), H4e))
             for j in range(1, n):
                 if isinstance(linha[j], Tag) and tlinha[j]:
-                    rot = f"<b>{escape(cabec[j])}:</b> " if j < len(cabec) and cabec[j] else ""
-                    story.append(Paragraph(rot + inline(linha[j]), Corpo))
+                    rotulo = cabec[j] if j < len(cabec) and cabec[j] else ""
+                    if rotulo:
+                        cor_rot = LULA if rotulo.startswith("Lula") else (FLAV if rotulo.startswith("Flávio") else None)
+                        txt_rot = f'<font color="{cor_rot}">{escape(rotulo)}</font>' if cor_rot else escape(rotulo)
+                        story.append(Paragraph(txt_rot, H4e))
+                    emite_filhos(linha[j], story, secao)
         return
     dados = []
     for r, linha in enumerate(grade):
@@ -437,13 +482,13 @@ def tabela(tbl, story, secao):
     story.append(Spacer(1, 5))
 
 CAIXA = {"info": ("#eef6ff", "#0b5fa5"), "warn": ("#fff8e1", "#9a6b00"), "danger": ("#fff0f3", "#a4133c"), "good": ("#eaf7ef", "#137547")}
-BLOCOS = {"p", "ul", "ol", "div", "table", "h3", "h4", "hr", "canvas"}
+BLOCOS = {"p", "ul", "ol", "div", "article", "table", "h3", "h4", "hr", "canvas"}
 
 def emite_filhos(el, story, secao):
     buf = []
     def flush():
         t = "".join(buf).strip(); buf.clear()
-        if t: story.append(Paragraph(t, Corpo))
+        if t: anexa_paragrafos(story, t, Corpo)
     for filho in el.children:
         if isinstance(filho, NavigableString):
             if str(filho).strip(): buf.append(inline(filho))
@@ -462,19 +507,19 @@ def despacha(el, story, secao):
     if nome == "h4": story.append(Paragraph(inline(el), H4e)); return
     if nome == "p":
         estilo = Lead if "lead" in classes else (Pequeno if "small" in classes else Corpo)
-        if el.get_text(strip=True): story.append(Paragraph(inline(el), estilo))
+        if el.get_text(strip=True): anexa_paragrafos(story, inline(el), estilo)
         return
     if nome in ("ul", "ol"):
         for i, li in enumerate(el.find_all("li", recursive=False), 1):
             if secao == "references":
                 story.append(Paragraph(inline(li, refs=True), Refe))
             else:
-                story.append(Paragraph(inline(li), Lista, bulletText=f"{i}." if nome == "ol" else "•"))
+                anexa_paragrafos(story, inline(li), Lista, bulletText=f"{i}." if nome == "ol" else "•")
         story.append(Spacer(1, 2)); return
     if nome == "hr": story.append(HRFlowable(width="100%", thickness=0.6, color=HexColor("#b8ab8c"), spaceBefore=5, spaceAfter=5)); return
     if nome == "canvas": figura(el.get("id"), story); return
     if nome == "table": tabela(el, story, secao); return
-    if nome == "div":
+    if nome in ("div", "article"):
         if "controls" in classes: return
         if "tablebox" in classes:
             t = el.find("table")
@@ -494,6 +539,7 @@ def despacha(el, story, secao):
             story.append(KeepTogether(tb)); story.append(Spacer(1, 6)); return
         if "card" in classes:
             cor = LULA if "a" in classes else (FLAV if "b" in classes else "#14273d")
+            story.append(CondPageBreak(150 if PERFIL_ATUAL == "ampliada" else 72))
             story.append(HRFlowable(width="100%", thickness=2.0, color=HexColor(cor), spaceBefore=7, spaceAfter=4))
             emite_filhos(el, story, secao); story.append(Spacer(1, 4)); return
         if "timeline" in classes:
@@ -647,12 +693,10 @@ body{margin:0;min-height:100dvh;display:flex;flex-direction:column;align-items:c
 header{width:min(100%,920px);margin-inline:auto;text-align:center}
 .k{font-family:Verdana,Geneva,sans-serif;letter-spacing:.18em;font-size:.66rem;color:var(--ouro);text-transform:uppercase}
 h1{font-size:clamp(1.22rem,3.6vw,1.85rem);line-height:1.15;margin:.32rem 0 .18rem}
-.sub{margin:0 0 3px;font-style:italic;font-size:clamp(.84rem,2.4vw,.99rem);opacity:.88}
-.credits{font-family:Verdana,Geneva,sans-serif;font-size:.71rem;opacity:.76}
 #palco{width:100%;flex:1 1 auto;min-height:0;display:grid;place-items:center;padding:12px 0 8px;perspective:2800px;perspective-origin:50% 48%}
 #livro{position:relative;margin-inline:auto;transform-style:preserve-3d;transition:transform var(--dur) var(--ease),width .35s ease;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:pointer;border-radius:6px}
-#livro.spread{width:min(96vw,1180px,max(300px,calc((100vh - 218px)*1.4095238)));width:min(96vw,1180px,max(300px,calc((100dvh - 218px)*1.4095238)));aspect-ratio:296/210}
-#livro.single{width:min(96vw,640px,max(270px,calc((100vh - 218px)*.7047619)));width:min(96vw,640px,max(270px,calc((100dvh - 218px)*.7047619)));aspect-ratio:148/210}
+#livro.spread{width:min(97vw,1400px,max(300px,calc((100vh - 190px)*1.4095238)));width:min(97vw,1400px,max(300px,calc((100dvh - 190px)*1.4095238)));aspect-ratio:296/210}
+#livro.single{width:min(97vw,720px,max(270px,calc((100vh - 190px)*.7047619)));width:min(97vw,720px,max(270px,calc((100dvh - 190px)*.7047619)));aspect-ratio:148/210}
 #livro.spread.closed-front{transform:translateX(-25%)}
 #livro.spread.closed-back{transform:translateX(25%)}
 #livro:focus-visible{outline:3px solid #f0c169;outline-offset:5px}
@@ -711,11 +755,36 @@ button:disabled{opacity:.36;cursor:default}
 :focus-visible{outline:3px solid #f0c169;outline-offset:2px}
 @media(max-width:820px){
  body{padding:9px 7px calc(12px + env(safe-area-inset-bottom,0px))}
- .credits{display:none}
  #palco{padding:8px 0 6px}
- #livro.single{width:min(97.5vw,640px,max(270px,calc((100vh - 196px)*.7047619)));width:min(97.5vw,640px,max(270px,calc((100dvh - 196px)*.7047619)))}
+ #livro.single{width:min(97.5vw,720px,max(270px,calc((100vh - 190px)*.7047619)));width:min(97.5vw,720px,max(270px,calc((100dvh - 190px)*.7047619)))}
  button,a.btn{padding:9px 12px;font-size:.86rem}
  #contador{min-width:132px;font-size:.84rem}
+}
+/* ---------- TELA CHEIA ---------- */
+body.fs{height:100dvh;overflow:hidden;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px))}
+body.fs .k,body.fs .progresso,body.fs .dica{display:none}
+body.fs header{flex:0 0 auto}
+body.fs h1{margin:0}
+body.fs #palco{padding:6px 0 2px}
+body.fs .controls{flex:0 0 auto;width:100%;margin:4px 0 0}
+body.fs #contador{font-weight:700;font-size:.95rem}
+body.fs .controls>button,body.fs .controls>a.btn{box-shadow:0 10px 24px rgba(0,0,0,.45)}
+@media(min-width:821px){
+ body.fs #livro.spread{width:min(1520px,calc(100vw - 252px),max(320px,calc((100dvh - 118px)*1.4095238)))}
+ body.fs #livro.single{width:min(760px,calc(100vw - 252px),max(270px,calc((100dvh - 118px)*.7047619)))}
+ body.fs .controls>button,body.fs .controls>a.btn{position:fixed;z-index:60;max-width:112px;white-space:normal;text-align:center;line-height:1.18}
+ body.fs a.principal{left:14px;top:58px}
+ body.fs #tela{right:14px;top:58px}
+ body.fs #inicio{left:14px;top:calc(50% - 122px)}
+ body.fs #ant{left:14px;top:calc(50% - 58px)}
+ body.fs #fim{right:14px;top:calc(50% - 122px)}
+ body.fs #prox{right:14px;top:calc(50% - 58px)}
+ body.fs a.pdf{left:14px;bottom:58px}
+}
+@media(max-width:820px){
+ body.fs .controls>button,body.fs .controls>a.btn{display:none!important}
+ body.fs #livro.single{width:min(98vw,max(270px,calc((100dvh - 106px)*.7047619)))}
+ body.fs h1{font-size:clamp(.98rem,4.6vw,1.2rem);padding-inline:8px}
 }
 @media(prefers-reduced-motion:reduce){:root{--dur:1ms}#turning.animating .face-shade{animation:none}}
 </style>
@@ -724,8 +793,6 @@ button:disabled{opacity:.36;cursor:default}
 <header>
 <div class="k">Eleições Presidenciais 2026 · 2º turno · Flipbook em fonte ampliada</div>
 <h1>Dois projetos de Brasil em disputa</h1>
-<p class="sub">Análise comparativa completa dos programas de governo — Lula (PT) × Flávio Bolsonaro (PL)</p>
-<div class="credits">Curadoria: <strong>by rogerelizar</strong> · Montagem por IA: <strong>Arena.ai — Agent Mode</strong> · 2º Turno 2026 - Criado por IA</div>
 </header>
 <section id="palco" aria-label="Livro digital">
   <div id="livro" class="spread closed-front" tabindex="0" role="application" aria-label="Flipbook. Use as setas esquerda e direita para virar as páginas.">
@@ -747,8 +814,8 @@ button:disabled{opacity:.36;cursor:default}
   <button type="button" id="prox">Próxima ▶</button>
   <button type="button" id="fim" class="ghost" aria-label="Ir para o fim">Fim ⏭</button>
   <button type="button" id="tela" class="ghost">Tela cheia</button>
-  <a class="btn" href="../analise.html">⌂ Página principal</a>
-  <a class="btn ghost" href="Analise-2026-Ebook-A5.pdf" download>⬇ PDF A5</a>
+  <a class="btn principal" href="../analise.html">⌂ Página principal</a>
+  <a class="btn ghost pdf" href="Analise-2026-Ebook-A5.pdf" download>⬇ PDF A5</a>
 </div>
 <div class="progresso"><span>1</span><input id="slider" type="range" min="1" step="1" value="1" aria-label="Ir para a página"><span id="totalPag"></span></div>
 <p class="dica">Edição digital em <strong>fonte ampliada</strong>, feita para ler na tela sem esforço. No computador, o livro abre em duas páginas centradas; no celular, em página única. Toque nas laterais, deslize o dedo ou use ← →. Funciona sem internet.</p>
@@ -905,9 +972,17 @@ bAnt.addEventListener("click",anterior);
 bIni.addEventListener("click",function(){irPara(0);});
 bFim.addEventListener("click",function(){irPara(total-1);});
 slider.addEventListener("input",function(){ irPara(Number(slider.value)-1); });
+function sincronizarTela(){
+  var fs=!!(document.fullscreenElement||document.webkitFullscreenElement);
+  document.body.classList.toggle("fs",fs);
+  bTela.textContent=fs?"Sair da tela cheia":"Tela cheia";
+}
+document.addEventListener("fullscreenchange",sincronizarTela);
+document.addEventListener("webkitfullscreenchange",sincronizarTela);
 bTela.addEventListener("click",function(){
-  if(document.fullscreenElement) document.exitFullscreen();
+  if(document.fullscreenElement||document.webkitFullscreenElement){ (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
   else if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  else if(document.documentElement.webkitRequestFullscreen) document.documentElement.webkitRequestFullscreen();
 });
 livro.addEventListener("click",function(e){
   if(Date.now()<suppressClick) return;
