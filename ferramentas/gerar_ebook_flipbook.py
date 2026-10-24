@@ -497,49 +497,111 @@ d = fitz.open(sai_pdf); npag = len(d)
 print(f"EBOOK pages={npag} bytes={sai_pdf.stat().st_size}")
 
 # ---------------- flipbook HTML5 (arquivo único) ----------------
-folhas = []
-for i in range(0, npag, 2):
-    def face(pg, lado):
-        if pg >= npag:
-            return f'<div class="face {lado} fim"><div>Fim<br><small>by rogerelizar</small></div></div>'
-        pix = d[pg].get_pixmap(dpi=115)
-        im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
-        buf = io.BytesIO(); im.save(buf, "JPEG", quality=66, optimize=True)
-        uri = "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
-        return f'<div class="face {lado}"><img src="{uri}" alt="Página {pg+1}"></div>'
-    folhas.append(f'<div class="leaf">{face(i, "front")}{face(i+1, "back")}</div>')
+# Motor v2: desktop = spread de 2 páginas centrado (capa centraliza sozinha);
+# mobile = página única centrada, virada sobre a lombada; pool de 4 <img>
+# reutilizadas (decode preguiçoso), imagens WebP 190 dpi (fallback JPEG).
+from PIL import features as _pil_features
+_USA_WEBP = bool(_pil_features.check("webp"))
+_FMT, _MIME = ("WEBP", "image/webp") if _USA_WEBP else ("JPEG", "image/jpeg")
+paginas_uri = []
+for pg in range(npag):
+    pix = d[pg].get_pixmap(dpi=190, alpha=False)
+    im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+    buf = io.BytesIO()
+    if _USA_WEBP:
+        im.save(buf, "WEBP", quality=74, method=6)
+    else:
+        im.save(buf, "JPEG", quality=75, optimize=True)
+    paginas_uri.append(f"data:{_MIME};base64," + base64.b64encode(buf.getvalue()).decode())
+print(f"flipbook: {npag} páginas em {_FMT} 190dpi")
 
-FLIP = """<!DOCTYPE html>
+FLIP = r"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17130c">
 <title>Eleições Presidenciais 2026 — Flipbook A5 | Lula (PT) × Flávio Bolsonaro (PL)</title>
 <meta name="description" content="Flipbook HTML5 da análise comparativa dos programas de governo — 2º turno 2026. Curadoria: by rogerelizar. Criado por IA (Arena.ai — Agent Mode).">
 <style>
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:#17130c radial-gradient(900px 500px at 50% -5%,rgba(216,162,74,.14),transparent 62%);color:#f2e9d8;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:14px 10px 26px}
-header{text-align:center;max-width:760px}
-.k{font-family:Verdana,sans-serif;letter-spacing:.18em;font-size:.68rem;color:#d8a24a;text-transform:uppercase}
-h1{font-size:clamp(1.25rem,4.6vw,1.8rem);margin:.35rem 0 .2rem;line-height:1.2}
-.sub{opacity:.85;font-style:italic;font-size:clamp(.85rem,3vw,.98rem);margin:0 0 4px}
-.credits{font-family:Verdana,sans-serif;font-size:.72rem;opacity:.75}
-#palco{perspective:2400px;margin:16px 0 10px;width:min(94vw,500px)}
-#livro{position:relative;width:100%;aspect-ratio:148/210;transform-style:preserve-3d;filter:drop-shadow(0 22px 44px rgba(0,0,0,.55))}
-.leaf{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.25,.7,.3,1)}
-.leaf.flipped{transform:rotateY(-180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fbf7ec;overflow:hidden;border-radius:3px 8px 8px 3px}
-.face.back{transform:rotateY(180deg);border-radius:8px 3px 3px 8px}
-.face img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
-.face.fim{display:flex;align-items:center;justify-content:center;text-align:center;color:#5b5546;font-size:1.3rem;background:#efe8d8}
-.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;font-family:Verdana,sans-serif}
-button,a.btn{min-height:44px;padding:10px 18px;border-radius:6px;border:2px solid #d8a24a;background:#d8a24a;color:#17130c;font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
-button.ghost{background:transparent;color:#f2e9d8;border-color:#a08c5f}
-button:disabled{opacity:.38;cursor:default}
-#contador{font-size:.88rem;min-width:128px;text-align:center}
-.dica{font-family:Verdana,sans-serif;font-size:.72rem;opacity:.7;text-align:center;margin-top:8px}
+:root{--dur:860ms;--ease:cubic-bezier(.22,.68,.26,1);--ouro:#d8a24a;--papel:#fbf7ec}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100dvh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;padding:12px 12px calc(16px + env(safe-area-inset-bottom,0px));font-family:Georgia,'Times New Roman',serif;color:#f2e9d8;background:#17130c radial-gradient(1000px 540px at 50% -6%,rgba(216,162,74,.15),transparent 62%)}
+header{width:min(100%,920px);margin-inline:auto;text-align:center}
+.k{font-family:Verdana,Geneva,sans-serif;letter-spacing:.18em;font-size:.66rem;color:var(--ouro);text-transform:uppercase}
+h1{font-size:clamp(1.22rem,3.6vw,1.85rem);line-height:1.15;margin:.32rem 0 .18rem}
+.sub{margin:0 0 3px;font-style:italic;font-size:clamp(.84rem,2.4vw,.99rem);opacity:.88}
+.credits{font-family:Verdana,Geneva,sans-serif;font-size:.71rem;opacity:.76}
+#palco{width:100%;flex:1 1 auto;min-height:0;display:grid;place-items:center;padding:12px 0 8px;perspective:2800px;perspective-origin:50% 48%}
+#livro{position:relative;margin-inline:auto;transform-style:preserve-3d;transition:transform var(--dur) var(--ease),width .35s ease;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:pointer;border-radius:6px}
+#livro.spread{width:min(96vw,1180px,max(300px,calc((100vh - 218px)*1.4095238)));width:min(96vw,1180px,max(300px,calc((100dvh - 218px)*1.4095238)));aspect-ratio:296/210}
+#livro.single{width:min(96vw,640px,max(270px,calc((100vh - 218px)*.7047619)));width:min(96vw,640px,max(270px,calc((100dvh - 218px)*.7047619)));aspect-ratio:148/210}
+#livro.spread.closed-front{transform:translateX(-25%)}
+#livro.spread.closed-back{transform:translateX(25%)}
+#livro:focus-visible{outline:3px solid #f0c169;outline-offset:5px}
+.page,.face{position:absolute;top:0;height:100%;overflow:hidden;background:var(--papel)}
+.page{z-index:1}
+#livro.spread .page.left{box-shadow:-14px 22px 38px rgba(0,0,0,.38)}
+#livro.spread .page.right{box-shadow:14px 22px 38px rgba(0,0,0,.38)}
+#livro.single .page.right{box-shadow:0 24px 48px rgba(0,0,0,.50)}
+.face{box-shadow:0 10px 28px rgba(0,0,0,.25)}
+#livro.spread .page.left{left:0;width:50%;border-radius:9px 2px 2px 9px}
+#livro.spread .page.right{left:50%;width:50%;border-radius:2px 9px 9px 2px}
+#livro.single .page.left{display:none}
+#livro.single .page.right{left:0;width:100%;border-radius:7px}
+#livro.spread.closed-front .page.left{visibility:hidden}
+#livro.spread.closed-back .page.right{visibility:hidden}
+.page img,.face img{width:100%;height:100%;display:block;object-fit:contain;background:var(--papel);-webkit-user-drag:none}
+.page.blank img,.face.paper img{display:none}
+.page.blank{background:linear-gradient(135deg,#efe7d2,#e2d5b4)}
+.blank-label,.paper-back{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:18px;color:#7a6f57;font-style:italic;font-size:clamp(.8rem,2.2vw,1rem)}
+.page.blank .blank-label{display:flex}
+.shade,.face-shade{position:absolute;inset:0;pointer-events:none}
+#livro.spread .page.left .shade{background:linear-gradient(90deg,rgba(0,0,0,.06),transparent 13%,transparent 76%,rgba(0,0,0,.24) 96%,rgba(0,0,0,.40))}
+#livro.spread .page.right .shade{background:linear-gradient(270deg,rgba(0,0,0,.06),transparent 13%,transparent 76%,rgba(0,0,0,.24) 96%,rgba(0,0,0,.40))}
+#livro.single .page.right .shade{background:linear-gradient(90deg,rgba(0,0,0,.20),transparent 7%,transparent 94%,rgba(0,0,0,.10))}
+.spine{position:absolute;top:0;bottom:0;left:calc(50% - 1px);width:2px;z-index:20;pointer-events:none;background:linear-gradient(180deg,rgba(90,70,30,.05),rgba(90,70,30,.38),rgba(90,70,30,.05))}
+#livro.single .spine{display:none}
+#turning{position:absolute;top:0;height:100%;z-index:30;display:none;pointer-events:none;transform-style:preserve-3d;will-change:transform;transform:rotateY(0deg)}
+#livro.spread #turning{left:50%;width:50%;transform-origin:left center}
+#livro.single #turning{left:0;width:100%;transform-origin:left center}
+#turning.on{display:block}
+#turning.animate{transition:transform var(--dur) var(--ease)}
+#turning.flipped{transform:rotateY(-180deg)}
+.face{inset:0;width:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face.front{transform:translateZ(.7px);border-radius:2px 9px 9px 2px}
+.face.back{transform:rotateY(180deg) translateZ(.7px);border-radius:9px 2px 2px 9px}
+#livro.single .face.front,#livro.single .face.back{border-radius:7px}
+.face.paper{background:linear-gradient(135deg,#f3ecd9,#e6dab9)}
+.face.paper .paper-back{display:flex}
+.face-shade{opacity:0;background:linear-gradient(90deg,rgba(0,0,0,.46),rgba(0,0,0,.10) 42%,rgba(255,255,255,.12) 58%,rgba(0,0,0,.20))}
+#turning.animating .face.front .face-shade{animation:sombraFrente var(--dur) ease-in-out both}
+#turning.animating .face.back .face-shade{animation:sombraVerso var(--dur) ease-in-out both}
+@keyframes sombraFrente{0%{opacity:0}45%{opacity:.62}100%{opacity:.30}}
+@keyframes sombraVerso{0%{opacity:.68}55%{opacity:.34}100%{opacity:0}}
+.hint{position:absolute;top:50%;z-index:25;width:44px;height:44px;margin-top:-22px;border-radius:50%;display:grid;place-items:center;background:rgba(23,19,12,.55);color:#fff;font-family:Verdana,sans-serif;font-size:1.35rem;opacity:0;transition:opacity .25s;pointer-events:none}
+.hint.prev{left:10px}.hint.next{right:10px}
+@media(hover:hover){#livro:hover .hint{opacity:.88}}
+.controls,.progresso{width:min(96vw,900px);margin-inline:auto;font-family:Verdana,Geneva,sans-serif}
+.controls{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
+button,a.btn{min-height:44px;padding:10px 15px;border-radius:7px;border:2px solid var(--ouro);background:var(--ouro);color:#17130c;font:inherit;font-weight:700;font-size:.9rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+button.ghost,a.btn.ghost{background:transparent;color:#f2e9d8;border-color:#a08c5f}
+button:disabled{opacity:.36;cursor:default}
+#contador{font-size:.89rem;min-width:158px;text-align:center}
+.progresso{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:.74rem;opacity:.92}
+.progresso input[type=range]{flex:1;accent-color:var(--ouro);height:28px;cursor:pointer}
+.dica{font-family:Verdana,Geneva,sans-serif;font-size:.71rem;opacity:.72;text-align:center;margin:7px auto 0;max-width:900px}
 :focus-visible{outline:3px solid #f0c169;outline-offset:2px}
-@media (prefers-reduced-motion: reduce){.leaf{transition:none}}
+@media(max-width:820px){
+ body{padding:9px 7px calc(12px + env(safe-area-inset-bottom,0px))}
+ .credits{display:none}
+ #palco{padding:8px 0 6px}
+ #livro.single{width:min(97.5vw,640px,max(270px,calc((100vh - 196px)*.7047619)));width:min(97.5vw,640px,max(270px,calc((100dvh - 196px)*.7047619)))}
+ button,a.btn{padding:9px 12px;font-size:.86rem}
+ #contador{min-width:132px;font-size:.84rem}
+}
+@media(prefers-reduced-motion:reduce){:root{--dur:1ms}#turning.animating .face-shade{animation:none}}
 </style>
 </head>
 <body>
@@ -549,52 +611,225 @@ button:disabled{opacity:.38;cursor:default}
 <p class="sub">Análise comparativa completa dos programas de governo — Lula (PT) × Flávio Bolsonaro (PL)</p>
 <div class="credits">Curadoria: <strong>by rogerelizar</strong> · Montagem por IA: <strong>Arena.ai — Agent Mode</strong> · 2º Turno 2026 - Criado por IA</div>
 </header>
-<div id="palco"><div id="livro">__FOLHAS__</div></div>
+<section id="palco" aria-label="Livro digital">
+  <div id="livro" class="spread closed-front" tabindex="0" role="application" aria-label="Flipbook. Use as setas esquerda e direita para virar as páginas.">
+    <div class="page static left blank"><img id="imgLeft" alt=""><div class="blank-label"></div><div class="shade"></div></div>
+    <div class="page static right"><img id="imgRight" alt=""><div class="blank-label"></div><div class="shade"></div></div>
+    <div id="turning" aria-hidden="true">
+      <div class="face front"><img id="imgFront" alt=""><div class="face-shade"></div></div>
+      <div class="face back" id="faceBack"><img id="imgBack" alt=""><div class="paper-back">by rogerelizar</div><div class="face-shade"></div></div>
+    </div>
+    <div class="spine"></div>
+    <div class="hint prev" aria-hidden="true">‹</div>
+    <div class="hint next" aria-hidden="true">›</div>
+  </div>
+</section>
 <div class="controls">
-<button type="button" id="ant">◀ Anterior</button>
-<span id="contador" aria-live="polite"></span>
-<button type="button" id="prox">Próxima ▶</button>
-<a class="btn ghost" href="Analise-2026-Ebook-A5.pdf" download>⬇ PDF A5</a>
+  <button type="button" id="inicio" class="ghost" aria-label="Ir para o início">⏮ Início</button>
+  <button type="button" id="ant">◀ Anterior</button>
+  <span id="contador" aria-live="polite"></span>
+  <button type="button" id="prox">Próxima ▶</button>
+  <button type="button" id="fim" class="ghost" aria-label="Ir para o fim">Fim ⏭</button>
+  <button type="button" id="tela" class="ghost">Tela cheia</button>
+  <a class="btn ghost" href="Analise-2026-Ebook-A5.pdf" download>⬇ PDF A5</a>
 </div>
-<p class="dica">Toque nas laterais do livro, deslize o dedo ou use ← → no teclado para virar as páginas. Funciona sem internet.</p>
+<div class="progresso"><span>1</span><input id="slider" type="range" min="1" step="1" value="1" aria-label="Ir para a página"><span id="totalPag"></span></div>
+<p class="dica">No computador, o livro abre em duas páginas centradas; no celular, em página única. Toque nas laterais, deslize o dedo ou use ← →. Funciona sem internet.</p>
+<noscript><p class="dica">Ative o JavaScript para folhear — ou baixe o PDF A5 acima.</p></noscript>
+<script>const PAGES=__PAGES_JSON__;</script>
 <script>
 (function(){
 "use strict";
-var leaves=[].slice.call(document.querySelectorAll(".leaf"));
-var total=__NPAG__, atual=0;
-var contador=document.getElementById("contador"), ant=document.getElementById("ant"), prox=document.getElementById("prox");
-function render(){
-  leaves.forEach(function(l,i){
-    var virada=i<atual;
-    l.classList.toggle("flipped",virada);
-    l.style.zIndex=virada?String(i+1):String(leaves.length-i);
-  });
-  var visivel=Math.min(atual*2+1,total);
-  contador.textContent="Página "+visivel+" de "+total;
-  ant.disabled=atual<=0; prox.disabled=atual>=leaves.length;
+var total=PAGES.length;
+var livro=document.getElementById("livro"), turn=document.getElementById("turning"), faceBack=document.getElementById("faceBack");
+var imgL=document.getElementById("imgLeft"), imgR=document.getElementById("imgRight"), imgF=document.getElementById("imgFront"), imgB=document.getElementById("imgBack");
+var elL=imgL.parentElement, elR=imgR.parentElement;
+var contador=document.getElementById("contador"), slider=document.getElementById("slider");
+var bIni=document.getElementById("inicio"), bAnt=document.getElementById("ant"), bProx=document.getElementById("prox"), bFim=document.getElementById("fim"), bTela=document.getElementById("tela");
+var mq=window.matchMedia("(max-width: 820px)");
+var reduz=window.matchMedia("(prefers-reduced-motion: reduce)");
+var mode=mq.matches?"single":"spread";
+var anchor=0, spread=0, page=0, animating=false, finishFn=null, finishTimer=0, tokenSeq=0, suppressClick=0;
+var maxSpread=Math.ceil((total-1)/2);
+var preloaded={};
+slider.max=String(total); document.getElementById("totalPag").textContent=String(total);
+
+function duracao(){ return reduz.matches?30:(mode==="single"?680:860); }
+function spreadPages(s){
+  if(s<=0) return [null,0];
+  var l=2*s-1, r=2*s;
+  return [l<total?l:null, r<total?r:null];
 }
-function proxPagina(){ if(atual<leaves.length){atual++;render();} }
-function antPagina(){ if(atual>0){atual--;render();} }
-prox.addEventListener("click",proxPagina);
-ant.addEventListener("click",antPagina);
-document.addEventListener("keydown",function(e){ if(e.key==="ArrowRight")proxPagina(); if(e.key==="ArrowLeft")antPagina(); });
-var livro=document.getElementById("livro");
-livro.addEventListener("click",function(e){
-  var r=livro.getBoundingClientRect(), x=(e.clientX-r.left)/r.width;
-  if(x>0.55)proxPagina(); else if(x<0.45)antPagina();
+function preload(centro){
+  for(var i=centro-2;i<=centro+5;i++){
+    if(i>=0&&i<total&&!preloaded[i]){ preloaded[i]=1; var im=new Image(); im.src=PAGES[i]; }
+  }
+}
+function setImg(img, idx){
+  var cont=img.parentElement;
+  if(idx===null||idx===undefined){
+    img.removeAttribute("src"); img.alt=""; delete img.dataset.page;
+    if(cont.classList.contains("page")) cont.classList.add("blank");
+    return;
+  }
+  cont.classList.remove("blank");
+  if(img.dataset.page!==String(idx)){ img.src=PAGES[idx]; img.dataset.page=String(idx); }
+  img.alt="Página "+(idx+1)+" de "+total;
+}
+function limites(){
+  return {
+    podeAnt: !animating && (mode==="single" ? page>0 : spread>0),
+    podeProx: !animating && (mode==="single" ? page<total-1 : spread<maxSpread)
+  };
+}
+function botoes(){
+  var l=limites();
+  bAnt.disabled=!l.podeAnt; bIni.disabled=!l.podeAnt;
+  bProx.disabled=!l.podeProx; bFim.disabled=!l.podeProx;
+  slider.disabled=animating;
+}
+function sincroniza(){
+  anchor=Math.max(0,Math.min(total-1,anchor));
+  page=anchor;
+  spread=page===0?0:Math.min(maxSpread,Math.ceil(page/2));
+  if(mode==="spread") anchor=spread===0?0:Math.min(2*spread-1,total-1);
+}
+function render(){
+  sincroniza();
+  livro.style.setProperty("--dur", duracao()+"ms");
+  livro.classList.toggle("single",mode==="single");
+  livro.classList.toggle("spread",mode==="spread");
+  if(mode==="single"){
+    livro.classList.remove("closed-front","closed-back");
+    setImg(imgL,null); setImg(imgR,page);
+    contador.textContent="Página "+(page+1)+" de "+total;
+    slider.value=String(page+1);
+  }else{
+    var pr=spreadPages(spread), l=pr[0], r=pr[1];
+    livro.classList.toggle("closed-front",l===null&&r!==null);
+    livro.classList.toggle("closed-back",r===null&&l!==null);
+    setImg(imgL,l); setImg(imgR,r);
+    contador.textContent = l===null ? ("Capa · Página "+(r+1)+" de "+total)
+      : (r===null ? ("Página "+(l+1)+" de "+total) : ("Páginas "+(l+1)+"–"+(r+1)+" de "+total));
+    slider.value=String(anchor+1);
+  }
+  livro.setAttribute("aria-label","Flipbook, "+contador.textContent+". Use as setas esquerda e direita para virar as páginas.");
+  botoes(); preload(anchor);
+}
+function concluir(novoAnchor, token){
+  if(token!==tokenSeq) return;
+  window.clearTimeout(finishTimer); finishFn=null; animating=false;
+  turn.classList.remove("on","animate","animating","flipped");
+  anchor=novoAnchor; render();
+}
+function virar(op){
+  if(animating) return;
+  animating=true; botoes();
+  if(mode==="spread"){
+    var destino=op.targetSpread;
+    var dp=spreadPages(destino);
+    livro.classList.toggle("closed-front",dp[0]===null&&dp[1]!==null);
+    livro.classList.toggle("closed-back",dp[1]===null&&dp[0]!==null);
+    setImg(imgL,op.underLeft); setImg(imgR,op.underRight);
+  }else{
+    setImg(imgR,op.underRight);
+  }
+  faceBack.classList.toggle("paper",!!op.paper);
+  setImg(imgF,op.front);
+  if(op.paper){ imgB.removeAttribute("src"); imgB.alt=""; delete imgB.dataset.page; }
+  else setImg(imgB,op.back);
+  turn.classList.remove("animate","animating","flipped");
+  turn.classList.add("on");
+  if(op.fromFlipped) turn.classList.add("flipped");
+  void turn.offsetWidth;
+  var token=++tokenSeq;
+  finishFn=function(){ concluir(op.newAnchor,token); };
+  finishTimer=window.setTimeout(function(){ if(finishFn){ var f=finishFn; finishFn=null; f(); } }, duracao()+90);
+  window.requestAnimationFrame(function(){
+    window.requestAnimationFrame(function(){
+      turn.classList.add("animate","animating");
+      turn.classList.toggle("flipped",!!op.toFlipped);
+    });
+  });
+}
+turn.addEventListener("transitionend",function(e){
+  if(e.propertyName==="transform"&&finishFn){ var f=finishFn; finishFn=null; window.clearTimeout(finishTimer); f(); }
 });
-var tx=null;
-livro.addEventListener("touchstart",function(e){tx=e.changedTouches[0].clientX;},{passive:true});
+function proxima(){
+  if(animating) return;
+  if(mode==="single"){
+    if(page>=total-1) return;
+    virar({front:page,paper:true,fromFlipped:false,toFlipped:true,newAnchor:page+1,underRight:page+1});
+  }else{
+    if(spread>=maxSpread) return;
+    var atual=spreadPages(spread), dest=spreadPages(spread+1);
+    virar({front:atual[1],back:dest[0],fromFlipped:false,toFlipped:true,
+           newAnchor:dest[0]!==null?dest[0]:dest[1],underLeft:atual[0],underRight:dest[1],targetSpread:spread+1});
+  }
+}
+function anterior(){
+  if(animating) return;
+  if(mode==="single"){
+    if(page<=0) return;
+    virar({front:page-1,paper:true,fromFlipped:true,toFlipped:false,newAnchor:page-1,underRight:page});
+  }else{
+    if(spread<=0) return;
+    var atual=spreadPages(spread), dest=spreadPages(spread-1);
+    virar({front:dest[1],back:atual[0],fromFlipped:true,toFlipped:false,
+           newAnchor:dest[0]!==null?dest[0]:dest[1],underLeft:dest[0],underRight:atual[1],targetSpread:spread-1});
+  }
+}
+function irPara(novoAnchor){
+  if(animating) return;
+  anchor=novoAnchor; render();
+}
+bProx.addEventListener("click",proxima);
+bAnt.addEventListener("click",anterior);
+bIni.addEventListener("click",function(){irPara(0);});
+bFim.addEventListener("click",function(){irPara(total-1);});
+slider.addEventListener("input",function(){ irPara(Number(slider.value)-1); });
+bTela.addEventListener("click",function(){
+  if(document.fullscreenElement) document.exitFullscreen();
+  else if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+});
+livro.addEventListener("click",function(e){
+  if(Date.now()<suppressClick) return;
+  var r=livro.getBoundingClientRect(), x=(e.clientX-r.left)/r.width;
+  if(mode==="spread"){ if(x<0.5)anterior(); else proxima(); }
+  else{ if(x<0.30)anterior(); else if(x>0.70)proxima(); }
+});
+var ta=null, tx=0, ty=0;
+livro.addEventListener("touchstart",function(e){ var t=e.changedTouches[0]; tx=t.clientX; ty=t.clientY; },{passive:true});
 livro.addEventListener("touchend",function(e){
-  if(tx===null)return; var dx=e.changedTouches[0].clientX-tx; tx=null;
-  if(dx<-42)proxPagina(); else if(dx>42)antPagina();
+  var t=e.changedTouches[0], dx=t.clientX-tx, dy=t.clientY-ty;
+  if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy)*1.25){
+    suppressClick=Date.now()+350;
+    if(dx<0)proxima(); else anterior();
+  }
 },{passive:true});
+document.addEventListener("keydown",function(e){
+  var tag=(e.target&&e.target.tagName)||"";
+  if(tag==="INPUT"||tag==="TEXTAREA"||tag==="SELECT") return;
+  if(e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); proxima(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ e.preventDefault(); anterior(); }
+  else if(e.key==="Home"){ e.preventDefault(); irPara(0); }
+  else if(e.key==="End"){ e.preventDefault(); irPara(total-1); }
+});
+function trocarModo(){
+  var novo=mq.matches?"single":"spread";
+  if(novo===mode) return;
+  if(finishFn){ var f=finishFn; finishFn=null; window.clearTimeout(finishTimer); f(); }
+  mode=novo; render();
+}
+if(mq.addEventListener) mq.addEventListener("change",trocarModo);
+else if(mq.addListener) mq.addListener(trocarModo);
 render();
 })();
 </script>
 </body>
 </html>
 """
+
 sai_flip = RAIZ / "downloads" / "Analise-2026-Flipbook.html"
-sai_flip.write_text(FLIP.replace("__FOLHAS__", "\n".join(folhas)).replace("__NPAG__", str(npag)), encoding="utf-8")
-print(f"FLIPBOOK bytes={sai_flip.stat().st_size} folhas={len(folhas)}")
+sai_flip.write_text(FLIP.replace("__PAGES_JSON__", json.dumps(paginas_uri, separators=(",", ":"))), encoding="utf-8")
+print(f"FLIPBOOK bytes={sai_flip.stat().st_size} paginas={npag} formato={_FMT}")
